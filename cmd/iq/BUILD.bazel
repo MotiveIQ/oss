@@ -3,7 +3,7 @@ load("@rules_go//go:def.bzl", "go_binary", "go_library")
 go_library(
     name = "iq_lib",
     srcs = ["main.go"],
-    importpath = "github.com/MotiveIQ/public/cmd/iq",
+    importpath = "go.motiveiq.dev/cmd/iq",
     visibility = ["//visibility:private"],
     deps = ["//cmd/iq/internal/publiccli"],
 )

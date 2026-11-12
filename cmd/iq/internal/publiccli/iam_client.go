@@ -10,11 +10,11 @@ import (
 
 	"google.golang.org/grpc/credentials"
 
-	iamv1 "github.com/MotiveIQ/public/platform/iam/api/v1"
-	"github.com/MotiveIQ/public/platform/iam/oauth"
-	motiveiq "github.com/MotiveIQ/public/platform/iam/sdk"
-	sdkcli "github.com/MotiveIQ/public/platform/iam/sdk/cli"
-	"github.com/MotiveIQ/public/platform/iam/sdk/sessioncache"
+	iamv1 "go.motiveiq.dev/platform/iam/api/v1"
+	"go.motiveiq.dev/platform/iam/oauth"
+	motiveiq "go.motiveiq.dev/platform/iam/sdk"
+	sdkcli "go.motiveiq.dev/platform/iam/sdk/cli"
+	"go.motiveiq.dev/platform/iam/sdk/sessioncache"
 )
 
 const (

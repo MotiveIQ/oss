@@ -7,8 +7,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/MotiveIQ/public/platform/iam/oauth"
-	motiveiq "github.com/MotiveIQ/public/platform/iam/sdk"
+	"go.motiveiq.dev/platform/iam/oauth"
+	motiveiq "go.motiveiq.dev/platform/iam/sdk"
 )
 
 func TestAPICommandsOutsideWorkspace(t *testing.T) {

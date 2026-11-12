@@ -9,7 +9,7 @@ go_library(
         "http.go",
         "request_proof.go",
     ],
-    importpath = "github.com/MotiveIQ/public/platform/iam/sdk/internal/transport",
+    importpath = "go.motiveiq.dev/platform/iam/sdk/internal/transport",
     visibility = ["//platform/iam/sdk:__subpackages__"],
     deps = [
         "//platform/iam/internal/proof",

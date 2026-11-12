@@ -4,7 +4,7 @@ go_library(
     name = "prooftest",
     testonly = True,
     srcs = ["prooftest.go"],
-    importpath = "github.com/MotiveIQ/public/platform/iam/internal/prooftest",
+    importpath = "go.motiveiq.dev/platform/iam/internal/prooftest",
     visibility = ["//platform/iam:__subpackages__"],
     deps = [
         "//platform/iam/internal/proof",

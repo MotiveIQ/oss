@@ -12,7 +12,7 @@ import (
 	"time"
 	"unicode/utf8"
 
-	s3v1 "github.com/MotiveIQ/public/platform/s3/api/v1"
+	s3v1 "go.motiveiq.dev/platform/s3/api/v1"
 	"golang.org/x/text/unicode/norm"
 )
 

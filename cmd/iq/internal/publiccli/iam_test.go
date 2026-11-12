@@ -17,9 +17,9 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 
-	iamv1 "github.com/MotiveIQ/public/platform/iam/api/v1"
-	"github.com/MotiveIQ/public/platform/iam/oauth"
-	motiveiq "github.com/MotiveIQ/public/platform/iam/sdk"
+	iamv1 "go.motiveiq.dev/platform/iam/api/v1"
+	"go.motiveiq.dev/platform/iam/oauth"
+	motiveiq "go.motiveiq.dev/platform/iam/sdk"
 )
 
 func TestIAMVerbRPCMapping(t *testing.T) {

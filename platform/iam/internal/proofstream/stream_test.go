@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	iamv1 "github.com/MotiveIQ/public/platform/iam/api/v1"
-	"github.com/MotiveIQ/public/platform/iam/internal/proof"
+	iamv1 "go.motiveiq.dev/platform/iam/api/v1"
+	"go.motiveiq.dev/platform/iam/internal/proof"
 	"google.golang.org/protobuf/encoding/protowire"
 	"google.golang.org/protobuf/proto"
 )

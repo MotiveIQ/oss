@@ -16,7 +16,7 @@ import (
 	"strings"
 	"time"
 
-	s3v1 "github.com/MotiveIQ/public/platform/s3/api/v1"
+	s3v1 "go.motiveiq.dev/platform/s3/api/v1"
 )
 
 type s3Task struct {

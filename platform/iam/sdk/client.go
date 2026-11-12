@@ -8,7 +8,7 @@ import (
 	"sync"
 	"time"
 
-	sdktransport "github.com/MotiveIQ/public/platform/iam/sdk/internal/transport"
+	sdktransport "go.motiveiq.dev/platform/iam/sdk/internal/transport"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -16,9 +16,9 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 
-	"github.com/MotiveIQ/public/platform/iam/internal/proof"
-	"github.com/MotiveIQ/public/platform/iam/internal/proofgrpc"
-	"github.com/MotiveIQ/public/platform/iam/internal/proofhttp"
+	"go.motiveiq.dev/platform/iam/internal/proof"
+	"go.motiveiq.dev/platform/iam/internal/proofgrpc"
+	"go.motiveiq.dev/platform/iam/internal/proofhttp"
 )
 
 // EndpointResolver resolves a stable SDK service key to a gRPC target.

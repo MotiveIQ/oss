@@ -13,7 +13,7 @@ import (
 	"google.golang.org/grpc/mem"
 	"google.golang.org/protobuf/proto"
 
-	"github.com/MotiveIQ/public/platform/iam/internal/proof"
+	"go.motiveiq.dev/platform/iam/internal/proof"
 )
 
 type encodedRequest struct{ payload []byte }

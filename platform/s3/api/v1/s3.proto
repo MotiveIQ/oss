@@ -5,7 +5,7 @@ package motiveiq.s3.v1;
 import "google/protobuf/timestamp.proto";
 import "platform/iam/api/v1/stream.proto";
 
-option go_package = "github.com/MotiveIQ/public/platform/s3/api/v1;s3v1";
+option go_package = "go.motiveiq.dev/platform/s3/api/v1;s3v1";
 
 // ControlPlane owns bucket configuration. Kubernetes reconcilers are ordinary
 // clients of this service and never write its database directly.

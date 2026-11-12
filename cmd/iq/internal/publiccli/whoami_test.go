@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/MotiveIQ/public/platform/iam/oauth"
+	"go.motiveiq.dev/platform/iam/oauth"
 )
 
 // The token fields, in the order every format lists them.

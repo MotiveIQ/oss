@@ -12,7 +12,7 @@ import (
 	"github.com/spf13/cobra"
 	"google.golang.org/protobuf/proto"
 
-	sm "github.com/MotiveIQ/public/platform/secretsmanager/api/v1"
+	sm "go.motiveiq.dev/platform/secretsmanager/api/v1"
 )
 
 const SecretsManagerEndpointEnv = "MOTIVEIQ_IQ_SECRETSMANAGER_ENDPOINT"

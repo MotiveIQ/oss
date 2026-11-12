@@ -1,7 +1,7 @@
 package motiveiq
 
 import (
-	sdktransport "github.com/MotiveIQ/public/platform/iam/sdk/internal/transport"
+	sdktransport "go.motiveiq.dev/platform/iam/sdk/internal/transport"
 )
 
 // WithServiceGRPCProof selects the sending profile for one SDK service key.

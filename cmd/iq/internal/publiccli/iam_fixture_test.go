@@ -11,8 +11,8 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	iamv1 "github.com/MotiveIQ/public/platform/iam/api/v1"
-	motiveiq "github.com/MotiveIQ/public/platform/iam/sdk"
+	iamv1 "go.motiveiq.dev/platform/iam/api/v1"
+	motiveiq "go.motiveiq.dev/platform/iam/sdk"
 )
 
 type fakeIAMClient struct {

@@ -3,7 +3,7 @@ package motiveiq
 import (
 	"fmt"
 
-	sdktransport "github.com/MotiveIQ/public/platform/iam/sdk/internal/transport"
+	sdktransport "go.motiveiq.dev/platform/iam/sdk/internal/transport"
 	"google.golang.org/grpc"
 )
 

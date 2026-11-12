@@ -18,8 +18,8 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 
-	"github.com/MotiveIQ/public/platform/iam/internal/proof"
-	"github.com/MotiveIQ/public/platform/iam/internal/proofgrpc"
+	"go.motiveiq.dev/platform/iam/internal/proof"
+	"go.motiveiq.dev/platform/iam/internal/proofgrpc"
 )
 
 // Signer can re-sign a v3 fixture as a valid historical v2 proof, so rejection

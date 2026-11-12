@@ -1,6 +1,6 @@
 syntax = "proto3";
 package motiveiq.kms.v1;
-option go_package = "github.com/MotiveIQ/public/platform/kms/api/v1;kmsv1";
+option go_package = "go.motiveiq.dev/platform/kms/api/v1;kmsv1";
 import "google/protobuf/timestamp.proto";
 
 service DataPlane {

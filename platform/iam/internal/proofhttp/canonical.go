@@ -14,7 +14,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/MotiveIQ/public/platform/iam/internal/proof"
+	"go.motiveiq.dev/platform/iam/internal/proof"
 )
 
 var (

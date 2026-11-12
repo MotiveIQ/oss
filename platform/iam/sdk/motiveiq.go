@@ -19,13 +19,13 @@ import (
 	"sync"
 	"time"
 
-	sdktransport "github.com/MotiveIQ/public/platform/iam/sdk/internal/transport"
+	sdktransport "go.motiveiq.dev/platform/iam/sdk/internal/transport"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/credentials/insecure"
 
-	"github.com/MotiveIQ/public/platform/iam/internal/urn"
+	"go.motiveiq.dev/platform/iam/internal/urn"
 )
 
 // Environment variables read by LoadDefaultConfig. The admission webhook

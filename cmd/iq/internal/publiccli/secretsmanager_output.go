@@ -11,7 +11,7 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	sm "github.com/MotiveIQ/public/platform/secretsmanager/api/v1"
+	sm "go.motiveiq.dev/platform/secretsmanager/api/v1"
 )
 
 func secretDate(out map[string]any, field string, value *timestamppb.Timestamp) {

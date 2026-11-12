@@ -10,9 +10,9 @@ import (
 
 	"github.com/spf13/cobra"
 
-	iamv1 "github.com/MotiveIQ/public/platform/iam/api/v1"
-	"github.com/MotiveIQ/public/platform/iam/oauth"
-	motiveiq "github.com/MotiveIQ/public/platform/iam/sdk"
+	iamv1 "go.motiveiq.dev/platform/iam/api/v1"
+	"go.motiveiq.dev/platform/iam/oauth"
+	motiveiq "go.motiveiq.dev/platform/iam/sdk"
 )
 
 const IAMAddress = "iam.platform.motiveiq.net:443"

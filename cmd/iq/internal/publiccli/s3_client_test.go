@@ -15,9 +15,9 @@ import (
 	"strings"
 	"testing"
 
-	iamv1 "github.com/MotiveIQ/public/platform/iam/api/v1"
-	motiveiq "github.com/MotiveIQ/public/platform/iam/sdk"
-	s3v1 "github.com/MotiveIQ/public/platform/s3/api/v1"
+	iamv1 "go.motiveiq.dev/platform/iam/api/v1"
+	motiveiq "go.motiveiq.dev/platform/iam/sdk"
+	s3v1 "go.motiveiq.dev/platform/s3/api/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/metadata"

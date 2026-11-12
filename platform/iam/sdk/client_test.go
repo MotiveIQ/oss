@@ -15,7 +15,7 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 
-	"github.com/MotiveIQ/public/platform/iam/internal/proof"
+	"go.motiveiq.dev/platform/iam/internal/proof"
 )
 
 func TestServiceEndpointPrecedence(t *testing.T) {

@@ -8,7 +8,7 @@ go_library(
         "jwk.go",
         "proof.go",
     ],
-    importpath = "github.com/MotiveIQ/public/platform/iam/internal/proof",
+    importpath = "go.motiveiq.dev/platform/iam/internal/proof",
     visibility = ["//platform/iam:__subpackages__"],
 )
 

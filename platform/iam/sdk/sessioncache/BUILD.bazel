@@ -3,7 +3,7 @@ load("@rules_go//go:def.bzl", "go_library", "go_test")
 go_library(
     name = "sessioncache",
     srcs = ["file.go"],
-    importpath = "github.com/MotiveIQ/public/platform/iam/sdk/sessioncache",
+    importpath = "go.motiveiq.dev/platform/iam/sdk/sessioncache",
     visibility = ["//visibility:public"],
     deps = ["@com_github_gofrs_flock//:flock"],
 )

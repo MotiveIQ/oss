@@ -3,7 +3,7 @@ package cli
 import (
 	"testing"
 
-	motiveiq "github.com/MotiveIQ/public/platform/iam/sdk"
+	motiveiq "go.motiveiq.dev/platform/iam/sdk"
 )
 
 func TestIdentityDiscovery(t *testing.T) {

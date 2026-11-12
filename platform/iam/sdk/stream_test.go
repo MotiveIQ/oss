@@ -14,8 +14,8 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 
-	"github.com/MotiveIQ/public/platform/iam/internal/proof"
-	"github.com/MotiveIQ/public/platform/iam/internal/proofgrpc"
+	"go.motiveiq.dev/platform/iam/internal/proof"
+	"go.motiveiq.dev/platform/iam/internal/proofgrpc"
 )
 
 const proofTestOrigin = "https://deploy.platform.motiveiq.net"

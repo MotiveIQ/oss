@@ -19,8 +19,8 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 
-	motiveiq "github.com/MotiveIQ/public/platform/iam/sdk"
-	kmsv1 "github.com/MotiveIQ/public/platform/kms/api/v1"
+	motiveiq "go.motiveiq.dev/platform/iam/sdk"
+	kmsv1 "go.motiveiq.dev/platform/kms/api/v1"
 )
 
 const kmsTestID = "11111111-1111-4111-8111-111111111111"

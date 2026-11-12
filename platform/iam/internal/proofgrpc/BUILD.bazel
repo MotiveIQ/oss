@@ -3,7 +3,7 @@ load("@rules_go//go:def.bzl", "go_library", "go_test")
 go_library(
     name = "proofgrpc",
     srcs = ["transport.go"],
-    importpath = "github.com/MotiveIQ/public/platform/iam/internal/proofgrpc",
+    importpath = "go.motiveiq.dev/platform/iam/internal/proofgrpc",
     visibility = ["//platform/iam:__subpackages__"],
     deps = [
         "//platform/iam/internal/proof",

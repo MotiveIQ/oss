@@ -12,9 +12,9 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/proto"
 
-	iamv1 "github.com/MotiveIQ/public/platform/iam/api/v1"
-	"github.com/MotiveIQ/public/platform/iam/internal/proof"
-	"github.com/MotiveIQ/public/platform/iam/internal/proofgrpc"
+	iamv1 "go.motiveiq.dev/platform/iam/api/v1"
+	"go.motiveiq.dev/platform/iam/internal/proof"
+	"go.motiveiq.dev/platform/iam/internal/proofgrpc"
 )
 
 // Credential-provider tuning. These are deliberately unexported constants:

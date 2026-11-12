@@ -20,9 +20,9 @@ import (
 	"google.golang.org/grpc/test/bufconn"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	iamv1 "github.com/MotiveIQ/public/platform/iam/api/v1"
-	"github.com/MotiveIQ/public/platform/iam/oauth"
-	motiveiq "github.com/MotiveIQ/public/platform/iam/sdk"
+	iamv1 "go.motiveiq.dev/platform/iam/api/v1"
+	"go.motiveiq.dev/platform/iam/oauth"
+	motiveiq "go.motiveiq.dev/platform/iam/sdk"
 )
 
 type proofConfigTestServer struct {

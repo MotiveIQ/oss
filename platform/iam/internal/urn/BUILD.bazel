@@ -8,7 +8,7 @@ exports_files(["urn.go"])
 go_library(
     name = "urn",
     srcs = ["urn.go"],
-    importpath = "github.com/MotiveIQ/public/platform/iam/internal/urn",
+    importpath = "go.motiveiq.dev/platform/iam/internal/urn",
     visibility = ["//platform/iam:__subpackages__"],
 )
 

@@ -19,9 +19,9 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	iamv1 "github.com/MotiveIQ/public/platform/iam/api/v1"
-	"github.com/MotiveIQ/public/platform/iam/internal/proof"
-	"github.com/MotiveIQ/public/platform/iam/internal/proofgrpc"
+	iamv1 "go.motiveiq.dev/platform/iam/api/v1"
+	"go.motiveiq.dev/platform/iam/internal/proof"
+	"go.motiveiq.dev/platform/iam/internal/proofgrpc"
 )
 
 // testIssuer is the session-token issuer the unit tests use.

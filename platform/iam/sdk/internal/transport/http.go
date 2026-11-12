@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/MotiveIQ/public/platform/iam/internal/proof"
+	"go.motiveiq.dev/platform/iam/internal/proof"
 )
 
 // HeaderValues deliberately does not use http.Header.Values: Values

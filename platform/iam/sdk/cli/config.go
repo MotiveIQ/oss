@@ -11,8 +11,8 @@ import (
 
 	"google.golang.org/grpc/credentials"
 
-	"github.com/MotiveIQ/public/platform/iam/oauth"
-	motiveiq "github.com/MotiveIQ/public/platform/iam/sdk"
+	"go.motiveiq.dev/platform/iam/oauth"
+	motiveiq "go.motiveiq.dev/platform/iam/sdk"
 )
 
 const HumanRole = "urn:motiveiq:iam:role/human"

@@ -6,7 +6,7 @@ import "google/protobuf/timestamp.proto";
 import "platform/iam/api/v1/authentication.proto";
 import "platform/iam/api/v1/delegation.proto";
 
-option go_package = "github.com/MotiveIQ/public/platform/iam/api/v1;iamv1";
+option go_package = "go.motiveiq.dev/platform/iam/api/v1;iamv1";
 
 // STS exchanges verified external OIDC identities for short-lived
 // assumed-role sessions (DESIGN.md "STS"). Session tokens are carried in

@@ -10,10 +10,10 @@ import (
 	"testing"
 	"time"
 
-	sdktransport "github.com/MotiveIQ/public/platform/iam/sdk/internal/transport"
+	sdktransport "go.motiveiq.dev/platform/iam/sdk/internal/transport"
 
-	"github.com/MotiveIQ/public/platform/iam/internal/proof"
-	"github.com/MotiveIQ/public/platform/iam/internal/proofhttp"
+	"go.motiveiq.dev/platform/iam/internal/proof"
+	"go.motiveiq.dev/platform/iam/internal/proofhttp"
 )
 
 const httpTestOrigin = "https://api.platform.motiveiq.net"

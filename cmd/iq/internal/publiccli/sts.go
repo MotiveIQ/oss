@@ -6,7 +6,7 @@ import (
 	"github.com/spf13/cobra"
 	"google.golang.org/protobuf/proto"
 
-	iamv1 "github.com/MotiveIQ/public/platform/iam/api/v1"
+	iamv1 "go.motiveiq.dev/platform/iam/api/v1"
 )
 
 func (c *Command) stsCommand() *cobra.Command {

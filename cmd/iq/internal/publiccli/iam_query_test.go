@@ -10,7 +10,7 @@ import (
 
 	"gopkg.in/yaml.v3"
 
-	"github.com/MotiveIQ/public/platform/iam/oauth"
+	"go.motiveiq.dev/platform/iam/oauth"
 )
 
 func TestIAMDefaultJSONAllVerbs(t *testing.T) {

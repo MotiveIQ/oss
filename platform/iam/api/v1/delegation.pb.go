@@ -4025,7 +4025,7 @@ const file_platform_iam_api_v1_delegation_proto_rawDesc = "" +
 	"&SOURCE_RESOURCE_PROVENANCE_REQUEST_URN\x10\x01\x12/\n" +
 	"+SOURCE_RESOURCE_PROVENANCE_SERVICE_RESOLVED\x10\x02\x120\n" +
 	",SOURCE_RESOURCE_PROVENANCE_SERVICE_ALLOCATED\x10\x03\x12.\n" +
-	"*SOURCE_RESOURCE_PROVENANCE_REQUEST_DERIVED\x10\x04B6Z4github.com/MotiveIQ/public/platform/iam/api/v1;iamv1b\x06proto3"
+	"*SOURCE_RESOURCE_PROVENANCE_REQUEST_DERIVED\x10\x04B+Z)go.motiveiq.dev/platform/iam/api/v1;iamv1b\x06proto3"
 
 var (
 	file_platform_iam_api_v1_delegation_proto_rawDescOnce sync.Once

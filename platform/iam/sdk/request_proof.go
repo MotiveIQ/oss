@@ -1,6 +1,6 @@
 package motiveiq
 
-import sdktransport "github.com/MotiveIQ/public/platform/iam/sdk/internal/transport"
+import sdktransport "go.motiveiq.dev/platform/iam/sdk/internal/transport"
 
 // ProofVersion selects a transport-independent request-proof profile.
 type ProofVersion = sdktransport.ProofVersion

@@ -7,7 +7,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/MotiveIQ/public/platform/iam/oauth"
+	"go.motiveiq.dev/platform/iam/oauth"
 )
 
 func (c *Command) loginCommand() *cobra.Command {

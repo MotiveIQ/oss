@@ -27,7 +27,7 @@ go_proto_library(
         "@rules_go//proto:go_proto",
         "@rules_go//proto:go_grpc_v2",
     ],
-    importpath = "github.com/MotiveIQ/public/platform/iam/api/v1",
+    importpath = "go.motiveiq.dev/platform/iam/api/v1",
     proto = ":iamv1_proto",
     visibility = ["//visibility:public"],
 )
@@ -36,7 +36,7 @@ go_library(
     name = "api",
     srcs = ["client.go"],
     embed = [":iamv1_go_proto"],
-    importpath = "github.com/MotiveIQ/public/platform/iam/api/v1",
+    importpath = "go.motiveiq.dev/platform/iam/api/v1",
     visibility = ["//visibility:public"],
     deps = ["@org_golang_google_grpc//:grpc"],
 )

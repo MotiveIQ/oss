@@ -5,7 +5,7 @@ package motiveiq.iam.v1;
 import "google/protobuf/timestamp.proto";
 import "platform/iam/api/v1/delegation.proto";
 
-option go_package = "github.com/MotiveIQ/public/platform/iam/api/v1;iamv1";
+option go_package = "go.motiveiq.dev/platform/iam/api/v1;iamv1";
 
 // ControlPlane manages IAM's durable objects, modeled 1:1 on their AWS
 // counterparts: roles carry their trust policy as a document

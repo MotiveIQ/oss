@@ -15,7 +15,7 @@ go_library(
         "upload_client.go",
         "web_identity.go",
     ],
-    importpath = "github.com/MotiveIQ/public/platform/iam/sdk",
+    importpath = "go.motiveiq.dev/platform/iam/sdk",
     visibility = ["//visibility:public"],
     deps = [
         "//platform/iam/api/v1:api",

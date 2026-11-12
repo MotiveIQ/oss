@@ -9,7 +9,7 @@ import (
 
 	"google.golang.org/protobuf/encoding/protojson"
 
-	iamv1 "github.com/MotiveIQ/public/platform/iam/api/v1"
+	iamv1 "go.motiveiq.dev/platform/iam/api/v1"
 )
 
 // The identity fields, in the order every format lists them.

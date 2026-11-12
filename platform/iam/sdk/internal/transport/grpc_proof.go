@@ -5,7 +5,7 @@ import (
 
 	"google.golang.org/grpc/metadata"
 
-	"github.com/MotiveIQ/public/platform/iam/internal/proof"
+	"go.motiveiq.dev/platform/iam/internal/proof"
 )
 
 // ValidateGRPCMetadata excludes transport-owned and binary fields from this adapter.

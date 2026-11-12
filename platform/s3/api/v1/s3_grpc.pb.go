@@ -8,7 +8,7 @@ package s3v1
 
 import (
 	context "context"
-	v1 "github.com/MotiveIQ/public/platform/iam/api/v1"
+	v1 "go.motiveiq.dev/platform/iam/api/v1"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"

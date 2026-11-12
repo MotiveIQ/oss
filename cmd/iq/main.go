@@ -5,7 +5,7 @@ import (
 	"os"
 	"os/signal"
 
-	"github.com/MotiveIQ/public/cmd/iq/internal/publiccli"
+	"go.motiveiq.dev/cmd/iq/internal/publiccli"
 )
 
 func main() {

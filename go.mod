@@ -1,4 +1,4 @@
-module github.com/MotiveIQ/public
+module go.motiveiq.dev
 
 go 1.27.1
 

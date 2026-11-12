@@ -2590,7 +2590,7 @@ const file_platform_kms_api_v1_kms_proto_rawDesc = "" +
 	"\vDeleteAlias\x12#.motiveiq.kms.v1.DeleteAliasRequest\x1a\x1a.motiveiq.kms.v1.Operation\x12L\n" +
 	"\bGetAlias\x12 .motiveiq.kms.v1.GetAliasRequest\x1a\x1e.motiveiq.kms.v1.AliasMetadata\x12X\n" +
 	"\vListAliases\x12#.motiveiq.kms.v1.ListAliasesRequest\x1a$.motiveiq.kms.v1.ListAliasesResponse\x12P\n" +
-	"\fGetOperation\x12$.motiveiq.kms.v1.GetOperationRequest\x1a\x1a.motiveiq.kms.v1.OperationB6Z4github.com/MotiveIQ/public/platform/kms/api/v1;kmsv1b\x06proto3"
+	"\fGetOperation\x12$.motiveiq.kms.v1.GetOperationRequest\x1a\x1a.motiveiq.kms.v1.OperationB+Z)go.motiveiq.dev/platform/kms/api/v1;kmsv1b\x06proto3"
 
 var (
 	file_platform_kms_api_v1_kms_proto_rawDescOnce sync.Once

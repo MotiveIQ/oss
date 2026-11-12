@@ -8,7 +8,7 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	kmsv1 "github.com/MotiveIQ/public/platform/kms/api/v1"
+	kmsv1 "go.motiveiq.dev/platform/kms/api/v1"
 )
 
 func (c *Command) printKMS(options outputOptions, title string, value any) error {

@@ -18,9 +18,9 @@ import (
 	"google.golang.org/grpc/test/bufconn"
 	"google.golang.org/protobuf/proto"
 
-	iamv1 "github.com/MotiveIQ/public/platform/iam/api/v1"
-	motiveiq "github.com/MotiveIQ/public/platform/iam/sdk"
-	sm "github.com/MotiveIQ/public/platform/secretsmanager/api/v1"
+	iamv1 "go.motiveiq.dev/platform/iam/api/v1"
+	motiveiq "go.motiveiq.dev/platform/iam/sdk"
+	sm "go.motiveiq.dev/platform/secretsmanager/api/v1"
 )
 
 func TestIQSecretsManagerSignsRequestsWithStableOrigin(t *testing.T) {

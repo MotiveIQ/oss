@@ -7,7 +7,7 @@
 package s3v1
 
 import (
-	v1 "github.com/MotiveIQ/public/platform/iam/api/v1"
+	v1 "go.motiveiq.dev/platform/iam/api/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -2542,7 +2542,7 @@ const file_platform_s3_api_v1_s3_proto_rawDesc = "" +
 	"HeadObject\x12!.motiveiq.s3.v1.HeadObjectRequest\x1a\".motiveiq.s3.v1.HeadObjectResponse\x12R\n" +
 	"\tGetObject\x12 .motiveiq.s3.v1.GetObjectRequest\x1a!.motiveiq.s3.v1.GetObjectResponse0\x01\x12T\n" +
 	"\tPutObject\x12\".motiveiq.iam.v1.SignedStreamFrame\x1a!.motiveiq.s3.v1.PutObjectResponse(\x01\x12Y\n" +
-	"\fDeleteObject\x12#.motiveiq.s3.v1.DeleteObjectRequest\x1a$.motiveiq.s3.v1.DeleteObjectResponseB4Z2github.com/MotiveIQ/public/platform/s3/api/v1;s3v1b\x06proto3"
+	"\fDeleteObject\x12#.motiveiq.s3.v1.DeleteObjectRequest\x1a$.motiveiq.s3.v1.DeleteObjectResponseB)Z'go.motiveiq.dev/platform/s3/api/v1;s3v1b\x06proto3"
 
 var (
 	file_platform_s3_api_v1_s3_proto_rawDescOnce sync.Once

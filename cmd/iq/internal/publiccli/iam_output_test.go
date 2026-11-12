@@ -5,7 +5,7 @@ import (
 	"testing"
 	"unicode/utf8"
 
-	iamv1 "github.com/MotiveIQ/public/platform/iam/api/v1"
+	iamv1 "go.motiveiq.dev/platform/iam/api/v1"
 )
 
 // parseIAMTable checks that the caption, borders and cells occupy one frame.

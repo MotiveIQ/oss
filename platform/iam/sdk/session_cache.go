@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/MotiveIQ/public/platform/iam/internal/proof"
+	"go.motiveiq.dev/platform/iam/internal/proof"
 )
 
 // SessionCache optionally shares session credentials beyond one Config's

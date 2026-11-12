@@ -9,8 +9,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/MotiveIQ/public/platform/iam/internal/proof"
-	"github.com/MotiveIQ/public/platform/iam/internal/proofhttp"
+	"go.motiveiq.dev/platform/iam/internal/proof"
+	"go.motiveiq.dev/platform/iam/internal/proofhttp"
 )
 
 func TestNormalizeOrigin(t *testing.T) {

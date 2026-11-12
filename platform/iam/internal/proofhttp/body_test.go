@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/MotiveIQ/public/platform/iam/internal/proofhttp"
+	"go.motiveiq.dev/platform/iam/internal/proofhttp"
 )
 
 type trackingBody struct {

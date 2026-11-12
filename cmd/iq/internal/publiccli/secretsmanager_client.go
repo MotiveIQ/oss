@@ -3,8 +3,8 @@ package publiccli
 import (
 	"errors"
 
-	motiveiq "github.com/MotiveIQ/public/platform/iam/sdk"
-	sm "github.com/MotiveIQ/public/platform/secretsmanager/api/v1"
+	motiveiq "go.motiveiq.dev/platform/iam/sdk"
+	sm "go.motiveiq.dev/platform/secretsmanager/api/v1"
 )
 
 type SecretsManagerClient = sm.SecretsManagerClient

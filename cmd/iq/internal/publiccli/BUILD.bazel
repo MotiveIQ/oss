@@ -24,7 +24,7 @@ go_library(
         "sts.go",
         "whoami.go",
     ],
-    importpath = "github.com/MotiveIQ/public/cmd/iq/internal/publiccli",
+    importpath = "go.motiveiq.dev/cmd/iq/internal/publiccli",
     visibility = ["//cmd/iq:__subpackages__"],
     deps = [
         "//platform/iam/api/v1:api",

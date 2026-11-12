@@ -504,7 +504,7 @@ const file_platform_iam_api_v1_sts_proto_rawDesc = "" +
 	"\x03STS\x12\x82\x01\n" +
 	"\x19AssumeRoleWithWebIdentity\x121.motiveiq.iam.v1.AssumeRoleWithWebIdentityRequest\x1a2.motiveiq.iam.v1.AssumeRoleWithWebIdentityResponse\x12j\n" +
 	"\x11GetCallerIdentity\x12).motiveiq.iam.v1.GetCallerIdentityRequest\x1a*.motiveiq.iam.v1.GetCallerIdentityResponse\x12s\n" +
-	"\x14IssueDelegationToken\x12,.motiveiq.iam.v1.IssueDelegationTokenRequest\x1a-.motiveiq.iam.v1.IssueDelegationTokenResponseB6Z4github.com/MotiveIQ/public/platform/iam/api/v1;iamv1b\x06proto3"
+	"\x14IssueDelegationToken\x12,.motiveiq.iam.v1.IssueDelegationTokenRequest\x1a-.motiveiq.iam.v1.IssueDelegationTokenResponseB+Z)go.motiveiq.dev/platform/iam/api/v1;iamv1b\x06proto3"
 
 var (
 	file_platform_iam_api_v1_sts_proto_rawDescOnce sync.Once

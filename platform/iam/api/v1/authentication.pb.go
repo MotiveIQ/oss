@@ -79,7 +79,7 @@ const file_platform_iam_api_v1_authentication_proto_rawDesc = "" +
 	"\x10SessionTokenType\x12\"\n" +
 	"\x1eSESSION_TOKEN_TYPE_UNSPECIFIED\x10\x00\x12!\n" +
 	"\x19SESSION_TOKEN_TYPE_BEARER\x10\x01\x1a\x02\b\x01\x12*\n" +
-	"&SESSION_TOKEN_TYPE_PROOF_OF_POSSESSION\x10\x02B6Z4github.com/MotiveIQ/public/platform/iam/api/v1;iamv1b\x06proto3"
+	"&SESSION_TOKEN_TYPE_PROOF_OF_POSSESSION\x10\x02B+Z)go.motiveiq.dev/platform/iam/api/v1;iamv1b\x06proto3"
 
 var (
 	file_platform_iam_api_v1_authentication_proto_rawDescOnce sync.Once

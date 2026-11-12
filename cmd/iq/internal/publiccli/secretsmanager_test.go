@@ -19,8 +19,8 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	motiveiq "github.com/MotiveIQ/public/platform/iam/sdk"
-	sm "github.com/MotiveIQ/public/platform/secretsmanager/api/v1"
+	motiveiq "go.motiveiq.dev/platform/iam/sdk"
+	sm "go.motiveiq.dev/platform/secretsmanager/api/v1"
 )
 
 const secretTestURN = secretURNPrefix + "33333333-3333-4333-8333-333333333333"

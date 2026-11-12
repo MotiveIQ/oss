@@ -338,7 +338,7 @@ const file_platform_iam_api_v1_stream_proto_rawDesc = "" +
 	"\x15deadline_unix_seconds\x18\x02 \x01(\x03R\x13deadlineUnixSeconds\"q\n" +
 	"\x13RequestStreamFinish\x12,\n" +
 	"\x12data_message_count\x18\x01 \x01(\x04R\x10dataMessageCount\x12,\n" +
-	"\x12data_payload_bytes\x18\x02 \x01(\x04R\x10dataPayloadBytesB6Z4github.com/MotiveIQ/public/platform/iam/api/v1;iamv1b\x06proto3"
+	"\x12data_payload_bytes\x18\x02 \x01(\x04R\x10dataPayloadBytesB+Z)go.motiveiq.dev/platform/iam/api/v1;iamv1b\x06proto3"
 
 var (
 	file_platform_iam_api_v1_stream_proto_rawDescOnce sync.Once

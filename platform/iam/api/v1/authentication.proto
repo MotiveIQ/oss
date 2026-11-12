@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package motiveiq.iam.v1;
 
-option go_package = "github.com/MotiveIQ/public/platform/iam/api/v1;iamv1";
+option go_package = "go.motiveiq.dev/platform/iam/api/v1;iamv1";
 
 // SessionTokenType describes how possession of an STS session token is
 // proven. Unspecified and Bearer remain on the wire only so historical data

@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/cobra"
 	"google.golang.org/protobuf/proto"
 
-	kmsv1 "github.com/MotiveIQ/public/platform/kms/api/v1"
+	kmsv1 "go.motiveiq.dev/platform/kms/api/v1"
 )
 
 const KMSEndpointEnv = "MOTIVEIQ_IQ_KMS_ENDPOINT"

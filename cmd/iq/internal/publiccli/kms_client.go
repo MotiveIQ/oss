@@ -3,8 +3,8 @@ package publiccli
 import (
 	"errors"
 
-	motiveiq "github.com/MotiveIQ/public/platform/iam/sdk"
-	kmsv1 "github.com/MotiveIQ/public/platform/kms/api/v1"
+	motiveiq "go.motiveiq.dev/platform/iam/sdk"
+	kmsv1 "go.motiveiq.dev/platform/kms/api/v1"
 )
 
 // KMSClient keeps both APIs on the same proof-bound SDK configuration.

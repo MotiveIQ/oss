@@ -3,7 +3,7 @@ load("@rules_go//go:def.bzl", "go_library", "go_test")
 go_library(
     name = "cli",
     srcs = ["config.go"],
-    importpath = "github.com/MotiveIQ/public/platform/iam/sdk/cli",
+    importpath = "go.motiveiq.dev/platform/iam/sdk/cli",
     visibility = ["//visibility:public"],
     deps = [
         "//platform/iam/oauth",

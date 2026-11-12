@@ -20,7 +20,7 @@ go_proto_library(
         "@rules_go//proto:go_proto",
         "@rules_go//proto:go_grpc_v2",
     ],
-    importpath = "github.com/MotiveIQ/public/platform/s3/api/v1",
+    importpath = "go.motiveiq.dev/platform/s3/api/v1",
     proto = ":s3v1_proto",
     visibility = ["//visibility:public"],
     deps = ["//platform/iam/api/v1:api"],
@@ -34,7 +34,7 @@ go_library(
         "transfer.go",
     ],
     embed = [":s3v1_go_proto"],
-    importpath = "github.com/MotiveIQ/public/platform/s3/api/v1",
+    importpath = "go.motiveiq.dev/platform/s3/api/v1",
     visibility = ["//visibility:public"],
     deps = [
         "@org_golang_google_grpc//:grpc",

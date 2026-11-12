@@ -1,6 +1,6 @@
 load("@bazel_gazelle//:def.bzl", "gazelle")
 
-# gazelle:prefix github.com/MotiveIQ/public
+# gazelle:prefix go.motiveiq.dev
 # gazelle:go_generate_proto true
 gazelle(name = "gazelle")
 

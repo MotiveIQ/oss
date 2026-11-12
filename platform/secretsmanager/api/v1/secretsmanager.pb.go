@@ -1438,7 +1438,7 @@ const file_platform_secretsmanager_api_v1_secretsmanager_proto_rawDesc = "" +
 	"\x12ListSecretVersions\x125.motiveiq.secretsmanager.v1.ListSecretVersionsRequest\x1a6.motiveiq.secretsmanager.v1.ListSecretVersionsResponse\x12k\n" +
 	"\fUpdateSecret\x12/.motiveiq.secretsmanager.v1.UpdateSecretRequest\x1a*.motiveiq.secretsmanager.v1.SecretMetadata\x12k\n" +
 	"\fDeleteSecret\x12/.motiveiq.secretsmanager.v1.DeleteSecretRequest\x1a*.motiveiq.secretsmanager.v1.SecretMetadata\x12m\n" +
-	"\rRestoreSecret\x120.motiveiq.secretsmanager.v1.RestoreSecretRequest\x1a*.motiveiq.secretsmanager.v1.SecretMetadataBLZJgithub.com/MotiveIQ/public/platform/secretsmanager/api/v1;secretsmanagerv1b\x06proto3"
+	"\rRestoreSecret\x120.motiveiq.secretsmanager.v1.RestoreSecretRequest\x1a*.motiveiq.secretsmanager.v1.SecretMetadataBAZ?go.motiveiq.dev/platform/secretsmanager/api/v1;secretsmanagerv1b\x06proto3"
 
 var (
 	file_platform_secretsmanager_api_v1_secretsmanager_proto_rawDescOnce sync.Once

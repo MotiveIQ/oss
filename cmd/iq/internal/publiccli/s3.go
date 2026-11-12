@@ -12,7 +12,7 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	s3v1 "github.com/MotiveIQ/public/platform/s3/api/v1"
+	s3v1 "go.motiveiq.dev/platform/s3/api/v1"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 

@@ -1,6 +1,6 @@
 syntax = "proto3";
 package motiveiq.iam.v1;
-option go_package = "github.com/MotiveIQ/public/platform/iam/api/v1;iamv1";
+option go_package = "go.motiveiq.dev/platform/iam/api/v1;iamv1";
 
 // Only OPEN carries credentials. The proof binds the exact body bytes.
 message SignedStreamFrame {

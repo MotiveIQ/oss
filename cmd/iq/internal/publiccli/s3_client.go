@@ -5,8 +5,8 @@ import (
 	"errors"
 	"io"
 
-	motiveiq "github.com/MotiveIQ/public/platform/iam/sdk"
-	s3v1 "github.com/MotiveIQ/public/platform/s3/api/v1"
+	motiveiq "go.motiveiq.dev/platform/iam/sdk"
+	s3v1 "go.motiveiq.dev/platform/s3/api/v1"
 	"google.golang.org/grpc"
 )
 

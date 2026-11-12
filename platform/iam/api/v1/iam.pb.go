@@ -3316,7 +3316,7 @@ const file_platform_iam_api_v1_iam_proto_rawDesc = "" +
 	"\rGetDelegation\x12%.motiveiq.iam.v1.GetDelegationRequest\x1a\x1b.motiveiq.iam.v1.Delegation\x12d\n" +
 	"\x0fListDelegations\x12'.motiveiq.iam.v1.ListDelegationsRequest\x1a(.motiveiq.iam.v1.ListDelegationsResponse\x12Y\n" +
 	"\x10UpdateDelegation\x12(.motiveiq.iam.v1.UpdateDelegationRequest\x1a\x1b.motiveiq.iam.v1.Delegation\x12Y\n" +
-	"\x10DeleteDelegation\x12(.motiveiq.iam.v1.DeleteDelegationRequest\x1a\x1b.motiveiq.iam.v1.DelegationB6Z4github.com/MotiveIQ/public/platform/iam/api/v1;iamv1b\x06proto3"
+	"\x10DeleteDelegation\x12(.motiveiq.iam.v1.DeleteDelegationRequest\x1a\x1b.motiveiq.iam.v1.DelegationB+Z)go.motiveiq.dev/platform/iam/api/v1;iamv1b\x06proto3"
 
 var (
 	file_platform_iam_api_v1_iam_proto_rawDescOnce sync.Once
