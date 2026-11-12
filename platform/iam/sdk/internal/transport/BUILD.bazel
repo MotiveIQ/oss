@@ -1,0 +1,19 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "transport",
+    srcs = [
+        "authentication.go",
+        "delegation.go",
+        "grpc_proof.go",
+        "http.go",
+        "request_proof.go",
+    ],
+    importpath = "github.com/MotiveIQ/public/platform/iam/sdk/internal/transport",
+    visibility = ["//platform/iam/sdk:__subpackages__"],
+    deps = [
+        "//platform/iam/internal/proof",
+        "@org_golang_google_grpc//metadata",
+        "@org_golang_google_protobuf//proto",
+    ],
+)

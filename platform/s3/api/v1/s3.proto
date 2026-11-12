@@ -1,0 +1,257 @@
+syntax = "proto3";
+
+package motiveiq.s3.v1;
+
+import "google/protobuf/timestamp.proto";
+import "platform/iam/api/v1/stream.proto";
+
+option go_package = "github.com/MotiveIQ/public/platform/s3/api/v1;s3v1";
+
+// ControlPlane owns bucket configuration. Kubernetes reconcilers are ordinary
+// clients of this service and never write its database directly.
+service ControlPlane {
+  rpc CreateBucket(CreateBucketRequest) returns (CreateBucketResponse);
+  rpc GetBucket(GetBucketRequest) returns (HeadBucketResponse);
+  rpc ListBuckets(ListBucketsRequest) returns (ListBucketsResponse);
+  rpc UpdateBucket(UpdateBucketRequest) returns (HeadBucketResponse);
+  rpc DeleteBucket(DeleteBucketRequest) returns (DeleteBucketResponse);
+  rpc GetMutation(GetMutationRequest) returns (Mutation);
+}
+
+// DataPlane has no bucket lifecycle or policy mutation RPCs.
+service DataPlane {
+  rpc HeadBucket(HeadBucketRequest) returns (HeadBucketResponse);
+  rpc ListObjects(ListObjectsRequest) returns (ListObjectsResponse);
+  rpc HeadObject(HeadObjectRequest) returns (HeadObjectResponse);
+  rpc GetObject(GetObjectRequest) returns (stream GetObjectResponse);
+  rpc PutObject(stream motiveiq.iam.v1.SignedStreamFrame) returns (PutObjectResponse);
+  rpc DeleteObject(DeleteObjectRequest) returns (DeleteObjectResponse);
+}
+
+message BucketSpec { string access_policy_json = 1; }
+message GetBucketRequest { BucketRef bucket = 1; }
+message UpdateBucketRequest {
+  BucketRef bucket = 1;
+  int64 expected_revision = 2;
+  BucketSpec spec = 3;
+  string request_id = 4;
+}
+message GetMutationRequest { string request_id = 1; string bucket_name = 2; }
+message Mutation {
+  string request_id = 1;
+  string operation = 2;
+  string bucket_id = 3;
+  string bucket_name = 4;
+  int64 revision = 5;
+  string request_json = 6;
+  // PENDING, SUCCEEDED, FAILED, or SUPERSEDED.
+  string state = 7;
+  string error = 8;
+}
+
+enum BucketState {
+  BUCKET_STATE_UNSPECIFIED = 0;
+  BUCKET_STATE_CREATING = 1;
+  BUCKET_STATE_ACTIVE = 2;
+  BUCKET_STATE_DELETING = 3;
+  BUCKET_STATE_DELETED = 4;
+}
+
+message BucketRef {
+  string name = 1;
+  string id = 2;
+}
+
+message ObjectRef {
+  string bucket = 1;
+  string key = 2;
+}
+
+message Bucket {
+  string name = 1;
+  string urn = 2;
+  BucketState state = 3;
+  int64 generation = 4;
+  google.protobuf.Timestamp create_time = 5;
+  google.protobuf.Timestamp update_time = 6;
+  string id = 7;
+  int64 revision = 8;
+  int64 observed_revision = 9;
+  BucketSpec spec = 10;
+  string last_error = 11;
+  int64 iam_revision = 12;
+  string applied_policy_hash = 13;
+  bool ready = 14;
+
+}
+
+message ListBucketsRequest {
+  int32 page_size = 1;
+  string page_token = 2;
+  BucketState state = 3;
+  bool include_deleted = 4;
+}
+
+message ListBucketsResponse {
+  // buckets contains the global active catalog view. It is deliberately not
+  // filtered by creator, role, source identity, user, or tenant.
+  repeated Bucket buckets = 1;
+  string next_page_token = 2;
+}
+
+message CreateBucketRequest {
+  string name = 1;
+  BucketSpec spec = 2;
+  string request_id = 3;
+}
+
+message CreateBucketResponse {
+  Bucket bucket = 1;
+}
+
+message DeleteBucketRequest {
+  BucketRef bucket = 1;
+  int64 expected_revision = 2;
+  string request_id = 3;
+}
+
+message DeleteBucketResponse {}
+
+message HeadBucketRequest {
+  BucketRef bucket = 1;
+}
+
+message HeadBucketResponse {
+  Bucket bucket = 1;
+}
+
+message BucketPolicy {
+  string bucket = 1;
+  string document_json = 2;
+  string content_hash = 3;
+  int64 revision = 4;
+  google.protobuf.Timestamp create_time = 5;
+  google.protobuf.Timestamp update_time = 6;
+}
+
+message GetBucketPolicyRequest {
+  BucketRef bucket = 1;
+}
+
+message GetBucketPolicyResponse {
+  BucketPolicy policy = 1;
+}
+
+message PutBucketPolicyRequest {
+  BucketRef bucket = 1;
+  string document_json = 2;
+}
+
+message PutBucketPolicyResponse {
+  BucketPolicy policy = 1;
+}
+
+message DeleteBucketPolicyRequest {
+  BucketRef bucket = 1;
+}
+
+message DeleteBucketPolicyResponse {}
+
+message ListObjectsRequest {
+  BucketRef bucket = 1;
+  string prefix = 2;
+  string delimiter = 3;
+  int32 page_size = 4;
+  string page_token = 5;
+}
+
+message ListObjectsResponse {
+  repeated ObjectMetadata objects = 1;
+  repeated string common_prefixes = 2;
+  string next_page_token = 3;
+}
+
+message ObjectMetadata {
+  ObjectRef object = 1;
+  uint64 content_length = 2;
+  string content_type = 3;
+  string content_encoding = 4;
+  string content_disposition = 5;
+  string cache_control = 6;
+  map<string, string> metadata = 7;
+  string etag = 8;
+  google.protobuf.Timestamp last_modified = 9;
+  // content_range is present for a successful partial HEAD or GET and uses
+  // the S3/HTTP Content-Range wire value, for example "bytes 0-99/1000".
+  string content_range = 10;
+}
+
+message ObjectConditions {
+  string if_match = 1;
+  string if_none_match = 2;
+  google.protobuf.Timestamp if_modified_since = 3;
+  // DeleteObject also supports this condition, atomically enforced by RGW's
+  // x-amz-delete-if-unmodified-since. Comparison has whole-second
+  // precision; a republication fence must separate versions by at least a second.
+  google.protobuf.Timestamp if_unmodified_since = 4;
+}
+
+message ByteRange {
+  uint64 start = 1;
+  optional uint64 end_inclusive = 2;
+}
+
+message HeadObjectRequest {
+  ObjectRef object = 1;
+  ObjectConditions conditions = 2;
+  ByteRange range = 3;
+}
+
+message HeadObjectResponse {
+  ObjectMetadata metadata = 1;
+}
+
+message GetObjectRequest {
+  ObjectRef object = 1;
+  ByteRange range = 2;
+  ObjectConditions conditions = 3;
+}
+
+message GetObjectResponse {
+  oneof frame {
+    ObjectMetadata metadata = 1;
+    bytes data = 2;
+  }
+}
+
+message PutObjectHeader {
+  string bucket = 1;
+  string key = 2;
+  // Required by v1, including an explicit zero for an empty object. Presence
+  // distinguishes a known empty body from an unsupported unknown-length stream.
+  optional uint64 content_length = 3;
+  string content_type = 4;
+  map<string, string> metadata = 5;
+  string content_encoding = 6;
+  string content_disposition = 7;
+  string cache_control = 8;
+  ObjectConditions conditions = 9;
+}
+
+message PutObjectRequest {
+  oneof frame {
+    PutObjectHeader header = 1;
+    bytes data = 2;
+  }
+}
+
+message PutObjectResponse {
+  ObjectMetadata metadata = 1;
+}
+
+message DeleteObjectRequest {
+  ObjectRef object = 1;
+  ObjectConditions conditions = 2;
+}
+
+message DeleteObjectResponse {}

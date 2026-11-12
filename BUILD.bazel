@@ -1,0 +1,13 @@
+load("@bazel_gazelle//:def.bzl", "gazelle")
+
+# gazelle:prefix github.com/MotiveIQ/public
+# gazelle:go_generate_proto true
+gazelle(name = "gazelle")
+
+alias(
+    name = "iq",
+    actual = "//cmd/iq",
+    visibility = ["//visibility:public"],
+)
+
+exports_files(["go.mod", "go.sum"])

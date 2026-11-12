@@ -1,0 +1,49 @@
+load("@com_google_protobuf//bazel:proto_library.bzl", "proto_library")
+load("@rules_go//go:def.bzl", "go_library", "go_test")
+load("@rules_go//proto:def.bzl", "go_proto_library")
+
+# gazelle:go_generate_proto true
+
+proto_library(
+    name = "iamv1_proto",
+    srcs = [
+        "authentication.proto",
+        "delegation.proto",
+        "iam.proto",
+        "stream.proto",
+        "sts.proto",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_google_protobuf//:descriptor_proto",
+        "@com_google_protobuf//:struct_proto",
+        "@com_google_protobuf//:timestamp_proto",
+    ],
+)
+
+go_proto_library(
+    name = "iamv1_go_proto",
+    compilers = [
+        "@rules_go//proto:go_proto",
+        "@rules_go//proto:go_grpc_v2",
+    ],
+    importpath = "github.com/MotiveIQ/public/platform/iam/api/v1",
+    proto = ":iamv1_proto",
+    visibility = ["//visibility:public"],
+)
+
+go_library(
+    name = "api",
+    srcs = ["client.go"],
+    embed = [":iamv1_go_proto"],
+    importpath = "github.com/MotiveIQ/public/platform/iam/api/v1",
+    visibility = ["//visibility:public"],
+    deps = ["@org_golang_google_grpc//:grpc"],
+)
+
+go_test(
+    name = "api_test",
+    srcs = ["client_test.go"],
+    embed = [":api"],
+    deps = ["@org_golang_google_grpc//:grpc"],
+)

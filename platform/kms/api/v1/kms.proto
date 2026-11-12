@@ -1,0 +1,200 @@
+syntax = "proto3";
+package motiveiq.kms.v1;
+option go_package = "github.com/MotiveIQ/public/platform/kms/api/v1;kmsv1";
+import "google/protobuf/timestamp.proto";
+
+service DataPlane {
+  rpc GenerateDataKey(GenerateDataKeyRequest) returns (GenerateDataKeyResponse);
+  rpc GenerateDataKeyWithoutPlaintext(GenerateDataKeyRequest)
+      returns (GenerateDataKeyWithoutPlaintextResponse);
+  rpc Encrypt(EncryptRequest) returns (EncryptResponse);
+  rpc Decrypt(DecryptRequest) returns (DecryptResponse);
+  rpc ReEncrypt(ReEncryptRequest) returns (ReEncryptResponse);
+}
+
+enum DataKeySpec {
+  DATA_KEY_SPEC_UNSPECIFIED = 0;
+  DATA_KEY_SPEC_AES_256 = 1;
+}
+
+enum CiphertextPurpose {
+  CIPHERTEXT_PURPOSE_UNSPECIFIED = 0;
+  CIPHERTEXT_PURPOSE_DATA_KEY = 1;
+  CIPHERTEXT_PURPOSE_SMALL_VALUE = 2;
+}
+
+message KeyMaterialRef {
+  string key_urn = 1;
+  string material_version = 2;
+}
+
+message GenerateDataKeyRequest {
+  string key = 1;
+  oneof size {               // Required: exactly one size selector.
+    DataKeySpec key_spec = 2;
+    uint32 number_of_bytes = 4;  // 1–1024 inclusive.
+  }
+  map<string, string> encryption_context = 3;
+}
+
+message GenerateDataKeyResponse {
+  KeyMaterialRef key = 1;
+  bytes plaintext = 2;        // Sensitive: requested length; never persisted by KMS.
+  bytes ciphertext_blob = 3;  // Retain this blob for a later Decrypt request.
+}
+
+message GenerateDataKeyWithoutPlaintextResponse {
+  KeyMaterialRef key = 1;
+  bytes ciphertext_blob = 2;
+}
+
+message EncryptRequest {
+  string key = 1;
+  bytes plaintext = 2;        // Sensitive: 1–4096 bytes.
+  map<string, string> encryption_context = 3;
+}
+
+message EncryptResponse {
+  KeyMaterialRef key = 1;
+  bytes ciphertext_blob = 2;
+}
+
+message DecryptRequest {
+  string key_urn = 1;         // Required expected key; aliases are rejected.
+  bytes ciphertext_blob = 2;
+  map<string, string> encryption_context = 3;
+}
+
+message DecryptResponse {
+  KeyMaterialRef key = 1;
+  bytes plaintext = 2;        // Sensitive; release only after AEAD verification.
+  CiphertextPurpose purpose = 3;
+}
+
+message ReEncryptRequest {
+  string source_key_urn = 1;
+  bytes ciphertext_blob = 2;
+  map<string, string> source_encryption_context = 3;
+  string destination_key = 4;
+  map<string, string> destination_encryption_context = 5;
+}
+
+message ReEncryptResponse {
+  KeyMaterialRef source = 1;
+  KeyMaterialRef destination = 2;
+  bytes ciphertext_blob = 3;
+}
+
+enum KeyState {
+  KEY_STATE_UNSPECIFIED = 0;
+  KEY_STATE_CREATING = 1;
+  KEY_STATE_ENABLED = 2;
+  KEY_STATE_DISABLED = 3;
+  KEY_STATE_PENDING_DELETION = 4;
+  KEY_STATE_DELETING = 5;
+  KEY_STATE_DELETED = 6;
+}
+enum OperationState {
+  OPERATION_STATE_UNSPECIFIED = 0;
+  OPERATION_STATE_PENDING = 1;
+  OPERATION_STATE_SUCCEEDED = 2;
+  OPERATION_STATE_FAILED = 3;
+  OPERATION_STATE_SUPERSEDED = 4;
+}
+message RotationPolicy { uint32 period_days = 1; }
+message KeyMetadata {
+  string key_urn = 1;
+  string description = 2;
+  string key_spec = 3;
+  string key_usage = 4;
+  KeyState state = 5;
+  int64 revision = 6;
+  int64 observed_revision = 7;
+  string active_material_version = 8;
+  RotationPolicy rotation_policy = 9;
+  google.protobuf.Timestamp last_rotation_time = 10;
+  google.protobuf.Timestamp next_rotation_time = 11;
+  google.protobuf.Timestamp deletion_time = 12;
+  int64 policy_revision = 13;
+  int64 applied_policy_revision = 14;
+  string applied_policy_hash = 15;
+  bool ready = 16;
+  string last_error_code = 17;
+  google.protobuf.Timestamp create_time = 18;
+  google.protobuf.Timestamp update_time = 19;
+}
+message AliasMetadata { string alias_urn = 1; string key_urn = 2; int64 revision = 3; }
+message Operation {
+  string request_id = 1;
+  string operation_type = 2;
+  repeated string resource_urns = 3;
+  int64 accepted_revision = 4;
+  OperationState state = 5;
+  string result_key_urn = 6;
+  AliasMetadata result_alias = 7;
+  string error_code = 8;
+  string safe_error_message = 9;
+  google.protobuf.Timestamp create_time = 10;
+  google.protobuf.Timestamp update_time = 11;
+}
+message CreateKeyRequest {
+  string request_id = 1;
+  string description = 2;
+  string policy_document = 3;
+  RotationPolicy rotation_policy = 4;
+}
+message KeyRequest { string key_urn = 1; }
+message KeyMutationRequest { string key_urn = 1; string request_id = 2; int64 expected_revision = 3; }
+message UpdateKeyDescriptionRequest {
+  string key_urn = 1; string request_id = 2; int64 expected_revision = 3; string description = 4;
+}
+message PutRotationPolicyRequest {
+  string key_urn = 1; string request_id = 2; int64 expected_revision = 3; RotationPolicy rotation_policy = 4;
+}
+message GetRotationPolicyResponse {
+  RotationPolicy rotation_policy = 1;
+  google.protobuf.Timestamp last_rotation_time = 2;
+  google.protobuf.Timestamp next_rotation_time = 3;
+}
+message ScheduleKeyDeletionRequest {
+  string key_urn = 1; string request_id = 2; int64 expected_revision = 3; uint32 pending_window_days = 4;
+}
+message PutKeyPolicyRequest {
+  string key_urn = 1; string request_id = 2; int64 expected_revision = 3; string policy_document = 4;
+}
+message GetKeyPolicyResponse {
+  string desired_document = 1; string applied_document = 2; string applied_hash = 3;
+  int64 desired_revision = 4; int64 applied_revision = 5;
+}
+message CreateAliasRequest { string alias_urn = 1; string key_urn = 2; string request_id = 3; }
+message UpdateAliasRequest {
+  string alias_urn = 1; string key_urn = 2; string request_id = 3; int64 expected_revision = 4;
+}
+message DeleteAliasRequest { string alias_urn = 1; string request_id = 2; int64 expected_revision = 3; }
+message GetAliasRequest { string alias_urn = 1; }
+message ListKeysRequest { uint32 page_size = 1; string page_token = 2; KeyState state = 3; }
+message ListKeysResponse { repeated KeyMetadata keys = 1; string next_page_token = 2; }
+message ListAliasesRequest { uint32 page_size = 1; string page_token = 2; }
+message ListAliasesResponse { repeated AliasMetadata aliases = 1; string next_page_token = 2; }
+message GetOperationRequest { string request_id = 1; }
+service ControlPlane {
+  rpc CreateKey(CreateKeyRequest) returns (Operation);
+  rpc DescribeKey(KeyRequest) returns (KeyMetadata);
+  rpc ListKeys(ListKeysRequest) returns (ListKeysResponse);
+  rpc UpdateKeyDescription(UpdateKeyDescriptionRequest) returns (Operation);
+  rpc EnableKey(KeyMutationRequest) returns (Operation);
+  rpc DisableKey(KeyMutationRequest) returns (Operation);
+  rpc RotateKey(KeyMutationRequest) returns (Operation);
+  rpc PutRotationPolicy(PutRotationPolicyRequest) returns (Operation);
+  rpc GetRotationPolicy(KeyRequest) returns (GetRotationPolicyResponse);
+  rpc ScheduleKeyDeletion(ScheduleKeyDeletionRequest) returns (Operation);
+  rpc CancelKeyDeletion(KeyMutationRequest) returns (Operation);
+  rpc PutKeyPolicy(PutKeyPolicyRequest) returns (Operation);
+  rpc GetKeyPolicy(KeyRequest) returns (GetKeyPolicyResponse);
+  rpc CreateAlias(CreateAliasRequest) returns (Operation);
+  rpc UpdateAlias(UpdateAliasRequest) returns (Operation);
+  rpc DeleteAlias(DeleteAliasRequest) returns (Operation);
+  rpc GetAlias(GetAliasRequest) returns (AliasMetadata);
+  rpc ListAliases(ListAliasesRequest) returns (ListAliasesResponse);
+  rpc GetOperation(GetOperationRequest) returns (Operation);
+}

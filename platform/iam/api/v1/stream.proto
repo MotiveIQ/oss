@@ -1,0 +1,29 @@
+syntax = "proto3";
+package motiveiq.iam.v1;
+option go_package = "github.com/MotiveIQ/public/platform/iam/api/v1;iamv1";
+
+// Only OPEN carries credentials. The proof binds the exact body bytes.
+message SignedStreamFrame {
+  bytes body = 1 [debug_redact = true];
+  string proof = 2 [debug_redact = true];
+  string session_token = 3 [debug_redact = true];
+}
+message RequestStreamFrameBody {
+  string profile = 1;
+  bytes stream_id = 2;
+  uint64 sequence = 3;
+  bytes previous_frame_sha256 = 4;
+  oneof frame {
+    RequestStreamOpen open = 5;
+    bytes data = 6 [debug_redact = true];
+    RequestStreamFinish finish = 7;
+  }
+}
+message RequestStreamOpen {
+  bytes request_bytes = 1 [debug_redact = true];
+  int64 deadline_unix_seconds = 2;
+}
+message RequestStreamFinish {
+  uint64 data_message_count = 1;
+  uint64 data_payload_bytes = 2;
+}

@@ -1,0 +1,27 @@
+load("@rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "proofstream",
+    srcs = ["stream.go"],
+    importpath = "github.com/MotiveIQ/public/platform/iam/internal/proofstream",
+    visibility = ["//platform/iam:__subpackages__"],
+    deps = [
+        "//platform/iam/api/v1:api",
+        "//platform/iam/internal/proof",
+        "@org_golang_google_protobuf//encoding/protowire",
+        "@org_golang_google_protobuf//proto",
+        "@org_golang_google_protobuf//reflect/protoreflect",
+    ],
+)
+
+go_test(
+    name = "proofstream_test",
+    srcs = ["stream_test.go"],
+    embed = [":proofstream"],
+    deps = [
+        "//platform/iam/api/v1:api",
+        "//platform/iam/internal/proof",
+        "@org_golang_google_protobuf//encoding/protowire",
+        "@org_golang_google_protobuf//proto",
+    ],
+)

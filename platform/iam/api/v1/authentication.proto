@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package motiveiq.iam.v1;
+
+option go_package = "github.com/MotiveIQ/public/platform/iam/api/v1;iamv1";
+
+// SessionTokenType describes how possession of an STS session token is
+// proven. Unspecified and Bearer remain on the wire only so historical data
+// can be decoded; STS accepts and issues proof-of-possession exclusively.
+enum SessionTokenType {
+  SESSION_TOKEN_TYPE_UNSPECIFIED = 0;
+  SESSION_TOKEN_TYPE_BEARER = 1 [deprecated = true];
+  SESSION_TOKEN_TYPE_PROOF_OF_POSSESSION = 2;
+}

@@ -1,0 +1,109 @@
+syntax = "proto3";
+
+package motiveiq.iam.v1;
+
+import "google/protobuf/timestamp.proto";
+import "platform/iam/api/v1/authentication.proto";
+import "platform/iam/api/v1/delegation.proto";
+
+option go_package = "github.com/MotiveIQ/public/platform/iam/api/v1;iamv1";
+
+// STS exchanges verified external OIDC identities for short-lived
+// assumed-role sessions (DESIGN.md "STS"). Session tokens are carried in
+// request metadata together with a per-request proof.
+service STS {
+  rpc AssumeRoleWithWebIdentity(AssumeRoleWithWebIdentityRequest)
+      returns (AssumeRoleWithWebIdentityResponse);
+  // GetCallerIdentity reads the proof-bound session from request metadata and
+  // answers from the validated token alone; no database read.
+  rpc GetCallerIdentity(GetCallerIdentityRequest)
+      returns (GetCallerIdentityResponse);
+  // Internal workload call; metadata authenticates the actor, not the end
+  // subject. Requires explicit sts:IssueDelegationToken on the named Delegation,
+  // an active service binding, independent verification of the original signed
+  // request, and PDP.AuthorizeDelegation approval of the exact scope. Verification
+  // and issuance are one exchange; the actor does not submit a source attestation.
+  // Token use still requires the target service to call ordinary PDP.Authorize
+  // with delegated_subject_authentication and the actual downstream request.
+  // Does not create a role session or accept another delegation.
+  // Disabled unless PDP explicitly trusts the issuer role and the registered
+  // definitions, actor binding, and current policies permit the exchange.
+  rpc IssueDelegationToken(IssueDelegationTokenRequest) returns (IssueDelegationTokenResponse);
+}
+
+message AssumeRoleWithWebIdentityRequest {
+  string role_urn = 1;
+  string web_identity_token = 2 [debug_redact = true];
+  // Optional; STS generates a session name when empty. Constrained to
+  // [A-Za-z0-9._-]{1,64}.
+  string session_name = 3;
+  // Optional; the role's maximum session duration when zero.
+  int64 duration_seconds = 4;
+  // Optional inline session policy (v1 JSON language, allow-only). Always
+  // permitted; effective permissions are the intersection with the role's
+  // grants.
+  string session_policy_json = 5;
+  // Required. Must be proof-of-possession; unspecified and Bearer are retained
+  // only as historical enum values and are rejected by STS.
+  SessionTokenType requested_token_type = 6;
+}
+
+message AssumeRoleWithWebIdentityResponse {
+  string session_token = 1 [debug_redact = true]; // short-lived JWT; aud "motiveiq"
+  string session_id = 2;    // "session_…" — the unique identifier (jti)
+  string session_urn = 3;   // not unique across concurrent sessions
+  string role_urn = 4;
+  google.protobuf.Timestamp expire_time = 5;
+  // Always proof-of-possession for newly issued sessions.
+  SessionTokenType session_token_type = 6;
+  string proof_key_thumbprint = 7;
+}
+
+message GetCallerIdentityRequest {}
+
+message GetCallerIdentityResponse {
+  string session_id = 1;
+  string session_urn = 2;
+  string role_urn = 3;
+  string session_name = 4;
+  google.protobuf.Timestamp expire_time = 5;
+}
+
+message IssueDelegationTokenRequest {
+  DelegationReference delegation = 1;
+  // Original caller proof and evidence, not normalized source claims. Body bytes
+  // are required by any body mapping; omission requires exclusively authenticated
+  // non-body sources. STS selects the contract by origin/transport/method/route
+  // and verifies it matches the pinned Delegation before constructing verified
+  // source context for PDP, including whether it verified the body or only its
+  // signed digest commitment.
+  SourceRequestEvidence source = 2;
+  SourceCatalogAssertions catalog_assertions = 3;
+  // Desired exact downstream scope; approved only within the verified source
+  // request, registered integration, and original subject's live permissions.
+  DelegationTarget target = 4;
+  // Required request deadline; may narrow but never extend the contract,
+  // credential lifetime. Both input sessions and source proof must be valid at
+  // issuance; their later expiry does not invalidate the independent credential.
+  google.protobuf.Timestamp expire_not_after = 5;
+  // Required RFC 7638 thumbprint of an SDK-generated possession key. Covered by
+  // the actor's signed issuance request. Its private key never leaves the SDK.
+  string proof_key_thumbprint = 6;
+}
+
+message IssueDelegationTokenResponse {
+  // Distinct signed credential containing the approved DelegationScope and a
+  // unique grant ID. Audience/type restrict it to the target service and this
+  // protocol. Final encoded token is 1..16384 ASCII bytes; issuance fails if the
+  // approved scope cannot fit, never dropping scope fields. The actor carries
+  // these exact bytes in Authorization: DPoP and signs their SHA-256 as
+  // 64 lowercase hex characters in motiveiq-delegation-token-sha256 v3 metadata.
+  // The independent key signs the request and token digest. No parent tokens
+  // accompany execution. The full token is never embedded in proof metadata.
+  // It is not an ordinary
+  // STS session, bearer credential, or reusable allow decision. See DESIGN.md
+  // "Delegation token transport and proof binding" for both transport profiles.
+  string delegation_token = 1 [debug_redact = true];
+  string delegation_id = 2; // unique issued credential ID, not the definition ID
+  google.protobuf.Timestamp expire_time = 3;
+}

@@ -1,0 +1,26 @@
+load("@rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "proofhttp",
+    srcs = [
+        "body.go",
+        "canonical.go",
+        "digest.go",
+    ],
+    importpath = "github.com/MotiveIQ/public/platform/iam/internal/proofhttp",
+    visibility = ["//platform/iam:__subpackages__"],
+    deps = ["//platform/iam/internal/proof"],
+)
+
+go_test(
+    name = "proofhttp_test",
+    srcs = [
+        "body_test.go",
+        "canonical_test.go",
+        "digest_test.go",
+    ],
+    deps = [
+        ":proofhttp",
+        "//platform/iam/internal/proof",
+    ],
+)

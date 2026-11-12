@@ -1,0 +1,568 @@
+syntax = "proto3";
+
+package motiveiq.iam.v1;
+
+import "google/protobuf/descriptor.proto";
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/MotiveIQ/public/platform/iam/api/v1;iamv1";
+
+// Verified service delegation. STS verifies the original
+// request within IssueDelegationToken; there is no separate attestation exchange.
+//
+// IAM RPCs remain gRPC. Source and target request transports are independently
+// typed; translating an HTTP request never creates a caller-signed gRPC request.
+// An origin is configured logical HTTPS identity, never an untrusted Host or
+// forwarding header. Unset/unknown transport, mapping, and profile variants deny.
+
+// Controller ownership is durable across retries and process restarts. A writer
+// still needs the controller-role gate and ordinary IAM permissions. Once owned,
+// every mutation must carry the same Kubernetes UID and a non-stale generation.
+// Adoption of an unowned existing object explicitly pins its immutable ID; it
+// never transfers another active owner's object. Inactive retired bindings may
+// be explicitly adopted by a new UID; their IDs use principal_id/role_id.
+message ConfigurationWrite {
+  string owner_uid = 1;
+  int64 generation = 2;
+  string adopt_id = 3;
+}
+message ConfigurationOwner {
+  string owner_uid = 1;
+  int64 generation = 2;
+  bool retiring = 3; // terminal for this owner, even before deletion completes
+}
+
+// Operator-managed interpretation of original signed requests. Registration
+// rejects overlapping enabled routes for the same origin/transport/method,
+// including ambiguous HTTP templates; request-supplied contract IDs cannot
+// choose an interpretation. Updates do not retarget pinned Delegations.
+message RequestContract {
+  string id = 1;
+  string name = 2;
+  string urn = 3; // urn:motiveiq:iam:request-contract/<name>
+  int64 revision = 4;
+  bool enabled = 5;
+  RequestContractSpec spec = 6;
+  // Server-derived digest of the complete validated spec, including transport,
+  // descriptor closure when present, mappings, and constructor version.
+  bytes spec_sha256 = 7;
+  google.protobuf.Timestamp create_time = 8;
+  google.protobuf.Timestamp update_time = 9;
+  google.protobuf.Timestamp retire_time = 10; // deletion permanently reserves the name
+  ConfigurationOwner management = 11;
+}
+
+message RequestContractReference {
+  string urn = 1;
+  string id = 2;
+  int64 revision = 3; // positive; all three fields must match
+}
+
+message RequestContractSpec {
+  string service = 1; // registered ServiceDefinition name
+  string service_principal_id = 2; // immutable identity of the request recipient
+  repeated string origins = 3;
+  string action = 4; // canonical, service-prefixed authorization action
+  string resource_type = 5; // registered type within service
+  SourceResourceBinding resource = 6;
+  // Non-secret string attributes extracted from registered sources. Every
+  // mapping must resolve. Attribute names cannot be reserved identity keys.
+  map<string, RequestStringSource> request_attributes = 7;
+  // Separately admitted application assertions, never verified request facts.
+  // No name may overlap request_attributes or reserved identity/delegation keys.
+  repeated string catalog_attribute_names = 8;
+  // Required presence, at most 3 MiB at registration. Zero requires the empty-body
+  // digest even when bytes are omitted. Positive limits apply to supplied bytes;
+  // a signed digest alone does not establish the actual payload size or receipt.
+  optional uint32 max_request_bytes = 9;
+  // Exact endpoint-configured set of v3 signed metadata names; empty means none.
+  // The signed proof must contain precisely this set, not an actor-selected
+  // subset. Names obey the shared transport-specific singleton ASCII rules. Every
+  // signed_metadata source must name a member. Other signed fields need not be
+  // exposed as authorization attributes but are still checked against evidence.
+  // Neither motiveiq-delegation-token nor motiveiq-delegation-token-sha256 is
+  // admissible here: source requests cannot already be delegated (one hop only).
+  repeated string signed_metadata_names = 10;
+  oneof transport {
+    GRPCRequestContractSpec grpc = 11;
+    HTTPRequestMatcher http = 12;
+  }
+  // Operator-pinned source authorization contract. True skips the source
+  // resource-policy layer, matching identity/session-only services. Cannot be
+  // combined with a derived resource's constructor-owned policy attachment.
+  // This never changes downstream authorization or permits skipping a key policy.
+  bool skip_source_resource_policy = 13;
+}
+
+message GRPCRequestContractSpec {
+  string full_method = 1; // exact full method name, including leading slash
+  // Descriptor closure containing full_method and its unary request type.
+  // Required even for metadata-only contracts. Registration checks body paths.
+  // Signed upload OPEN needs a separate profile; it is not unary evidence.
+  google.protobuf.FileDescriptorSet schema = 2;
+}
+
+// Initial HTTP profile: MotiveIQ v3 proof-bound requests, not AWS SigV4 or
+// presigned URLs. Method, URI, operation, body digest, and configured metadata
+// must all match the proof. No protocol guessing or authentication downgrade.
+message HTTPRequestMatcher {
+  string method = 1; // exact uppercase HTTP method
+  // Bounded absolute path template: literal segments, {name} for one nonempty
+  // segment, and optional terminal {name...} for a nonempty remainder. Capture
+  // names are unique; literal segments match exact escaped spelling. Split the
+  // escaped path BEFORE extraction; retain each capture's original spelling.
+  // Sources choose raw vs once-decoded values. Preserve '/', repeated slashes,
+  // '.', '..', and literal '+'. Reject malformed escapes even for raw captures.
+  // No path cleaning, redirects, double decoding, or actor-supplied captures.
+  string path_template = 2;
+  HTTPProofOperation proof_operation = 3;
+  // Allowlist of exact ASCII query names. Split raw query at '&' and the first
+  // '='; decode values once as UTF-8, treating '+' literally. Names must appear
+  // unescaped, once each; reject unknown/duplicate names and malformed escapes.
+  // Absence of an allowed name is permitted unless used by a required mapping.
+  // An empty list rejects ANY query, including a trailing '?'. Empty components
+  // and a bare '?' are always invalid; never sort or rebuild the signed query.
+  repeated string query_parameter_names = 4;
+}
+
+// Compute the expected operation from trusted configuration and verified URI,
+// never an actor-supplied label. It need not equal the IAM action (e.g. HEAD).
+message HTTPProofOperation {
+  oneof source {
+    string constant = 1; // nonempty; e.g. s3:GetObject
+    bool escaped_path = 2; // must be true; the SDK's default HTTP operation
+  }
+}
+
+// Reusable non-secret source for selectors, constructor inputs, and attributes.
+// Body mappings remain the gRPC default; metadata is an explicit opt-in. HTTP
+// sources may use signed target components. Registration rejects sources for the
+// wrong transport, undeclared captures/query names, or unsupported body codecs.
+// A source is required: unset or unsupported variants are invalid. There is no
+// automatic body/metadata fallback or precedence when a source fails to resolve.
+message RequestStringSource {
+  oneof source {
+    GRPCStringFieldPath grpc_body_field = 1;
+    // Exact registered singleton name. Read the value from authenticated v3
+    // metadata claims, never from an unsigned request map. The source service
+    // must reject disagreement with any equivalent field in its actual body.
+    string signed_metadata = 2;
+    // HTTP only; values come from the independently verified request target and
+    // registered matcher. Never trust path/query maps supplied by the actor.
+    HTTPPathParameterSource http_path_parameter = 3;
+    string http_query_parameter = 4;
+  }
+}
+
+message HTTPPathParameterSource {
+  string name = 1; // capture declared in path_template
+  // Required explicit decoding. For S3, bucket uses RAW_ESCAPED (escaped bucket
+  // names are rejected by validation); key uses PERCENT_DECODED_UTF8. Matching
+  // always precedes decoding, and decoded slashes are never split again.
+  HTTPPathDecoding decoding = 2;
+}
+
+enum HTTPPathDecoding {
+  HTTP_PATH_DECODING_UNSPECIFIED = 0; // invalid
+  HTTP_PATH_DECODING_RAW_ESCAPED = 1;
+  HTTP_PATH_DECODING_PERCENT_DECODED_UTF8 = 2; // exactly once; '+' stays literal
+}
+
+// A bounded descriptor-checked path, not an expression or arbitrary JSONPath.
+// Intermediate fields must be singular messages. The leaf must be a string or,
+// when map_key is present, a map<string, string>. No repeated-field traversal.
+// Reject paths traversing debug_redact fields, including resource selectors.
+message GRPCStringFieldPath {
+  repeated uint32 field_numbers = 1;
+  optional string map_key = 2;
+}
+
+enum SourceResourceSelectorKind {
+  SOURCE_RESOURCE_SELECTOR_KIND_UNSPECIFIED = 0; // invalid, never a default allow
+  SOURCE_RESOURCE_SELECTOR_KIND_URN = 1;
+  SOURCE_RESOURCE_SELECTOR_KIND_NAME = 2;
+  SOURCE_RESOURCE_SELECTOR_KIND_CREATE_NAME = 3;
+}
+
+message ResourceSelectorMapping {
+  SourceResourceSelectorKind kind = 1;
+  RequestStringSource source = 2;
+}
+
+// Exactly one alternative must be populated. Empty/missing/multiple selectors
+// deny. ANY body mapping, including an unselected alternative, requires bytes;
+// omission cannot prove an alternative absent.
+message ResourceSelectorMappings {
+  repeated ResourceSelectorMapping alternatives = 1;
+}
+
+message SourceResourceBinding {
+  oneof mapping {
+    ResourceSelectorMappings selectors = 1;
+    ResourceDerivation derived_urn = 2;
+  }
+}
+
+// Identifies trusted, deployed code, not an uploaded script or remote callback.
+// Exact immutable name/version, no latest resolution. Registration and readers
+// reject unsupported versions. Constructors have bounded deterministic semantics
+// and an exact input schema and output service/resource type. No I/O, catalog
+// access, clock, interpolation engine, or actor-configurable executable code.
+message ResourceConstructorReference {
+  string name = 1; // e.g. s3.object-urn
+  uint32 version = 2; // positive; changing semantics requires a new version
+}
+
+message ResourceDerivation {
+  ResourceConstructorReference constructor = 1;
+  // Exact declared input set. Every mapping must resolve from verified evidence.
+  // Body inputs require bytes just like selectors and request attributes.
+  map<string, RequestStringSource> inputs = 2;
+}
+
+message SourceResourceSelector {
+  SourceResourceSelectorKind kind = 1;
+  string value = 2; // exact authenticated extraction result; URNs must be canonical
+}
+
+// STS-produced result, not an assertion accepted from the actor. All inputs are
+// independently verified; the output must be a canonical, wildcard-free URN of
+// the contract's resource type. PDP checks the pinned constructor/provenance.
+message DerivedSourceResource {
+  ResourceConstructorReference constructor = 1;
+  map<string, string> inputs = 2;
+  string resource_urn = 3;
+  // Constructor-defined governing resource policy, e.g. the bucket for an S3
+  // object. Absent selects resource_urn; present must be a canonical nonempty
+  // URN. No "skip policy" sentinel. STS derives this with the URN; PDP uses it
+  // for source authorization. Actors cannot choose or override the attachment.
+  optional string resource_policy_urn = 4;
+}
+
+// Unverified original request evidence supplied by the actor to IssueDelegationToken.
+// STS verifies the caller's session, signature, origin, method, and registered
+// metadata, then extracts source facts using only the contract's chosen sources.
+// Body sources require verification against exact payload bytes. Contracts using
+// only authenticated non-body sources may omit it, retaining a signed commitment.
+// An application-supplied digest or unsigned resource claim is not sufficient.
+// The original proof authenticates the source request, not a new call to STS;
+// separate actor credentials authenticate the IssueDelegationToken RPC itself.
+// Reject a source proof containing the reserved delegation-token digest; it
+// cannot be stripped or reinterpreted as application metadata for another hop.
+message SourceRequestEvidence {
+  string subject_session_token = 1 [debug_redact = true];
+  string original_request_proof = 2 [debug_redact = true];
+  string origin = 3;
+  oneof transport {
+    GRPCRequestEvidence grpc = 4;
+    HTTPRequestEvidence http = 7;
+  }
+  // Exact bytes covered by the proof (uncompressed protobuf for unary gRPC,
+  // transmitted body for HTTP). Required if ANY selector, constructor input, or
+  // attribute mapping uses the body. Present but empty is distinct from omission.
+  // Whenever present, STS verifies its digest even for non-body mappings.
+  // May contain secret values: bounded transient verification; no logs/storage.
+  optional bytes request_payload = 5 [debug_redact = true];
+  // Original signed singleton metadata, checked against the proof, not new
+  // issuer attributes. Authentication headers are handled by the fields above.
+  map<string, string> signed_metadata = 6 [debug_redact = true];
+}
+
+message GRPCRequestEvidence {
+  string full_method = 1;
+}
+
+message HTTPRequestEvidence {
+  string method = 1;
+  // Exact origin-form escaped path plus raw query, including a '?' if present.
+  // No authority, fragment, reconstructed URL, or decoded/re-encoded path.
+  // STS combines with the configured origin and checks the signed target URI.
+  string request_target = 2 [debug_redact = true];
+}
+
+// Issuer-derived input to PDP.AuthorizeDelegation, accepted only from a trusted
+// STS issuer authenticated on that RPC. STS constructs context from verified
+// original evidence, never by copying actor-supplied normalized facts. PDP checks
+// that this token matches context.subject and context.subject_token_sha256 and
+// evaluates the live session and contract's source/verification requirements.
+// This message is not a transferable credential.
+// Raw source payloads and original compact proofs do not leave STS for the PDP.
+message VerifiedSourceRequest {
+  string subject_session_token = 1 [debug_redact = true];
+  SourceRequestContext context = 2;
+}
+
+// Normalized facts constructed by STS after independent source verification.
+// Trusted only on the authenticated STS-to-PDP hop or in issuer-signed delegation
+// scope; this message alone is not proof of any source request or authorization.
+message SourceRequestContext {
+  RequestContractReference contract = 1;
+  RequestIdentity request = 2;
+  string proof_id = 3;
+  uint32 proof_version = 4;
+  SessionReference subject = 5;
+  bytes subject_token_sha256 = 6 [debug_redact = true];
+  string service_principal_id = 7;
+  string action = 8;
+  oneof resource {
+    SourceResourceSelector resource_selector = 9;
+    DerivedSourceResource derived_resource = 15;
+  }
+  map<string, string> request_attributes = 10;
+  google.protobuf.Timestamp proof_time = 11;
+  google.protobuf.Timestamp verified_time = 12; // audit only; cannot reset proof freshness
+  // No later than the original proof's validity window or subject session expiry.
+  // Evidence must be fresh at issuance. An issued credential has its own expiry.
+  google.protobuf.Timestamp expire_time = 13;
+  // Required STS-derived fact, preserved in approved scope and signed token.
+  // A digest authenticated in the proof does not mean STS inspected the payload.
+  SourcePayloadVerification payload_verification = 14;
+}
+
+enum SourcePayloadVerification {
+  SOURCE_PAYLOAD_VERIFICATION_UNSPECIFIED = 0; // invalid, never infer verification
+  SOURCE_PAYLOAD_VERIFICATION_BODY_VERIFIED = 1; // STS hashed the provided bytes
+  // All mappings use authenticated non-body sources (metadata or HTTP target).
+  // STS verifies the proof and retains its signed body digest, but cannot extract
+  // body fields or attest payload size, receipt, or metadata/body agreement.
+  SOURCE_PAYLOAD_VERIFICATION_SIGNED_DIGEST_ONLY = 2;
+}
+
+// Source and target choose transports independently. Includes all bound
+// application metadata, excluding authentication/credential-binding metadata.
+// Neither motiveiq-delegation-token nor motiveiq-delegation-token-sha256 belongs
+// in signed_metadata. The actor proof separately binds the exact token's SHA-256
+// via the reserved digest entry, avoiding a token containing a hash of itself.
+// Never log raw targets, metadata, or body hashes.
+message RequestIdentity {
+  string origin = 1;
+  // SHA-256 of exact request-body bytes, never a reserialization. On the source
+  // side this may be only a signed commitment; SourceRequestContext explicitly
+  // records whether STS checked the bytes. Target enforcers always hash the actual
+  // received request. Hashes of low-entropy secret inputs must not enter logs or
+  // public decision responses.
+  bytes request_sha256 = 2 [debug_redact = true];
+  map<string, string> signed_metadata = 3 [debug_redact = true];
+  oneof transport {
+    GRPCRequestIdentity grpc = 4;
+    HTTPRequestIdentity http = 5;
+  }
+}
+
+message GRPCRequestIdentity {
+  string full_method = 1;
+}
+
+message HTTPRequestIdentity {
+  string method = 1;
+  string request_target = 2 [debug_redact = true]; // exact escaped path + raw query
+  string proof_operation = 3;
+}
+
+// Allowed target endpoint shape, not the exact request authorized by a token.
+// Actual issuance/use also compares the complete RequestIdentity and all target
+// authorization inputs. No implicit conversion between transport variants.
+message RequestMatcher {
+  repeated string origins = 1;
+  oneof transport {
+    GRPCRequestMatcher grpc = 2;
+    HTTPRequestMatcher http = 3;
+  }
+  // Exact application-metadata set covered by the actor proof and identity.
+  // Neither reserved delegation-token name may appear here. The delegated
+  // adapter adds motiveiq-delegation-token-sha256 to the v3 proof's exact set;
+  // its 32-byte name and 64-character hex value consume one entry and 96 bytes
+  // of the unchanged 16-entry/4096-byte budget (at most 15 entries/4000 bytes
+  // remain for application metadata). The full token is in Authorization: DPoP.
+  repeated string signed_metadata_names = 4;
+}
+
+message GRPCRequestMatcher {
+  string full_method = 1;
+}
+
+message SessionReference {
+  string session_id = 1;
+  string role_id = 2; // immutable role identity, never resolved through a reused name
+  string proof_key_thumbprint = 3;
+  google.protobuf.Timestamp expire_time = 4;
+  // Issuer-authenticated identity/provenance. The immutable session record still
+  // supplies session policy, tags, source identity, and explicit revocation state
+  // to PDP. Parent expiry does not bound an independently issued credential.
+  string session_urn = 5;
+  string role_urn = 6;
+  string session_name = 7;
+  string source_identity = 8;
+}
+
+// The issuer derives provenance from the verified selector and contract. The
+// application cannot select a stronger provenance for its catalog assertions.
+enum SourceResourceProvenance {
+  SOURCE_RESOURCE_PROVENANCE_UNSPECIFIED = 0;
+  SOURCE_RESOURCE_PROVENANCE_REQUEST_URN = 1;
+  SOURCE_RESOURCE_PROVENANCE_SERVICE_RESOLVED = 2;
+  SOURCE_RESOURCE_PROVENANCE_SERVICE_ALLOCATED = 3;
+  // Canonical URN independently computed from verified inputs by a pinned
+  // trusted constructor. Not a literal signed URN or service catalog assertion.
+  SOURCE_RESOURCE_PROVENANCE_REQUEST_DERIVED = 4;
+}
+
+message SourceCatalogAssertions {
+  // Required for NAME/CREATE_NAME. For explicit or request-derived URNs, absent
+  // or exactly equal to STS's result; never a substitution or downgrade.
+  string resource_urn = 1;
+  // Only keys admitted by the pinned request contract, with no overlap with
+  // independently extracted request attributes. These remain service-attested.
+  map<string, string> attributes = 2;
+}
+
+// A durable integration definition, not a credential or a caller-visible
+// profile. All constraints intersect normal subject and actor permissions.
+message Delegation {
+  string id = 1;
+  string name = 2;
+  string urn = 3; // urn:motiveiq:iam:delegation/<name>
+  int64 revision = 4;
+  bool enabled = 5;
+  DelegationSpec spec = 6;
+  google.protobuf.Timestamp create_time = 7;
+  google.protobuf.Timestamp update_time = 8;
+  google.protobuf.Timestamp retire_time = 9;
+  ConfigurationOwner management = 10;
+}
+
+message DelegationReference {
+  string urn = 1;
+  string id = 2;
+  int64 revision = 3; // required exact revision; never silently resolve latest
+}
+
+message DelegationSpec {
+  string actor_service_principal_id = 1; // immutable; must own source_contract
+  RequestContractReference source_contract = 2;
+  // A single destination/method/action per definition. Create -> GenerateDataKey
+  // and Create -> Decrypt are distinct integrations, not an arbitrary action set.
+  string target_service_principal_id = 3;
+  RequestMatcher target_request = 4;
+  reserved 5;
+  string target_action = 6;
+  // Required nonempty set. REQUEST_URN and REQUEST_DERIVED independently confine;
+  // SERVICE_RESOLVED/ALLOCATED explicitly accept the weaker catalog boundary.
+  repeated SourceResourceProvenance allowed_source_provenance = 7;
+  // Required equality constraint: the downstream attribute must be a canonical
+  // URN exactly equal to the authorized source resource. Must not name a reserved
+  // identity or service-path key. E.g. for KMS this is
+  // kms:EncryptionContext:SecretURN; the target resource itself is the KMS key.
+  string source_resource_target_attribute = 8;
+  // Optional further narrowing, not an expression language. Every named
+  // attribute must be present with this exact string value on issuance and use.
+  // Reserved identity and service-path keys cannot be supplied here.
+  map<string, string> required_target_attributes = 9;
+  uint32 max_lifetime_seconds = 10; // 1..30; request deadline can further narrow
+}
+
+// Proposed at issuance, independently derived by the target enforcer on use.
+// Neither the actor's proposed attributes nor its digest prove their relationship
+// to actual bytes. KMS must check the digest and every bound authorization field
+// against the actual request before asking the PDP to authorize execution.
+message DelegationTarget {
+  RequestIdentity request = 1;
+  string action = 2;
+  string resource_urn = 3; // target resource, e.g. the KMS key, not the secret
+  // Bounded non-reserved authorization inputs. motiveiq:CalledVia, its First/Last
+  // variants, motiveiq:ViaService, and source identity facts are derived by the
+  // PDP, never supplied here by the actor. On use,
+  // compare these fields with the target enforcer's independently derived inputs.
+  map<string, google.protobuf.Value> attributes = 4;
+}
+
+// Approved scope returned only on the authenticated issuer-to-PDP hop. The
+// issuer signs exactly this scope into a distinct delegation credential. It is
+// not a reusable allow decision: execution rechecks live eligibility/policies.
+// The complete serialized scope must fit 8 KiB, in addition to individual field
+// budgets. Issuance returns ResourceExhausted when the aggregate is too large.
+message DelegationScope {
+  DelegationReference delegation = 1;
+  SourceRequestContext source = 2;
+  string source_resource_urn = 3;
+  SourceResourceProvenance source_resource_provenance = 4;
+  SourceCatalogAssertions catalog_assertions = 5;
+  SessionReference actor = 6;
+  // V1 admits one hop: PDP resolves this verified actor's stable principal name
+  // into the one-element motiveiq:CalledVia path and both First/Last values.
+  // The target is not a path element; a delegated subject cannot issue again.
+  string actor_service_principal_id = 7;
+  string target_service_principal_id = 8;
+  DelegationTarget target = 9;
+  google.protobuf.Timestamp expire_time = 10;
+  // Required RFC 7638 thumbprint of the credential's independent possession key.
+  // Authenticated issuance binds this key; parent session keys cannot redeem it.
+  string proof_key_thumbprint = 11;
+  // Evidence freshness is checked at issuance. Policies, identities, definitions,
+  // and revocation state are checked again at execution time.
+  google.protobuf.Timestamp issue_time = 12;
+}
+
+// Control-plane writes require separate administrative permissions, positive
+// revision preconditions on updates/deletes, and validation of referenced live
+// immutable IDs. Service runtimes cannot modify their own extraction or scope.
+message CreateRequestContractRequest {
+  string name = 1;
+  RequestContractSpec spec = 2;
+  bool enabled = 3;
+  ConfigurationWrite management = 4;
+}
+message GetRequestContractRequest { string name = 1; }
+// Lists include retired definitions, ordered by name. Each page is bounded by
+// count and encoded response size (1 MiB), so it may contain fewer than page_size
+// entries. Follow next_page_token until empty. Pagination is not a snapshot:
+// concurrent writes are observed with the ordinary eventual consistency model.
+message ListRequestContractsRequest {
+  uint32 page_size = 1; // zero defaults to 50; maximum 100
+  string page_token = 2; // opaque, method-bound continuation; never authorization
+}
+message ListRequestContractsResponse {
+  repeated RequestContract contracts = 1;
+  string next_page_token = 2;
+}
+message UpdateRequestContractRequest {
+  string name = 1;
+  int64 expected_revision = 2;
+  RequestContractSpec spec = 3; // full replacement, no implicit patch semantics
+  bool enabled = 4;
+  ConfigurationWrite management = 5;
+}
+message DeleteRequestContractRequest {
+  string name = 1;
+  int64 expected_revision = 2;
+  ConfigurationWrite management = 3;
+}
+message CreateDelegationRequest {
+  string name = 1;
+  DelegationSpec spec = 2;
+  bool enabled = 3;
+  ConfigurationWrite management = 4;
+}
+message GetDelegationRequest { string name = 1; }
+// Uses the same ordering, size bounds, and consistency as ListRequestContracts.
+message ListDelegationsRequest {
+  uint32 page_size = 1; // zero defaults to 50; maximum 100
+  string page_token = 2;
+}
+message ListDelegationsResponse {
+  repeated Delegation delegations = 1;
+  string next_page_token = 2;
+}
+message UpdateDelegationRequest {
+  string name = 1;
+  int64 expected_revision = 2;
+  DelegationSpec spec = 3;
+  bool enabled = 4;
+  ConfigurationWrite management = 5;
+}
+message DeleteDelegationRequest {
+  string name = 1;
+  int64 expected_revision = 2;
+  ConfigurationWrite management = 3;
+}

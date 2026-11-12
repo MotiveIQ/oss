@@ -1,0 +1,20 @@
+load("@rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "cli",
+    srcs = ["config.go"],
+    importpath = "github.com/MotiveIQ/public/platform/iam/sdk/cli",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//platform/iam/oauth",
+        "//platform/iam/sdk",
+        "@org_golang_google_grpc//credentials",
+    ],
+)
+
+go_test(
+    name = "cli_test",
+    srcs = ["config_test.go"],
+    embed = [":cli"],
+    deps = ["//platform/iam/sdk"],
+)

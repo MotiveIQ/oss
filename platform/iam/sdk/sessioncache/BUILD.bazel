@@ -1,0 +1,16 @@
+load("@rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "sessioncache",
+    srcs = ["file.go"],
+    importpath = "github.com/MotiveIQ/public/platform/iam/sdk/sessioncache",
+    visibility = ["//visibility:public"],
+    deps = ["@com_github_gofrs_flock//:flock"],
+)
+
+go_test(
+    name = "sessioncache_test",
+    srcs = ["file_test.go"],
+    embed = [":sessioncache"],
+    deps = ["@com_github_gofrs_flock//:flock"],
+)

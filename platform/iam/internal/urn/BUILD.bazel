@@ -1,0 +1,26 @@
+load("@rules_go//go:def.bzl", "go_library", "go_test")
+
+# The deploy-side workload identity component vendors this package's engine
+# service names; //platform/iam:pymanifest_contract_test cross-checks them
+# against this source.
+exports_files(["urn.go"])
+
+go_library(
+    name = "urn",
+    srcs = ["urn.go"],
+    importpath = "github.com/MotiveIQ/public/platform/iam/internal/urn",
+    visibility = ["//platform/iam:__subpackages__"],
+)
+
+go_test(
+    name = "urn_test",
+    srcs = [
+        "property_test.go",
+        "urn_test.go",
+    ],
+    embed = [":urn"],
+    deps = [
+        "@com_github_cedar_policy_cedar_go//:cedar-go",
+        "@com_github_cedar_policy_cedar_go//types",
+    ],
+)

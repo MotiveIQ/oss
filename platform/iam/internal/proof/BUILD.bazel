@@ -1,0 +1,24 @@
+load("@rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "proof",
+    srcs = [
+        "binding.go",
+        "json.go",
+        "jwk.go",
+        "proof.go",
+    ],
+    importpath = "github.com/MotiveIQ/public/platform/iam/internal/proof",
+    visibility = ["//platform/iam:__subpackages__"],
+)
+
+go_test(
+    name = "proof_test",
+    srcs = [
+        "jwk_test.go",
+        "metadata_test.go",
+        "profile_test.go",
+        "proof_test.go",
+    ],
+    embed = [":proof"],
+)

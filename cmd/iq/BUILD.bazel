@@ -1,0 +1,15 @@
+load("@rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "iq_lib",
+    srcs = ["main.go"],
+    importpath = "github.com/MotiveIQ/public/cmd/iq",
+    visibility = ["//visibility:private"],
+    deps = ["//cmd/iq/internal/publiccli"],
+)
+
+go_binary(
+    name = "iq",
+    embed = [":iq_lib"],
+    visibility = ["//visibility:public"],
+)

@@ -1,0 +1,425 @@
+syntax = "proto3";
+
+package motiveiq.iam.v1;
+
+import "google/protobuf/timestamp.proto";
+import "platform/iam/api/v1/delegation.proto";
+
+option go_package = "github.com/MotiveIQ/public/platform/iam/api/v1;iamv1";
+
+// ControlPlane manages IAM's durable objects, modeled 1:1 on their AWS
+// counterparts: roles carry their trust policy as a document
+// (AssumeRolePolicyDocument); permission policies are managed policies
+// attached directly to roles (AttachRolePolicy) and versioned as
+// PolicyVersion rows with a default-version head.
+//
+// Policy documents travel as JSON strings in the v1 policy language; the
+// server validates and compiles them at write time and rejects invalid
+// documents. Every mutation writes an admin-audit record.
+//
+// Every caller presents a proof-bound STS session. Each unary request carries
+// Authorization: DPoP plus a fresh proof bound to the session token, canonical
+// IAM origin, exact method, and deterministic protobuf body. IAM derives the
+// semantic action/resource from the RPC and authorizes it through the PDP.
+service ControlPlane {
+  rpc CreateOIDCProvider(CreateOIDCProviderRequest) returns (OIDCProvider);
+  rpc GetOIDCProvider(GetOIDCProviderRequest) returns (OIDCProvider);
+  rpc ListOIDCProviders(ListOIDCProvidersRequest) returns (ListOIDCProvidersResponse);
+  rpc DeleteOIDCProvider(DeleteOIDCProviderRequest) returns (DeleteOIDCProviderResponse);
+
+  rpc CreateRole(CreateRoleRequest) returns (Role);
+  rpc GetRole(GetRoleRequest) returns (Role);
+  rpc ListRoles(ListRolesRequest) returns (ListRolesResponse);
+  // UpdateRole changes the role's max session duration.
+  rpc UpdateRole(UpdateRoleRequest) returns (Role);
+  // UpdateAssumeRolePolicy replaces the role's trust policy document.
+  rpc UpdateAssumeRolePolicy(UpdateAssumeRolePolicyRequest) returns (Role);
+  rpc DeleteRole(DeleteRoleRequest) returns (DeleteRoleResponse);
+
+  rpc AttachRolePolicy(AttachRolePolicyRequest) returns (AttachRolePolicyResponse);
+  rpc DetachRolePolicy(DetachRolePolicyRequest) returns (DetachRolePolicyResponse);
+
+  rpc CreatePolicy(CreatePolicyRequest) returns (Policy);
+  rpc GetPolicy(GetPolicyRequest) returns (Policy);
+  rpc ListPolicies(ListPoliciesRequest) returns (ListPoliciesResponse);
+  // CreatePolicyVersion adds an immutable version and moves the default.
+  rpc CreatePolicyVersion(CreatePolicyVersionRequest) returns (Policy);
+  // DeletePolicy fails while the policy is attached to any live role.
+  rpc DeletePolicy(DeletePolicyRequest) returns (DeletePolicyResponse);
+
+  // Resource policies attach one document (v1 resource statements —
+  // principal patterns + actions, never resources) to one concrete resource
+  // URN of any registered service. The resource layer evaluates them
+  // independently of identity policies: both must allow.
+  rpc PutResourcePolicy(PutResourcePolicyRequest) returns (ResourcePolicy);
+  rpc GetResourcePolicy(GetResourcePolicyRequest) returns (ResourcePolicy);
+  rpc ListResourcePolicies(ListResourcePoliciesRequest) returns (ListResourcePoliciesResponse);
+  rpc DeleteResourcePolicy(DeleteResourcePolicyRequest) returns (DeleteResourcePolicyResponse);
+
+  // Service definitions are the write-time validation registry: one entry
+  // per URN service segment carrying its resource types (each with a default
+  // resource-policy posture) and its unprefixed action vocabulary.
+  // Authorize-time evaluation never consults the registry.
+  rpc PutServiceDefinition(PutServiceDefinitionRequest) returns (ServiceDefinition);
+  rpc GetServiceDefinition(GetServiceDefinitionRequest) returns (ServiceDefinition);
+  rpc ListServiceDefinitions(ListServiceDefinitionsRequest) returns (ListServiceDefinitionsResponse);
+  // DeleteServiceDefinition fails while any live resource policy targets the
+  // service's URN prefix.
+  rpc DeleteServiceDefinition(DeleteServiceDefinitionRequest) returns (DeleteServiceDefinitionResponse);
+
+  // Stable service identities and revisioned, immutable-role bindings.
+  rpc CreateServicePrincipal(CreateServicePrincipalRequest) returns (ServicePrincipal);
+  rpc GetServicePrincipal(GetServicePrincipalRequest) returns (ServicePrincipal);
+  rpc ListServicePrincipals(ListServicePrincipalsRequest) returns (ListServicePrincipalsResponse);
+  rpc UpdateServicePrincipal(UpdateServicePrincipalRequest) returns (ServicePrincipal);
+  rpc DeleteServicePrincipal(DeleteServicePrincipalRequest) returns (ServicePrincipal);
+  rpc PutServicePrincipalBinding(PutServicePrincipalBindingRequest) returns (ServicePrincipalBinding);
+  rpc DeleteServicePrincipalBinding(DeleteServicePrincipalBindingRequest) returns (ServicePrincipalBinding);
+  rpc ListServicePrincipalBindings(ListServicePrincipalBindingsRequest) returns (ListServicePrincipalBindingsResponse);
+
+  // Proposed transport-aware request contracts and delegation interfaces.
+  // These control-plane RPCs remain gRPC. No runtime handlers or
+  // permissions are enabled by these declarations. Definitions are privileged
+  // configuration; application callers never choose a delegation profile.
+  rpc CreateRequestContract(CreateRequestContractRequest) returns (RequestContract);
+  rpc GetRequestContract(GetRequestContractRequest) returns (RequestContract);
+  rpc ListRequestContracts(ListRequestContractsRequest) returns (ListRequestContractsResponse);
+  rpc UpdateRequestContract(UpdateRequestContractRequest) returns (RequestContract);
+  // Retirement preserves the immutable ID/name. Disabled or retired contracts
+  // cannot be used by STS to admit new requests or establish delegation eligibility.
+  rpc DeleteRequestContract(DeleteRequestContractRequest) returns (RequestContract);
+
+  rpc CreateDelegation(CreateDelegationRequest) returns (Delegation);
+  rpc GetDelegation(GetDelegationRequest) returns (Delegation);
+  rpc ListDelegations(ListDelegationsRequest) returns (ListDelegationsResponse);
+  rpc UpdateDelegation(UpdateDelegationRequest) returns (Delegation);
+  rpc DeleteDelegation(DeleteDelegationRequest) returns (Delegation);
+}
+
+message OIDCProvider {
+  // was id; the immutable internal ID is no longer exposed — no RPC accepts
+  // one, so it is internal-only (DESIGN.md decision 30).
+  reserved 1;
+  // urn is the server-derived, read-only canonical global id
+  // (urn:motiveiq:iam:oidc-provider/<name>) for audit and logs; name is its
+  // single-segment identity at the API (DESIGN.md decision 27).
+  string urn = 2;
+  string issuer = 3;
+  string discovery_url = 4;
+  repeated string allowed_algorithms = 5;
+  repeated string allowed_audiences = 6;
+  reserved 7; // was provider_type; removed (drove no behavior, no AWS analog)
+  google.protobuf.Timestamp create_time = 8;
+  google.protobuf.Timestamp update_time = 9;
+  // Optional PEM bundle of additional CAs trusted for this issuer's TLS
+  // endpoints. Additive to the public trust store (DESIGN.md decision 25):
+  // public issuers need nothing; a private issuer carries its own CA.
+  string issuer_ca_bundle = 10;
+  string name = 11; // single-segment identity; urn is derived from it
+}
+
+message CreateOIDCProviderRequest {
+  string name = 1;   // single path segment; the server derives the URN
+  string issuer = 2; // exact issuer match; unique among live providers
+  string discovery_url = 3;
+  repeated string allowed_algorithms = 4;
+  repeated string allowed_audiences = 5;
+  reserved 6; // was provider_type; removed (drove no behavior, no AWS analog)
+  // Optional PEM bundle of additional CAs trusted for this issuer's TLS
+  // endpoints; additive to the public trust store.
+  string issuer_ca_bundle = 7;
+}
+
+message GetOIDCProviderRequest {
+  string name = 1; // single path segment; the server derives the URN
+}
+
+message ListOIDCProvidersRequest {}
+
+message ListOIDCProvidersResponse {
+  repeated OIDCProvider providers = 1;
+}
+
+message DeleteOIDCProviderRequest {
+  string name = 1; // single path segment; the server derives the URN
+}
+
+message DeleteOIDCProviderResponse {}
+
+message Role {
+  // Original id field remains reserved; role_id is exposed at a new tag
+  // as an explicit binding precondition, never as a replacement for name.
+  reserved 1;
+  // urn is the server-derived, read-only canonical global id
+  // (urn:motiveiq:iam:role/<name>) for audit and logs; name is its
+  // single-segment identity at the API (DESIGN.md decision 27).
+  string urn = 2;
+  int64 max_session_duration_seconds = 3;
+  // The trust policy (v1 JSON language, trust statements).
+  string assume_role_policy_document = 4;
+  // Canonical URNs of the attached managed policies (a cross-object reference
+  // is a whole URN, matching AWS ARNs).
+  repeated string attached_policy_urns = 5;
+  reserved 6; // was disabled; removed (revocation is DeleteRole — a soft-deleted role drops from the live snapshot and denies on the next decision)
+  google.protobuf.Timestamp create_time = 7;
+  google.protobuf.Timestamp update_time = 8;
+  string name = 9; // single-segment identity; urn is derived from it
+  string role_id = 10; // immutable; pin this when binding a service principal
+}
+
+message CreateRoleRequest {
+  string name = 1; // single path segment; the server derives the URN
+  // Zero means the 900s default. Values above 900 are rejected.
+  int64 max_session_duration_seconds = 2;
+  // Required, as in AWS: a role is unusable without a trust policy.
+  string assume_role_policy_document = 3;
+}
+
+message GetRoleRequest {
+  string name = 1; // single path segment; the server derives the URN
+}
+
+message ListRolesRequest {}
+
+message ListRolesResponse {
+  repeated Role roles = 1;
+}
+
+message UpdateRoleRequest {
+  string name = 1; // single path segment; the server derives the URN
+  optional int64 max_session_duration_seconds = 2;
+  reserved 3; // was disabled; removed (revocation is DeleteRole)
+}
+
+message UpdateAssumeRolePolicyRequest {
+  string name = 1; // single path segment; the server derives the URN
+  string policy_document = 2;
+}
+
+message DeleteRoleRequest {
+  string name = 1; // single path segment; the server derives the URN
+}
+
+message DeleteRoleResponse {}
+
+message AttachRolePolicyRequest {
+  // The subject role, addressed by its name (the server derives the URN).
+  string role_name = 1;
+  // The managed policy to attach, referenced by its canonical URN (a
+  // cross-object reference is a whole URN, matching AWS --policy-arn).
+  string policy_urn = 2;
+}
+
+message AttachRolePolicyResponse {}
+
+message DetachRolePolicyRequest {
+  // The subject role, addressed by its name (the server derives the URN).
+  string role_name = 1;
+  // The managed policy to detach, referenced by its canonical URN.
+  string policy_urn = 2;
+}
+
+message DetachRolePolicyResponse {}
+
+message Policy {
+  // was id; the immutable internal ID is no longer exposed — no RPC accepts
+  // one, so it is internal-only (DESIGN.md decision 30).
+  reserved 1;
+  // urn is the server-derived, read-only canonical global id
+  // (urn:motiveiq:iam:policy/<name>) for audit and logs; name is its
+  // single-segment identity at the API (DESIGN.md decision 27).
+  string urn = 2;
+  PolicyVersion default_version = 3;
+  google.protobuf.Timestamp create_time = 4;
+  google.protobuf.Timestamp update_time = 5;
+  string name = 6; // single-segment identity; urn is derived from it
+}
+
+message PolicyVersion {
+  // was id; versions are addressed by (policy, number) at the API — the
+  // internal version ID is no longer exposed (DESIGN.md decision 30).
+  reserved 1;
+  int64 number = 2;
+  string document_json = 3;
+  string content_hash = 4;
+  google.protobuf.Timestamp create_time = 5;
+}
+
+message CreatePolicyRequest {
+  string name = 1; // single path segment; the server derives the URN
+  string document_json = 2;
+}
+
+message GetPolicyRequest {
+  string name = 1; // single path segment; the server derives the URN
+}
+
+message ListPoliciesRequest {}
+
+message ListPoliciesResponse {
+  repeated Policy policies = 1;
+}
+
+message CreatePolicyVersionRequest {
+  string name = 1; // single path segment; the server derives the URN
+  string document_json = 2;
+}
+
+message DeletePolicyRequest {
+  string name = 1; // single path segment; the server derives the URN
+}
+
+message DeletePolicyResponse {}
+
+message ResourcePolicy {
+  // The concrete canonical URN this policy is attached to — a cross-service
+  // reference (e.g. urn:motiveiq:temporal:namespace/motiveiq/orders), never
+  // a pattern and never an IAM name.
+  string resource_urn = 1;
+  // The current revision's document (v1 resource statements).
+  string document_json = 2;
+  string content_hash = 3;
+  int64 revision_number = 4;
+  google.protobuf.Timestamp create_time = 5;
+  google.protobuf.Timestamp update_time = 6;
+  // Echoed on a fenced write so callers can reject an older control plane.
+  int64 mutation_version = 7;
+}
+
+message PutResourcePolicyRequest {
+  string resource_urn = 1;
+  string document_json = 2;
+  // Positive versions fence stale writers; zero is the legacy unfenced mode.
+  int64 mutation_version = 3;
+}
+
+message GetResourcePolicyRequest {
+  string resource_urn = 1;
+}
+
+message ListResourcePoliciesRequest {}
+
+message ListResourcePoliciesResponse {
+  repeated ResourcePolicy resource_policies = 1;
+}
+
+message DeleteResourcePolicyRequest {
+  string resource_urn = 1;
+  int64 mutation_version = 2;
+}
+
+message DeleteResourcePolicyResponse { int64 mutation_version = 1; }
+
+message ServiceDefinition {
+  // The URN service segment ("temporal"): lowercase label, globally unique.
+  // Service definitions transcend environment — there is exactly one per
+  // service, published through iam-config.
+  string name = 1;
+  repeated ServiceResourceType resource_types = 2;
+  // Unprefixed canonical action names ("RegisterNamespace"); the global
+  // action grammar stays <service>:<Action> — the definition declares the
+  // part after the colon. Matching is case-insensitive.
+  repeated string actions = 3;
+  google.protobuf.Timestamp create_time = 4;
+  google.protobuf.Timestamp update_time = 5;
+}
+
+message ServiceResourceType {
+  // The URN resource-type segment ("namespace"): lowercase label, unique
+  // within the service.
+  string name = 1;
+  // The default resource policy for resources of this type with no explicit
+  // policy — a posture, not a grant channel. v1 permits exactly two states:
+  // empty string (absent: the resource layer is skipped, identity-only) or a
+  // document with zero statements (present-but-empty: denies everything
+  // until an explicit policy overrides it). Documents with statements are
+  // reserved and rejected.
+  string default_resource_policy_json = 2;
+}
+
+message PutServiceDefinitionRequest {
+  string name = 1;
+  repeated ServiceResourceType resource_types = 2;
+  repeated string actions = 3;
+}
+
+message GetServiceDefinitionRequest {
+  string name = 1;
+}
+
+message ListServiceDefinitionsRequest {}
+
+message ListServiceDefinitionsResponse {
+  repeated ServiceDefinition service_definitions = 1;
+}
+
+message DeleteServiceDefinitionRequest {
+  string name = 1;
+}
+
+message DeleteServiceDefinitionResponse {}
+
+
+message ServicePrincipal {
+  string id = 1;
+  string name = 2; // canonical DNS-shaped identity; no DNS lookup
+  string service = 3; // owning registered ServiceDefinition; immutable
+  bool enabled = 4;
+  int64 revision = 5;
+  google.protobuf.Timestamp create_time = 6;
+  google.protobuf.Timestamp update_time = 7;
+  google.protobuf.Timestamp retire_time = 8; // name remains permanently reserved
+
+  ConfigurationOwner management = 9;
+}
+message CreateServicePrincipalRequest {
+  string name = 1;
+  string service = 2;
+  ConfigurationWrite management = 3;
+  optional bool enabled = 4; // absent preserves legacy enabled-by-default creation
+}
+message GetServicePrincipalRequest { string name = 1; }
+message ListServicePrincipalsRequest {}
+message ListServicePrincipalsResponse { repeated ServicePrincipal service_principals = 1; }
+message UpdateServicePrincipalRequest {
+  string name = 1;
+  int64 expected_revision = 2; // required, positive
+  bool enabled = 3;
+
+  ConfigurationWrite management = 4;
+}
+message DeleteServicePrincipalRequest {
+  string name = 1;
+  int64 expected_revision = 2;
+  ConfigurationWrite management = 3;
+}
+message ServicePrincipalBinding {
+  string service_principal_id = 1;
+  string name = 2;
+  string role_id = 3;
+  string role_urn = 4;
+  bool active = 5;
+  int64 revision = 6;
+  google.protobuf.Timestamp create_time = 7;
+  google.protobuf.Timestamp update_time = 8;
+
+  ConfigurationOwner management = 9;
+}
+message PutServicePrincipalBindingRequest {
+  string name = 1;
+  string role_urn = 2;
+  string role_id = 3; // required immutable ID returned by GetRole
+  int64 expected_revision = 4; // zero creates; positive updates/reactivates
+
+  ConfigurationWrite management = 5;
+}
+message DeleteServicePrincipalBindingRequest {
+  string name = 1;
+  string role_urn = 2;
+  string role_id = 3;
+  int64 expected_revision = 4; // required, positive; removal retains a tombstone
+
+  ConfigurationWrite management = 5;
+}
+message ListServicePrincipalBindingsRequest {}
+message ListServicePrincipalBindingsResponse { repeated ServicePrincipalBinding bindings = 1; }
