@@ -81,6 +81,8 @@ func TestIQSharedConfigSignsV3ForIAMAndSTS(t *testing.T) {
 	dialer := func(context.Context, string) (net.Conn, error) { return listener.Dial() }
 
 	command := NewCommand()
+	// bufconn tests must not resolve a production hostname before dialing.
+	t.Setenv(IAMEndpointEnv, "passthrough:///bufconn")
 	credentialDirectory := t.TempDir()
 	t.Setenv(oauth.TokenFileEnv, filepath.Join(credentialDirectory, "credentials.json"))
 	t.Setenv("XDG_CACHE_HOME", t.TempDir())
@@ -152,6 +154,9 @@ func TestIQSharedConfigSignsV3ForIAMAndSTS(t *testing.T) {
 	// The explicit override resolves the same cache as the default above.
 	nextCommand := NewCommand()
 	nextCommand.Env = func(name string) string {
+		if name == IAMEndpointEnv {
+			return "passthrough:///bufconn"
+		}
 		if name == IAMSessionCacheDirEnv {
 			return cacheDirectory
 		}

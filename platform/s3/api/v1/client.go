@@ -30,7 +30,7 @@ const (
 	// ServiceOrigin is the stable logical HTTPS origin bound into S3 request
 	// proofs, independent of transport endpoint overrides.
 	ServiceOrigin   = "https://blob.platform.motiveiq.net"
-	defaultEndpoint = "dns:///blob.platform.motiveiq.net:443"
+	defaultEndpoint = "dns:///api.motiveiq.net:443"
 )
 
 // GRPCClientConfig is the narrow shared-SDK contract used by the S3 package.

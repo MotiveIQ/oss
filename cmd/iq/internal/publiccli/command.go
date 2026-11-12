@@ -15,7 +15,7 @@ import (
 	motiveiq "go.motiveiq.dev/platform/iam/sdk"
 )
 
-const IAMAddress = "iam.platform.motiveiq.net:443"
+const IAMAddress = "api.motiveiq.net:443"
 
 // ErrUsage distinguishes invalid command usage from an operation failure.
 var ErrUsage = errors.New("usage error")

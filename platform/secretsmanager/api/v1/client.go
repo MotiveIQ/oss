@@ -12,7 +12,7 @@ const (
 	// ServiceOrigin is the stable logical HTTPS origin bound into Secrets Manager request
 	// proofs, independent of transport endpoint overrides.
 	ServiceOrigin   = "https://secretsmanager.platform.motiveiq.net"
-	defaultEndpoint = "dns:///secretsmanager.platform.motiveiq.net:443"
+	defaultEndpoint = "dns:///api.motiveiq.net:443"
 )
 
 // GRPCClientConfig is the narrow shared-SDK contract used by the Secrets Manager package.

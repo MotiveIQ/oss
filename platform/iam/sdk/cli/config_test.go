@@ -15,7 +15,7 @@ func TestIdentityDiscovery(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if config.RoleURN != HumanRole || config.STSEndpoint != "iam.platform.motiveiq.net:443" {
+	if config.RoleURN != HumanRole || config.STSEndpoint != "api.motiveiq.net:443" {
 		t.Fatal("human defaults changed")
 	}
 	config.Close()

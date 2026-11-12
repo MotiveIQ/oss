@@ -42,7 +42,7 @@ func Load(ctx context.Context, role string, options ...motiveiq.Option) (*motive
 		motiveiq.WithClientTransportCredentials(credentials.NewTLS(tlsConfig.Clone())),
 	}
 	if strings.TrimSpace(os.Getenv(motiveiq.EnvSTSEndpoint)) == "" {
-		base = append(base, motiveiq.WithSTSEndpoint("iam.platform.motiveiq.net:443"))
+		base = append(base, motiveiq.WithSTSEndpoint("api.motiveiq.net:443"))
 	}
 	if strings.TrimSpace(os.Getenv(motiveiq.EnvWebIdentityTokenFile)) == "" {
 		base = append(base, motiveiq.WithWebIdentityTokenProvider(motiveiq.WebIdentityTokenProviderFunc(HumanToken)))

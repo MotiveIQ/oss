@@ -12,7 +12,7 @@ const (
 	// ServiceOrigin is the stable logical HTTPS origin bound into KMS request
 	// proofs, independent of transport endpoint overrides.
 	ServiceOrigin   = "https://kms.platform.motiveiq.net"
-	defaultEndpoint = "dns:///kms.platform.motiveiq.net:443"
+	defaultEndpoint = "dns:///api.motiveiq.net:443"
 )
 
 // GRPCClientConfig is the narrow shared-SDK contract used by the KMS package.

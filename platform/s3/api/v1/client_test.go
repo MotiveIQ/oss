@@ -53,7 +53,7 @@ func TestNewFromConfigUsesServiceProfileAndGeneratedClient(t *testing.T) {
 	if len(response.GetBuckets()) != 1 || response.GetBuckets()[0].GetName() != "global-bucket" {
 		t.Fatalf("buckets = %v", response.GetBuckets())
 	}
-	if cfg.serviceKey != ControlPlaneServiceKey || cfg.endpoint != "dns:///blob.platform.motiveiq.net:443" || cfg.origin != ControlPlaneServiceOrigin || cfg.endpointOver != "dns:///s3.test:443" {
+	if cfg.serviceKey != ControlPlaneServiceKey || cfg.endpoint != "dns:///api.motiveiq.net:443" || cfg.origin != ControlPlaneServiceOrigin || cfg.endpointOver != "dns:///s3.test:443" {
 		t.Fatalf("config call = (%q, %q, %q, %q)", cfg.serviceKey, cfg.endpoint, cfg.origin, cfg.endpointOver)
 	}
 	if conn.method != ControlPlane_ListBuckets_FullMethodName {
@@ -65,7 +65,7 @@ func TestDataAndControlShareOriginButKeepDistinctProfilesAndMethods(t *testing.T
 	conn := &recordingConn{}
 	cfg := &recordingConfig{conn: conn}
 	data := NewDataPlaneFromConfig(cfg)
-	if cfg.serviceKey != ServiceKey || cfg.endpoint != "dns:///blob.platform.motiveiq.net:443" || cfg.origin != "https://blob.platform.motiveiq.net" {
+	if cfg.serviceKey != ServiceKey || cfg.endpoint != "dns:///api.motiveiq.net:443" || cfg.origin != "https://blob.platform.motiveiq.net" {
 		t.Fatalf("data profile: %+v", cfg)
 	}
 	if _, err := data.HeadBucket(context.Background(), &HeadBucketRequest{}); err != nil {
@@ -76,7 +76,7 @@ func TestDataAndControlShareOriginButKeepDistinctProfilesAndMethods(t *testing.T
 	}
 	dataOrigin := cfg.origin
 	control := NewControlPlaneFromConfig(cfg)
-	if cfg.serviceKey != ControlPlaneServiceKey || cfg.serviceKey == ServiceKey || cfg.endpoint != "dns:///blob.platform.motiveiq.net:443" || cfg.origin != dataOrigin {
+	if cfg.serviceKey != ControlPlaneServiceKey || cfg.serviceKey == ServiceKey || cfg.endpoint != "dns:///api.motiveiq.net:443" || cfg.origin != dataOrigin {
 		t.Fatalf("control profile: %+v", cfg)
 	}
 	if _, err := control.ListBuckets(context.Background(), &ListBucketsRequest{}); err != nil {

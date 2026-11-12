@@ -24,7 +24,7 @@ const (
 )
 
 // defaultEndpoint is the shared production gRPC endpoint for IAM and STS.
-const defaultEndpoint = "dns:///iam.platform.motiveiq.net:443"
+const defaultEndpoint = "dns:///api.motiveiq.net:443"
 
 // GRPCClientConfig is the narrow shared-SDK contract consumed by the IAM API
 // package. Keeping it structural avoids an import cycle with the IAM SDK.

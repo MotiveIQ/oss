@@ -106,6 +106,9 @@ func TestIQS3UsesSignedStreamingFacade(t *testing.T) {
 	c.Stderr = errout
 	cacheDirectory := filepath.Join(t.TempDir(), "sts-cache")
 	c.Env = func(name string) string {
+		if name == IAMEndpointEnv {
+			return "passthrough:///bufconn"
+		}
 		if name == IAMSessionCacheDirEnv {
 			return cacheDirectory
 		}
