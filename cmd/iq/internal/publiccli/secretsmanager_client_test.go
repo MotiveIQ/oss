@@ -65,7 +65,7 @@ func TestIQSecretsManagerSignsRequestsWithStableOrigin(t *testing.T) {
 		}
 		return ""
 	}
-	c.WebIdentityToken = func(context.Context) (string, error) { return "web-identity", nil }
+	useTestIdentity(c, func(context.Context) (string, error) { return "web-identity", nil })
 	dialer := func(_ context.Context, target string) (net.Conn, error) {
 		mu.Lock()
 		targets = append(targets, target)

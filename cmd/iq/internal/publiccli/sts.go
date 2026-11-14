@@ -10,7 +10,7 @@ import (
 )
 
 func (c *Command) stsCommand() *cobra.Command {
-	options := iamOptions{Role: IAMHumanRoleURN}
+	options := iamOptions{}
 	command := &cobra.Command{
 		Use:           "sts",
 		Short:         "Inspect MotiveIQ STS assumed-role sessions.",

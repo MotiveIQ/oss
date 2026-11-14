@@ -90,8 +90,8 @@ func TestSTSGetCallerIdentity(t *testing.T) {
 	if fixture.sts.callerCalls != 1 {
 		t.Fatalf("GetCallerIdentity calls: %d", fixture.sts.callerCalls)
 	}
-	if len(fixture.loadedRoles) != 1 || fixture.loadedRoles[0] != IAMHumanRoleURN {
-		t.Fatalf("loaded roles = %v, want %q", fixture.loadedRoles, IAMHumanRoleURN)
+	if len(fixture.loadedRoles) != 1 || fixture.loadedRoles[0] != "" {
+		t.Fatalf("loaded roles = %v, want %q", fixture.loadedRoles, "")
 	}
 	if fixture.stsDials != 1 || fixture.iamDials != 0 {
 		t.Fatalf("client construction STS/IAM = %d/%d", fixture.stsDials, fixture.iamDials)

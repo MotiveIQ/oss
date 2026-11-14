@@ -11,8 +11,8 @@ import (
 	"github.com/spf13/cobra"
 
 	iamv1 "go.motiveiq.dev/platform/iam/api/v1"
-	"go.motiveiq.dev/platform/iam/oauth"
 	motiveiq "go.motiveiq.dev/platform/iam/sdk"
+	sdkconfig "go.motiveiq.dev/platform/iam/sdk/config"
 )
 
 const IAMAddress = "api.motiveiq.net:443"
@@ -50,13 +50,8 @@ type Command struct {
 	NewS3FromConfig             func(*motiveiq.Config, string) (S3Client, error)
 	NewKMSFromConfig            func(*motiveiq.Config, string) (KMSClient, error)
 	NewSecretsManagerFromConfig func(*motiveiq.Config, string) (SecretsManagerClient, error)
-	WebIdentityToken            func(context.Context) (string, error)
-	Login                       func(context.Context, io.Writer) (oauth.Credentials, error)
-	SaveCredentials             func(oauth.Credentials) (string, error)
-	LoadCredentials             func() (oauth.Credentials, error)
-
-	// LoginHint is optional guidance supplied by a containing application.
-	LoginHint string
+	Profile                     string
+	ResolveIdentity             func(string) (sdkconfig.Identity, error)
 }
 
 func NewCommand() *Command {
@@ -86,8 +81,8 @@ func (c *Command) Run(ctx context.Context, args []string) int {
 func (c *Command) Commands() []*cobra.Command {
 	c.applyDefaults()
 	return []*cobra.Command{
-		c.loginCommand(), c.s3Command(), c.kmsCommand(),
-		c.secretsManagerCommand(), c.iamCommand(), c.stsCommand(), c.whoamiCommand(),
+		c.s3Command(), c.kmsCommand(),
+		c.secretsManagerCommand(), c.iamCommand(), c.stsCommand(),
 	}
 }
 
@@ -103,6 +98,7 @@ func (c *Command) rootCommand() *cobra.Command {
 		},
 	}
 	root.CompletionOptions.SetDefaultShellCompDirective(cobra.ShellCompDirectiveNoFileComp)
+	root.PersistentFlags().StringVar(&c.Profile, "profile", "", "Credential profile (defaults to IQ_PROFILE or default).")
 	root.AddCommand(c.Commands()...)
 	return root
 }
@@ -138,21 +134,10 @@ func (c *Command) applyDefaults() {
 	if c.LoadSDKConfig == nil {
 		c.LoadSDKConfig = c.loadSDKConfig
 	}
-	if c.WebIdentityToken == nil {
-		c.WebIdentityToken = webIdentityTokenFromStore
-	}
-	if c.Login == nil {
-		c.Login = func(ctx context.Context, output io.Writer) (oauth.Credentials, error) {
-			return oauth.LoginWithBrowser(ctx, oauth.LoginOptions{Output: output, OpenBrowser: true})
+	if c.ResolveIdentity == nil {
+		c.ResolveIdentity = func(role string) (sdkconfig.Identity, error) {
+			return (sdkconfig.Resolver{Env: c.Env, Profile: c.Profile}).Resolve(role)
 		}
-	}
-	if c.SaveCredentials == nil {
-		c.SaveCredentials = func(credentials oauth.Credentials) (string, error) {
-			return oauth.SaveCredentials(credentials, "")
-		}
-	}
-	if c.LoadCredentials == nil {
-		c.LoadCredentials = loadCredentialsFromStore
 	}
 }
 

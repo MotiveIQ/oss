@@ -14,6 +14,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/pelletier/go-toml/v2"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/metadata"
@@ -21,21 +22,23 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	iamv1 "go.motiveiq.dev/platform/iam/api/v1"
-	"go.motiveiq.dev/platform/iam/oauth"
 	motiveiq "go.motiveiq.dev/platform/iam/sdk"
+	sdkconfig "go.motiveiq.dev/platform/iam/sdk/config"
 )
 
 type proofConfigTestServer struct {
 	iamv1.UnimplementedControlPlaneServer
 	iamv1.UnimplementedSTSServer
 
-	issuanceMetadata metadata.MD
-	iamMetadata      metadata.MD
-	identityMetadata metadata.MD
-	issuanceCalls    atomic.Int64
+	issuanceMetadata  metadata.MD
+	iamMetadata       metadata.MD
+	identityMetadata  metadata.MD
+	issuanceCalls     atomic.Int64
+	webIdentity, role string
 }
 
 func (s *proofConfigTestServer) AssumeRoleWithWebIdentity(ctx context.Context, request *iamv1.AssumeRoleWithWebIdentityRequest) (*iamv1.AssumeRoleWithWebIdentityResponse, error) {
+	s.webIdentity, s.role = request.GetWebIdentityToken(), request.GetRoleUrn()
 	s.issuanceCalls.Add(1)
 	s.issuanceMetadata, _ = metadata.FromIncomingContext(ctx)
 	proofs := s.issuanceMetadata.Get("dpop")
@@ -84,14 +87,11 @@ func TestIQSharedConfigSignsV3ForIAMAndSTS(t *testing.T) {
 	// bufconn tests must not resolve a production hostname before dialing.
 	t.Setenv(IAMEndpointEnv, "passthrough:///bufconn")
 	credentialDirectory := t.TempDir()
-	t.Setenv(oauth.TokenFileEnv, filepath.Join(credentialDirectory, "credentials.json"))
+	tokenFile := filepath.Join(credentialDirectory, "token")
 	t.Setenv("XDG_CACHE_HOME", t.TempDir())
 	t.Setenv(IAMSessionCacheDirEnv, "")
 	cacheDirectory := filepath.Join(os.Getenv("XDG_CACHE_HOME"), "iq", "sts")
-	if _, err := oauth.SaveCredentials(oauth.Credentials{
-		"access_token": "oauth-web-identity", "audience": oauth.PlatformAudience,
-		"expires_at": time.Now().Add(time.Hour).Unix(),
-	}, ""); err != nil {
+	if err := os.WriteFile(tokenFile, []byte("external-web-identity"), 0o600); err != nil {
 		t.Fatal(err)
 	}
 	if err := os.Chmod(credentialDirectory, 0o500); err != nil {
@@ -99,17 +99,18 @@ func TestIQSharedConfigSignsV3ForIAMAndSTS(t *testing.T) {
 	}
 	t.Cleanup(func() { _ = os.Chmod(credentialDirectory, 0o700) })
 	providerCalls := 0
-	command.WebIdentityToken = func(ctx context.Context) (string, error) {
+	useTestIdentity(command, func(ctx context.Context) (string, error) {
 		providerCalls++
-		return webIdentityTokenFromStore(ctx)
-	}
+		data, err := os.ReadFile(tokenFile)
+		return string(data), err
+	})
 	options := []motiveiq.Option{
 		motiveiq.WithTransportCredentials(insecure.NewCredentials()),
 		motiveiq.WithClientTransportCredentials(insecure.NewCredentials()),
 		motiveiq.WithDialOptions(grpc.WithContextDialer(dialer)),
 		motiveiq.WithClientDialOptions(grpc.WithContextDialer(dialer)),
 	}
-	config, err := command.loadSDKConfigWithOptions(context.Background(), IAMHumanRoleURN, options...)
+	config, err := command.loadSDKConfigWithOptions(context.Background(), testRoleURN, options...)
 	if err != nil {
 		t.Fatalf("loadSDKConfig: %v", err)
 	}
@@ -142,7 +143,7 @@ func TestIQSharedConfigSignsV3ForIAMAndSTS(t *testing.T) {
 	if info, err := os.Stat(cacheDirectory); err != nil || !info.IsDir() || info.Mode().Perm() != 0o700 {
 		t.Fatalf("private cache in user cache home: info=%v error=%v", info, err)
 	}
-	if entries, err := os.ReadDir(credentialDirectory); err != nil || len(entries) != 1 || entries[0].Name() != "credentials.json" {
+	if entries, err := os.ReadDir(credentialDirectory); err != nil || len(entries) != 1 || entries[0].Name() != "token" {
 		t.Fatalf("credential mount changed: entries=%v error=%v", entries, err)
 	}
 	firstProof := service.identityMetadata.Get("dpop")[0]
@@ -162,8 +163,8 @@ func TestIQSharedConfigSignsV3ForIAMAndSTS(t *testing.T) {
 		}
 		return ""
 	}
-	nextCommand.WebIdentityToken = command.WebIdentityToken
-	nextConfig, err := nextCommand.loadSDKConfigWithOptions(context.Background(), IAMHumanRoleURN, options...)
+	nextCommand.ResolveIdentity = command.ResolveIdentity
+	nextConfig, err := nextCommand.loadSDKConfigWithOptions(context.Background(), testRoleURN, options...)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -196,8 +197,6 @@ func TestSessionCacheDirectory(t *testing.T) {
 	home := t.TempDir()
 	t.Setenv("HOME", home)
 	t.Setenv("XDG_CONFIG_HOME", filepath.Join(t.TempDir(), "config"))
-	t.Setenv(oauth.TokenFileEnv, "/mounted/credentials.json")
-	t.Setenv(oauth.BazelTokenFileEnv, "/other/credentials.json")
 	for _, tc := range []struct {
 		name, override, cacheHome, want string
 	}{
@@ -301,4 +300,96 @@ func proofThumbprint(compact string) (string, error) {
 	canonical := []byte(fmt.Sprintf(`{"crv":%q,"kty":%q,"x":%q}`, header.JWK.Curve, header.JWK.KeyType, header.JWK.X))
 	digest := sha256.Sum256(canonical)
 	return base64.RawURLEncoding.EncodeToString(digest[:]), nil
+}
+
+func TestExternalTokenHelper(t *testing.T) {
+	if len(os.Args) < 3 || os.Args[len(os.Args)-2] != "--" {
+		return
+	}
+	data, err := os.ReadFile(os.Args[len(os.Args)-1])
+	if err != nil {
+		os.Exit(1)
+	}
+	if err := json.NewEncoder(os.Stdout).Encode(sdkconfig.ProcessToken{Version: 1, Token: string(data)}); err != nil {
+		os.Exit(2)
+	}
+	os.Exit(0)
+}
+
+func TestConfiguredSourcesEstablishNormalIAMSession(t *testing.T) {
+	for _, kind := range []string{"file", "process"} {
+		t.Run(kind, func(t *testing.T) {
+			listener := bufconn.Listen(1024 * 1024)
+			server := grpc.NewServer()
+			service := &proofConfigTestServer{}
+			iamv1.RegisterSTSServer(server, service)
+			go func() { _ = server.Serve(listener) }()
+			t.Cleanup(func() { server.Stop(); _ = listener.Close() })
+			directory := t.TempDir()
+			tokenPath := filepath.Join(directory, "external-token")
+			sourceConfig := sdkconfig.SourceConfig{"path": tokenPath}
+			if kind == "process" {
+				executable, err := os.Executable()
+				if err != nil {
+					t.Fatal(err)
+				}
+				sourceConfig = sdkconfig.SourceConfig{"command": []string{executable, "-test.run=^TestExternalTokenHelper$", "--", tokenPath}}
+			}
+			profilePath := filepath.Join(directory, "config.toml")
+			data, _ := toml.Marshal(sdkconfig.FileConfig{
+				Profiles:           map[string]sdkconfig.Profile{"selected": {RoleURN: testRoleURN, WebIdentitySource: "external", STSEndpoint: "passthrough:///bufconn"}},
+				WebIdentitySources: map[string]sdkconfig.Source{"external": {Type: kind, Config: sourceConfig}},
+			})
+			if err := os.WriteFile(profilePath, data, 0o600); err != nil {
+				t.Fatal(err)
+			}
+			command := NewCommand()
+			command.Stdout, command.Stderr = &strings.Builder{}, &strings.Builder{}
+			command.Env = func(key string) string {
+				switch key {
+				case sdkconfig.ConfigFileEnv:
+					return profilePath
+				case IAMSessionCacheDirEnv:
+					return filepath.Join(directory, "sessions")
+				case sdkconfig.RoleURNEnv:
+					return "urn:motiveiq:iam:role/wrong"
+				case sdkconfig.WebIdentityTokenFileEnv:
+					return "/wrong-token"
+				}
+				return ""
+			}
+			command.LoadSDKConfig = func(ctx context.Context, role string) (*motiveiq.Config, error) {
+				return command.loadSDKConfigWithOptions(ctx, role,
+					motiveiq.WithTransportCredentials(insecure.NewCredentials()),
+					motiveiq.WithClientTransportCredentials(insecure.NewCredentials()),
+					motiveiq.WithDialOptions(grpc.WithContextDialer(func(context.Context, string) (net.Conn, error) { return listener.Dial() })),
+					motiveiq.WithClientDialOptions(grpc.WithContextDialer(func(context.Context, string) (net.Conn, error) { return listener.Dial() })),
+				)
+			}
+			for _, external := range []string{"first-external-token", "rotated-external-token"} {
+				if err := os.WriteFile(tokenPath, []byte(external), 0o600); err != nil {
+					t.Fatal(err)
+				}
+				if code := command.Run(t.Context(), []string{"--profile", "selected", "sts", "get-caller-identity"}); code != 0 {
+					t.Fatalf("source %s: %s", kind, command.Stderr)
+				}
+				if service.webIdentity != external || service.role != testRoleURN {
+					t.Fatalf("STS received wrong identity/role: %q/%q", service.webIdentity, service.role)
+				}
+				assertProofMetadata(t, service.identityMetadata, "DPoP session-token", iamv1.STS_GetCallerIdentity_FullMethodName, iamv1.STSServiceOrigin)
+			}
+			if calls := service.issuanceCalls.Load(); calls != 2 {
+				t.Fatalf("rotated identity should establish a new session: %d", calls)
+			}
+			if err := os.Remove(tokenPath); err != nil {
+				t.Fatal(err)
+			}
+			if code := command.Run(t.Context(), []string{"--profile", "selected", "sts", "get-caller-identity"}); code == 0 {
+				t.Fatal("failed source used a cached session or fallback")
+			}
+			if calls := service.issuanceCalls.Load(); calls != 2 {
+				t.Fatalf("failed source reached STS: %d", calls)
+			}
+		})
+	}
 }

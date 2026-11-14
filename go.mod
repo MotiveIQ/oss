@@ -4,10 +4,14 @@ go 1.27.1
 
 require (
 	github.com/cedar-policy/cedar-go v1.8.0
+	github.com/coreos/go-oidc/v3 v3.21.0
+	github.com/go-jose/go-jose/v4 v4.1.4
 	github.com/gofrs/flock v0.13.0
 	github.com/google/uuid v1.6.0
 	github.com/jmespath/go-jmespath v0.4.0
+	github.com/pelletier/go-toml/v2 v2.2.4
 	github.com/spf13/cobra v1.10.2
+	golang.org/x/oauth2 v0.37.0
 	golang.org/x/text v0.42.0
 	google.golang.org/grpc v1.84.0
 	google.golang.org/protobuf v1.36.12

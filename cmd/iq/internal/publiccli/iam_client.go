@@ -2,25 +2,20 @@ package publiccli
 
 import (
 	"context"
-	"crypto/tls"
 	"errors"
 	"os"
 	"path/filepath"
 	"strings"
 
-	"google.golang.org/grpc/credentials"
-
 	iamv1 "go.motiveiq.dev/platform/iam/api/v1"
-	"go.motiveiq.dev/platform/iam/oauth"
 	motiveiq "go.motiveiq.dev/platform/iam/sdk"
-	sdkcli "go.motiveiq.dev/platform/iam/sdk/cli"
+	sdkconfig "go.motiveiq.dev/platform/iam/sdk/config"
 	"go.motiveiq.dev/platform/iam/sdk/sessioncache"
 )
 
 const (
-	IAMEndpointEnv        = "MOTIVEIQ_IQ_IAM_ENDPOINT"
-	IAMHumanRoleURN       = sdkcli.HumanRole
-	IAMSessionCacheDirEnv = "MOTIVEIQ_IQ_SESSION_CACHE_DIR"
+	IAMEndpointEnv        = "IQ_IAM_ENDPOINT"
+	IAMSessionCacheDirEnv = "IQ_SESSION_CACHE_DIR"
 )
 
 type iamClient struct {
@@ -89,26 +84,6 @@ func (c *stsClient) GetCallerIdentity(ctx context.Context, request *iamv1.GetCal
 	return c.client.GetCallerIdentity(ctx, request)
 }
 
-// webIdentityTokenFromStore returns the platform-audience access token that
-// STS accepts as the web identity. The audience is the whole requirement:
-// granted scopes attenuate the resulting session through its scopes principal
-// tag, so a narrowed consent must still yield a token.
-func webIdentityTokenFromStore(ctx context.Context) (string, error) {
-	return sdkcli.HumanToken(ctx)
-}
-
-func loadCredentialsFromStore() (oauth.Credentials, error) {
-	credentials, _, err := oauth.LoadCredentials("")
-	return credentials, err
-}
-
-func (c *Command) iamAddress() string {
-	if address := strings.TrimSpace(c.Env(IAMEndpointEnv)); address != "" {
-		return address
-	}
-	return IAMAddress
-}
-
 // loadSDKConfig resolves one proof-only shared configuration for IAM and STS.
 // Session issuance, refresh, the proof key, and all service connections are
 // owned by the returned Config. IQ opts into the SDK's process-shared cache.
@@ -117,28 +92,30 @@ func (c *Command) loadSDKConfig(ctx context.Context, roleURN string) (*motiveiq.
 }
 
 func (c *Command) loadSDKConfigWithOptions(ctx context.Context, roleURN string, options ...motiveiq.Option) (*motiveiq.Config, error) {
-	if strings.TrimSpace(roleURN) == "" {
-		return nil, errors.New("--role is required")
+	identity, err := c.ResolveIdentity(roleURN)
+	if err != nil {
+		return nil, err
 	}
-	address := c.iamAddress()
+	address := identity.STSEndpoint
+	if address == "" {
+		address = IAMAddress
+	}
+	// An explicit IAM endpoint override also selects the STS ingress address.
+	if override := strings.TrimSpace(c.Env(IAMEndpointEnv)); override != "" {
+		address = override
+	}
+	identity.STSEndpoint = address
 	cacheDirectory, err := c.sessionCacheDirectory()
 	if err != nil {
 		return nil, err
 	}
 	base := []motiveiq.Option{
-		motiveiq.WithRoleURN(roleURN),
 		motiveiq.WithSessionCache(sessioncache.NewFile(cacheDirectory)),
-		// IQ obtains human OAuth credentials from its credential store rather
-		// than ambient workload-identity variables in the caller's shell.
-		motiveiq.WithWebIdentityTokenProvider(motiveiq.WebIdentityTokenProviderFunc(c.WebIdentityToken)),
-		motiveiq.WithSTSEndpoint(address),
 		motiveiq.WithSTSProofOrigin(iamv1.STSServiceOrigin),
-		motiveiq.WithTransportCredentials(credentials.NewTLS(&tls.Config{MinVersion: tls.VersionTLS12})),
-		motiveiq.WithClientTransportCredentials(credentials.NewTLS(&tls.Config{MinVersion: tls.VersionTLS12})),
 		motiveiq.WithServiceEndpoint(iamv1.ControlPlaneServiceKey, address),
 		motiveiq.WithServiceEndpoint(iamv1.STSServiceKey, address),
 	}
-	return motiveiq.LoadDefaultConfig(ctx, append(base, options...)...)
+	return sdkconfig.LoadIdentity(ctx, identity, append(base, options...)...)
 }
 
 // Session storage must be writable independently of the OAuth credential file,

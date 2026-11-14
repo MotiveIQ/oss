@@ -150,7 +150,7 @@ func iamVerbs() []iamVerb {
 }
 
 func (c *Command) iamCommand() *cobra.Command {
-	options := iamOptions{Role: IAMHumanRoleURN}
+	options := iamOptions{}
 	command := &cobra.Command{
 		Use:   "iam",
 		Short: "Read MotiveIQ IAM control-plane objects.",

@@ -15,7 +15,7 @@ import (
 	sm "go.motiveiq.dev/platform/secretsmanager/api/v1"
 )
 
-const SecretsManagerEndpointEnv = "MOTIVEIQ_IQ_SECRETSMANAGER_ENDPOINT"
+const SecretsManagerEndpointEnv = "IQ_SECRETSMANAGER_ENDPOINT"
 const secretURNPrefix = "urn:motiveiq:secretsmanager:secret/"
 
 var secretNameSegment = regexp.MustCompile(`^[A-Za-z0-9][A-Za-z0-9_.-]{0,62}$`)
@@ -27,10 +27,10 @@ type secretsManagerOptions struct {
 }
 
 func (c *Command) secretsManagerCommand() *cobra.Command {
-	o := &secretsManagerOptions{iamOptions: iamOptions{Role: IAMHumanRoleURN}}
+	o := &secretsManagerOptions{iamOptions: iamOptions{}}
 	command := &cobra.Command{
 		Use: "secretsmanager", Short: "Store and retrieve KMS-encrypted, versioned secrets.",
-		Long: `AWS-style Secrets Manager commands using iq login and MotiveIQ IAM.
+		Long: `AWS-style Secrets Manager commands using configured credentials and MotiveIQ IAM.
 Secret IDs are names or complete MotiveIQ URNs. Values accept file:// text and
 fileb:// binary input. Only get-secret-value returns plaintext; other commands
 return metadata. See cmd/iq/SECRETSMANAGER.md for examples and API differences.`,
@@ -38,7 +38,7 @@ return metadata. See cmd/iq/SECRETSMANAGER.md for examples and API differences.`
 	}
 	c.addIAMFlags(command, &o.iamOptions)
 	f := command.PersistentFlags()
-	f.StringVar(&o.endpoint, "endpoint-url", c.Env(SecretsManagerEndpointEnv), "Secrets Manager HTTPS origin override (env: MOTIVEIQ_IQ_SECRETSMANAGER_ENDPOINT).")
+	f.StringVar(&o.endpoint, "endpoint-url", c.Env(SecretsManagerEndpointEnv), "Secrets Manager HTTPS origin override (env: IQ_SECRETSMANAGER_ENDPOINT).")
 	f.StringVar(&o.binaryFormat, "cli-binary-format", "base64", "Binary inputs: base64 or raw-in-base64-out; fileb:// always reads raw bytes.")
 	f.DurationVar(&o.timeout, "timeout", time.Minute, "Deadline for credentials and API calls, including pagination.")
 	f.Bool("no-cli-pager", false, "Disable paging (iq always writes directly to stdout).")

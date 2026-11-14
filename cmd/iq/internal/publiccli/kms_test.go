@@ -119,7 +119,7 @@ func TestKMSDataRequestsAndAWSOutput(t *testing.T) {
 			if got := f.run(t, args...); got != tt.want {
 				t.Fatalf("got %q want %q", got, tt.want)
 			}
-			if f.loads != 1 || len(f.conn.calls) != 1 || f.role != IAMHumanRoleURN {
+			if f.loads != 1 || len(f.conn.calls) != 1 || f.role != "" {
 				t.Fatal("unexpected authentication or request count")
 			}
 		})

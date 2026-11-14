@@ -13,6 +13,7 @@ import (
 
 	iamv1 "go.motiveiq.dev/platform/iam/api/v1"
 	motiveiq "go.motiveiq.dev/platform/iam/sdk"
+	sdkconfig "go.motiveiq.dev/platform/iam/sdk/config"
 )
 
 type fakeIAMClient struct {
@@ -141,9 +142,6 @@ func newIAMTestFixture(t *testing.T) *iamTestFixture {
 	command.Stdout = &strings.Builder{}
 	command.Stderr = &strings.Builder{}
 	command.Env = func(string) string { return "" }
-	command.WebIdentityToken = func(context.Context) (string, error) {
-		return "web-identity", nil
-	}
 	command.LoadSDKConfig = func(ctx context.Context, roleURN string) (*motiveiq.Config, error) {
 		fixture.loadedRoles = append(fixture.loadedRoles, roleURN)
 		return testSDKConfig(ctx, roleURN)
@@ -197,4 +195,15 @@ func testJWT(t *testing.T, payload map[string]any) string {
 		t.Fatal(err)
 	}
 	return "eyJhbGciOiJub25lIn0." + base64.RawURLEncoding.EncodeToString(body) + ".signature"
+}
+
+const testRoleURN = "urn:motiveiq:iam:role/test"
+
+func useTestIdentity(c *Command, provider func(context.Context) (string, error)) {
+	c.ResolveIdentity = func(role string) (sdkconfig.Identity, error) {
+		if role == "" {
+			role = testRoleURN
+		}
+		return sdkconfig.Identity{RoleURN: role, Provider: motiveiq.WebIdentityTokenProviderFunc(provider)}, nil
+	}
 }

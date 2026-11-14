@@ -9,8 +9,6 @@ import (
 	"testing"
 
 	"gopkg.in/yaml.v3"
-
-	"go.motiveiq.dev/platform/iam/oauth"
 )
 
 func TestIAMDefaultJSONAllVerbs(t *testing.T) {
@@ -141,12 +139,7 @@ func TestIdentityCommandsShareOutputOptions(t *testing.T) {
 	if !reflect.DeepEqual(fixture.loadedRoles, []string{"urn:motiveiq:iam:role/admin"}) || fixture.stdout() != "urn:motiveiq:iam:role/human\n" {
 		t.Fatalf("STS loaded roles %v; output %q", fixture.loadedRoles, fixture.stdout())
 	}
-	if out := runWhoami(t, "--query", "subject", "--output", "text"); out != "fabian@motiveiq.com\n" {
-		t.Fatalf("whoami query: %q", out)
-	}
-	if out := runWhoami(t, "--query", "scopes", "--output", "yaml"); out != "- iam:read\n- deploy:read\n" {
-		t.Fatalf("whoami YAML: %q", out)
-	}
+
 }
 
 func TestIAMOutputCompletion(t *testing.T) {
@@ -174,13 +167,10 @@ func TestIAMQueryTextNestedRecords(t *testing.T) {
 
 func TestIAMQueryValidationBeforeCredentials(t *testing.T) {
 	for _, args := range [][]string{
-		{"iam", "list-roles"}, {"sts", "get-caller-identity"}, {"whoami"},
+		{"iam", "list-roles"}, {"sts", "get-caller-identity"},
 	} {
 		fixture := newIAMTestFixture(t)
-		fixture.command.LoadCredentials = func() (oauth.Credentials, error) {
-			t.Fatal("invalid query loaded credentials")
-			return nil, nil
-		}
+
 		if code := fixture.command.Run(context.Background(), append(args, "--query", "roles[")); code == 0 {
 			t.Fatal("invalid query succeeded")
 		}

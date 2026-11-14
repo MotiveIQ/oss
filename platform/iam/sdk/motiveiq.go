@@ -2,10 +2,12 @@
 // credentials. All clients constructed from one Config share session refresh,
 // request signing and pooled transports. Config.Close releases those transports.
 //
-// LoadDefaultConfig reads MOTIVEIQ_ROLE_URN, MOTIVEIQ_WEB_IDENTITY_TOKEN_FILE,
-// MOTIVEIQ_STS_ENDPOINT, MOTIVEIQ_STS_PROOF_ORIGIN and MOTIVEIQ_SESSION_NAME.
+// LoadDefaultConfig reads IQ_ROLE_URN, IQ_WEB_IDENTITY_TOKEN_FILE,
+// IQ_STS_ENDPOINT, IQ_STS_PROOF_ORIGIN and IQ_SESSION_NAME.
 // Functional options override the environment. Credential acquisition is lazy;
 // a dynamic WebIdentityTokenProvider can replace the projected token file.
+// Legacy MOTIVEIQ_* aliases remain supported during workload migration;
+// IQ_* values take precedence, with the role and token file selected together.
 package motiveiq
 
 import (
@@ -19,6 +21,7 @@ import (
 	"sync"
 	"time"
 
+	"go.motiveiq.dev/platform/iam/sdk/internal/envconfig"
 	sdktransport "go.motiveiq.dev/platform/iam/sdk/internal/transport"
 
 	"google.golang.org/grpc"
@@ -32,11 +35,11 @@ import (
 // (PLAN.md M6) injects RoleURN, WebIdentityTokenFile, and STSEndpoint;
 // deployment configuration supplies the rest.
 const (
-	EnvRoleURN              = "MOTIVEIQ_ROLE_URN"
-	EnvWebIdentityTokenFile = "MOTIVEIQ_WEB_IDENTITY_TOKEN_FILE"
-	EnvSTSEndpoint          = "MOTIVEIQ_STS_ENDPOINT"
-	EnvSTSProofOrigin       = "MOTIVEIQ_STS_PROOF_ORIGIN"
-	EnvSessionName          = "MOTIVEIQ_SESSION_NAME"
+	EnvRoleURN              = "IQ_ROLE_URN"
+	EnvWebIdentityTokenFile = "IQ_WEB_IDENTITY_TOKEN_FILE"
+	EnvSTSEndpoint          = "IQ_STS_ENDPOINT"
+	EnvSTSProofOrigin       = "IQ_STS_PROOF_ORIGIN"
+	EnvSessionName          = "IQ_SESSION_NAME"
 )
 
 // DefaultSTSProofOrigin is the production logical HTTPS origin bound into STS
@@ -97,22 +100,22 @@ type Config struct {
 // environment.
 type Option func(*Config)
 
-// WithRoleURN overrides MOTIVEIQ_ROLE_URN.
+// WithRoleURN overrides IQ_ROLE_URN.
 func WithRoleURN(roleURN string) Option {
 	return func(c *Config) { c.RoleURN = roleURN }
 }
 
-// WithWebIdentityTokenFile overrides MOTIVEIQ_WEB_IDENTITY_TOKEN_FILE.
+// WithWebIdentityTokenFile overrides IQ_WEB_IDENTITY_TOKEN_FILE.
 func WithWebIdentityTokenFile(path string) Option {
 	return func(c *Config) { c.WebIdentityTokenFile = path }
 }
 
-// WithSTSEndpoint overrides MOTIVEIQ_STS_ENDPOINT.
+// WithSTSEndpoint overrides IQ_STS_ENDPOINT.
 func WithSTSEndpoint(endpoint string) Option {
 	return func(c *Config) { c.STSEndpoint = endpoint }
 }
 
-// WithSTSProofOrigin overrides MOTIVEIQ_STS_PROOF_ORIGIN (and the
+// WithSTSProofOrigin overrides IQ_STS_PROOF_ORIGIN (and the
 // DefaultSTSProofOrigin fallback). The value must be a canonical HTTPS origin,
 // without a path, query, or fragment.
 func WithSTSProofOrigin(origin string) Option {
@@ -120,7 +123,7 @@ func WithSTSProofOrigin(origin string) Option {
 }
 
 // WithSessionName sets the session name requested from STS, overriding
-// MOTIVEIQ_SESSION_NAME (which the M6 webhook injects with the pod name via
+// IQ_SESSION_NAME (which the M6 webhook injects with the pod name via
 // the downward API). Empty lets STS generate one. Constrained to
 // [A-Za-z0-9._-]{1,64} server-side.
 func WithSessionName(name string) Option {
@@ -223,11 +226,11 @@ func WithClock(now func() time.Time) Option {
 // SDK shape) and future credential-source probing; it is not currently used.
 func LoadDefaultConfig(_ context.Context, opts ...Option) (*Config, error) {
 	cfg := &Config{
-		RoleURN:              os.Getenv(EnvRoleURN),
-		WebIdentityTokenFile: os.Getenv(EnvWebIdentityTokenFile),
-		STSEndpoint:          os.Getenv(EnvSTSEndpoint),
-		STSProofOrigin:       os.Getenv(EnvSTSProofOrigin),
-		sessionName:          os.Getenv(EnvSessionName),
+		RoleURN:              envconfig.Get(os.Getenv, EnvRoleURN),
+		WebIdentityTokenFile: envconfig.Get(os.Getenv, EnvWebIdentityTokenFile),
+		STSEndpoint:          envconfig.Get(os.Getenv, EnvSTSEndpoint),
+		STSProofOrigin:       envconfig.Get(os.Getenv, EnvSTSProofOrigin),
+		sessionName:          envconfig.Get(os.Getenv, EnvSessionName),
 		serviceEndpoints:     make(map[string]string),
 		serviceOrigins:       make(map[string]string),
 		serviceGRPCProof:     make(map[string]RequestProofOptions),

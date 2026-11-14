@@ -1,0 +1,35 @@
+load("@rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "oidc",
+    srcs = [
+        "cache.go",
+        "command.go",
+        "identity.go",
+        "login.go",
+    ],
+    importpath = "go.motiveiq.dev/cmd/iq/internal/oidc",
+    visibility = ["//cmd/iq:__subpackages__"],
+    deps = [
+        "//platform/iam/sdk/config",
+        "@com_github_coreos_go_oidc_v3//oidc",
+        "@com_github_gofrs_flock//:flock",
+        "@org_golang_x_oauth2//:oauth2",
+    ],
+)
+
+go_test(
+    name = "oidc_test",
+    srcs = ["identity_test.go"],
+    args = ["-oidc-helper=$(rlocationpath //cmd/iq/oidc:iq-oidc)"],
+    data = [
+        "//cmd/iq/oidc:iq-oidc",
+    ],
+    embed = [":oidc"],
+    deps = [
+        "//platform/iam/sdk/config",
+        "@com_github_go_jose_go_jose_v4//:go-jose",
+        "@com_github_pelletier_go_toml_v2//:go-toml",
+        "@rules_go//go/runfiles",
+    ],
+)

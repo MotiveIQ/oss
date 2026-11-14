@@ -111,7 +111,7 @@ func TestSecretsManagerRequests(t *testing.T) {
 			if got := f.run(t, args...); got != tt.want {
 				t.Fatalf("got %q, want %q", got, tt.want)
 			}
-			if f.loads != 1 || f.role != IAMHumanRoleURN || len(f.conn.calls) != 1 {
+			if f.loads != 1 || f.role != "" || len(f.conn.calls) != 1 {
 				t.Fatalf("unexpected auth/call count: %d %s %d", f.loads, f.role, len(f.conn.calls))
 			}
 		})

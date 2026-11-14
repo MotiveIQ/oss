@@ -1,0 +1,28 @@
+load("@rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "config",
+    srcs = [
+        "config.go",
+        "profiles.go",
+        "providers.go",
+    ],
+    importpath = "go.motiveiq.dev/platform/iam/sdk/config",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//platform/iam/sdk",
+        "//platform/iam/sdk/internal/envconfig",
+        "@com_github_pelletier_go_toml_v2//:go-toml",
+        "@org_golang_google_grpc//credentials",
+    ],
+)
+
+go_test(
+    name = "config_test",
+    srcs = ["config_test.go"],
+    embed = [":config"],
+    deps = [
+        "//platform/iam/sdk",
+        "@com_github_pelletier_go_toml_v2//:go-toml",
+    ],
+)

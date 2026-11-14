@@ -68,7 +68,7 @@ func TestIQKMSSignsBothAPIsWithStableOrigin(t *testing.T) {
 		}
 		return ""
 	}
-	c.WebIdentityToken = func(context.Context) (string, error) { return "web-identity", nil }
+	useTestIdentity(c, func(context.Context) (string, error) { return "web-identity", nil })
 	var targets []string
 	dialer := func(_ context.Context, target string) (net.Conn, error) {
 		mu.Lock()

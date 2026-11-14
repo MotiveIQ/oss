@@ -5,12 +5,8 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"net/http"
-	"net/http/httptest"
-	"path/filepath"
 	"strings"
 	"testing"
-	"time"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -18,7 +14,6 @@ import (
 	"google.golang.org/protobuf/proto"
 
 	iamv1 "go.motiveiq.dev/platform/iam/api/v1"
-	"go.motiveiq.dev/platform/iam/oauth"
 	motiveiq "go.motiveiq.dev/platform/iam/sdk"
 )
 
@@ -52,8 +47,8 @@ func TestIAMVerbRPCMapping(t *testing.T) {
 			if !proto.Equal(fixture.iam.request, test.request) {
 				t.Fatalf("request %v, want %v", fixture.iam.request, test.request)
 			}
-			if len(fixture.loadedRoles) != 1 || fixture.loadedRoles[0] != IAMHumanRoleURN {
-				t.Fatalf("loaded roles = %v, want %q", fixture.loadedRoles, IAMHumanRoleURN)
+			if len(fixture.loadedRoles) != 1 || fixture.loadedRoles[0] != "" {
+				t.Fatalf("loaded roles = %v, want %q", fixture.loadedRoles, "")
 			}
 			if fixture.iamDials != 1 || fixture.stsDials != 0 {
 				t.Fatalf("client construction IAM/STS = %d/%d", fixture.iamDials, fixture.stsDials)
@@ -70,10 +65,8 @@ func TestIAMEndpointEnvOverride(t *testing.T) {
 		}
 		return ""
 	}
-	command.WebIdentityToken = func(context.Context) (string, error) {
-		return "web-identity", nil
-	}
-	config, err := command.loadSDKConfig(context.Background(), IAMHumanRoleURN)
+	useTestIdentity(command, func(context.Context) (string, error) { return "web-identity", nil })
+	config, err := command.loadSDKConfig(context.Background(), testRoleURN)
 	if err != nil {
 		t.Fatalf("loadSDKConfig: %v", err)
 	}
@@ -81,7 +74,7 @@ func TestIAMEndpointEnvOverride(t *testing.T) {
 	if config.STSEndpoint != "localhost:9443" {
 		t.Fatalf("STS endpoint = %q", config.STSEndpoint)
 	}
-	if config.RoleURN != IAMHumanRoleURN {
+	if config.RoleURN != testRoleURN {
 		t.Fatalf("role URN = %q", config.RoleURN)
 	}
 }
@@ -286,57 +279,20 @@ func TestIAMRejectsUnknownOutputFormat(t *testing.T) {
 	}
 }
 
-func TestIAMMissingLogin(t *testing.T) {
+func TestIAMMissingCredentials(t *testing.T) {
 	fixture := newIAMTestFixture(t)
 	fixture.command.LoadSDKConfig = func(context.Context, string) (*motiveiq.Config, error) {
-		return nil, errors.New("not logged in; run iq login")
+		return nil, errors.New("no web identity configured")
 	}
 	code := fixture.command.Run(context.Background(), []string{"iam", "list-roles"})
 	if code != 1 {
 		t.Fatalf("exit code %d, want 1", code)
 	}
-	if !strings.Contains(fixture.stderr(), "not logged in; run iq login") {
+	if !strings.Contains(fixture.stderr(), "no web identity configured") {
 		t.Fatalf("stderr %q", fixture.stderr())
 	}
 	if fixture.iamDials != 0 {
 		t.Fatal("IAM client must not be dialed without a session")
-	}
-}
-
-// TestWebIdentityTokenFromStoreAcceptsNarrowedConsent pins what the CLI
-// asks of the stored token: the platform audience and nothing else. Granted
-// scopes attenuate the assumed session through its scopes tag, so a login
-// that consented to a subset must still produce a web-identity token.
-// Demanding the full default scope set would fail every `iq iam`/`iq sts`
-// command with "run iq login" for a user whose login is fine, and no login
-// would clear it — a refresh cannot add a scope consent withheld.
-func TestWebIdentityTokenFromStoreAcceptsNarrowedConsent(t *testing.T) {
-	tokenEndpoint := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
-		t.Error("a valid stored platform-audience token must be used, not refreshed")
-		w.WriteHeader(http.StatusInternalServerError)
-	}))
-	defer tokenEndpoint.Close()
-
-	t.Setenv(oauth.TokenFileEnv, filepath.Join(t.TempDir(), "credentials.json"))
-	if _, err := oauth.SaveCredentials(oauth.Credentials{
-		"access_token":  "platform-token",
-		"audience":      oauth.PlatformAudience,
-		"client_id":     oauth.DefaultClientID,
-		"expires_at":    time.Now().Add(time.Hour).Unix(),
-		"issuer":        "https://issuer.example",
-		"refresh_token": "refresh-token",
-		"scope":         "openid profile email offline_access",
-		"token_url":     tokenEndpoint.URL,
-	}, ""); err != nil {
-		t.Fatal(err)
-	}
-
-	token, err := webIdentityTokenFromStore(context.Background())
-	if err != nil {
-		t.Fatalf("narrowed consent should still yield a web-identity token: %v", err)
-	}
-	if token != "platform-token" {
-		t.Fatalf("unexpected token: %q", token)
 	}
 }
 

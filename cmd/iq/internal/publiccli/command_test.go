@@ -2,12 +2,10 @@ package publiccli
 
 import (
 	"context"
-	"io"
 	"slices"
 	"strings"
 	"testing"
 
-	"go.motiveiq.dev/platform/iam/oauth"
 	motiveiq "go.motiveiq.dev/platform/iam/sdk"
 )
 
@@ -28,7 +26,7 @@ func TestAPICommandsOutsideWorkspace(t *testing.T) {
 		names = append(names, subcommand.Name())
 	}
 	slices.Sort(names)
-	want := []string{"iam", "kms", "login", "s3", "secretsmanager", "sts", "whoami"}
+	want := []string{"iam", "kms", "s3", "secretsmanager", "sts"}
 	if !slices.Equal(names, want) {
 		t.Fatalf("API commands = %v, want %v", names, want)
 	}
@@ -37,32 +35,24 @@ func TestAPICommandsOutsideWorkspace(t *testing.T) {
 			t.Fatalf("%s --help exited %d: %s", name, code, command.Stderr)
 		}
 	}
-	for _, name := range []string{"build", "run", "deploy", "setup", "install", "terraform", "blob"} {
+	for _, name := range []string{"login", "whoami", "build", "run", "deploy", "setup", "install", "terraform", "blob"} {
 		if code := command.Run(context.Background(), []string{name}); code == 0 {
 			t.Fatalf("internal command %s is available in the API CLI", name)
 		}
 	}
 }
 
-func TestLoginHasNoWorkspaceGuidance(t *testing.T) {
-	command := NewCommand()
-	stdout := &strings.Builder{}
-	command.Stdout = stdout
-	command.Login = func(context.Context, io.Writer) (oauth.Credentials, error) {
-		return oauth.Credentials{"refresh_token": "test-refresh-token"}, nil
-	}
-	var saved oauth.Credentials
-	command.SaveCredentials = func(credentials oauth.Credentials) (string, error) {
-		saved = credentials
-		return "/test/credentials.json", nil
-	}
-	if code := command.Run(context.Background(), []string{"login"}); code != 0 {
-		t.Fatalf("login exited %d", code)
-	}
-	if saved["refresh_token"] != "test-refresh-token" || !strings.Contains(stdout.String(), "saved credentials") {
-		t.Fatalf("login did not save credentials: %s", stdout)
-	}
-	if strings.Contains(stdout.String(), "buildfarm") || strings.Contains(stdout.String(), "iq build") {
-		t.Fatalf("standalone login contains internal guidance: %s", stdout)
+func TestProfileFlagResolvesBeforeServiceCall(t *testing.T) {
+	for _, args := range [][]string{{"--profile", "production", "sts", "get-caller-identity"}, {"sts", "get-caller-identity", "--profile", "production"}} {
+		fixture := newIAMTestFixture(t)
+		fixture.command.LoadSDKConfig = func(ctx context.Context, role string) (*motiveiq.Config, error) {
+			if fixture.command.Profile != "production" || role != "" {
+				t.Fatalf("profile=%q role=%q", fixture.command.Profile, role)
+			}
+			return testSDKConfig(ctx, "urn:motiveiq:iam:role/production")
+		}
+		if code := fixture.command.Run(context.Background(), args); code != 0 {
+			t.Fatalf("profile command failed: %s", fixture.stderr())
+		}
 	}
 }

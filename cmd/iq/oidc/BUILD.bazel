@@ -1,0 +1,15 @@
+load("@rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "oidc_lib",
+    srcs = ["main.go"],
+    importpath = "go.motiveiq.dev/cmd/iq/oidc",
+    visibility = ["//visibility:private"],
+    deps = ["//cmd/iq/internal/oidc"],
+)
+
+go_binary(
+    name = "iq-oidc",
+    embed = [":oidc_lib"],
+    visibility = ["//visibility:public"],
+)

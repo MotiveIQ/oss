@@ -1,0 +1,8 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "envconfig",
+    srcs = ["env.go"],
+    importpath = "go.motiveiq.dev/platform/iam/sdk/internal/envconfig",
+    visibility = ["//platform/iam/sdk:__subpackages__"],
+)

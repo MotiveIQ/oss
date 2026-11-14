@@ -11,7 +11,7 @@ import (
 	kmsv1 "go.motiveiq.dev/platform/kms/api/v1"
 )
 
-const KMSEndpointEnv = "MOTIVEIQ_IQ_KMS_ENDPOINT"
+const KMSEndpointEnv = "IQ_KMS_ENDPOINT"
 
 type kmsOptions struct {
 	iamOptions
@@ -20,14 +20,14 @@ type kmsOptions struct {
 }
 
 func (c *Command) kmsCommand() *cobra.Command {
-	o := &kmsOptions{iamOptions: iamOptions{Role: IAMHumanRoleURN}}
+	o := &kmsOptions{iamOptions: iamOptions{}}
 	command := &cobra.Command{
 		Use: "kms", Short: "Manage keys and encrypt data through MotiveIQ KMS.",
-		Long: "AWS-style KMS commands using iq login and MotiveIQ IAM. Key IDs are UUIDs or MotiveIQ URNs; aliases start with alias/. Binary outputs are base64. See cmd/iq/KMS.md for API differences.",
+		Long: "AWS-style KMS commands using configured credentials and MotiveIQ IAM. Key IDs are UUIDs or MotiveIQ URNs; aliases start with alias/. Binary outputs are base64. See cmd/iq/KMS.md for API differences.",
 	}
 	c.addIAMFlags(command, &o.iamOptions)
 	f := command.PersistentFlags()
-	f.StringVar(&o.endpoint, "endpoint-url", c.Env(KMSEndpointEnv), "KMS HTTPS origin override (env: MOTIVEIQ_IQ_KMS_ENDPOINT).")
+	f.StringVar(&o.endpoint, "endpoint-url", c.Env(KMSEndpointEnv), "KMS HTTPS origin override (env: IQ_KMS_ENDPOINT).")
 	f.StringVar(&o.binaryFormat, "cli-binary-format", "base64", "Binary inputs: base64 or raw-in-base64-out; fileb:// always reads raw bytes.")
 	f.DurationVar(&o.timeout, "timeout", time.Minute, "Deadline for credentials and API calls, including pagination or waiting.")
 	f.Bool("no-cli-pager", false, "Disable paging (iq always writes directly to stdout).")

@@ -26,7 +26,7 @@ func (f WebIdentityTokenProviderFunc) RetrieveWebIdentityToken(ctx context.Conte
 }
 
 // WithWebIdentityTokenProvider supplies a dynamic web-identity source. It
-// takes precedence over MOTIVEIQ_WEB_IDENTITY_TOKEN_FILE and
+// takes precedence over IQ_WEB_IDENTITY_TOKEN_FILE and
 // WithWebIdentityTokenFile, allowing non-Kubernetes callers such as IQ to use
 // the same proof-aware SessionCredentials implementation without writing an
 // OAuth token to a temporary file.

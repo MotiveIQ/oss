@@ -19,6 +19,7 @@ func clearEnv(t *testing.T) {
 		EnvSessionName,
 	} {
 		t.Setenv(key, "")
+		t.Setenv("MOTIVEIQ_"+strings.TrimPrefix(key, "IQ_"), "")
 	}
 }
 
@@ -89,5 +90,37 @@ func TestComponentConstructorsReportMissingConfig(t *testing.T) {
 	}
 	if _, err := cfg.Credentials(); err == nil || !strings.Contains(err.Error(), EnvRoleURN) {
 		t.Errorf("Credentials() = %v, want an error naming %s", err, EnvRoleURN)
+	}
+}
+
+func TestLegacyEnvironmentCompatibility(t *testing.T) {
+	clearEnv(t)
+	t.Setenv("MOTIVEIQ_ROLE_URN", testRoleURN)
+	t.Setenv("MOTIVEIQ_WEB_IDENTITY_TOKEN_FILE", "/legacy-token")
+	t.Setenv("MOTIVEIQ_STS_ENDPOINT", "legacy.example:443")
+	t.Setenv("MOTIVEIQ_STS_PROOF_ORIGIN", "https://legacy-sts.example")
+	t.Setenv("MOTIVEIQ_SESSION_NAME", "legacy-session")
+	cfg, err := LoadDefaultConfig(t.Context())
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer cfg.Close()
+	if cfg.RoleURN != testRoleURN || cfg.WebIdentityTokenFile != "/legacy-token" || cfg.STSEndpoint != "legacy.example:443" || cfg.STSProofOrigin != "https://legacy-sts.example" || cfg.sessionName != "legacy-session" {
+		t.Fatalf("legacy environment was not discovered: %+v", cfg)
+	}
+	t.Setenv("IQ_ROLE_URN", "urn:motiveiq:iam:role/canonical")
+	t.Setenv("IQ_STS_ENDPOINT", "canonical.example:443")
+	t.Setenv("IQ_STS_PROOF_ORIGIN", "https://canonical-sts.example")
+	t.Setenv("IQ_SESSION_NAME", "canonical-session")
+	cfg, err = LoadDefaultConfig(t.Context())
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer cfg.Close()
+	if cfg.RoleURN != "urn:motiveiq:iam:role/canonical" || cfg.WebIdentityTokenFile != "" || cfg.STSEndpoint != "canonical.example:443" || cfg.STSProofOrigin != "https://canonical-sts.example" || cfg.sessionName != "canonical-session" {
+		t.Fatalf("canonical environment did not take precedence: %+v", cfg)
+	}
+	if _, err := cfg.Credentials(); err == nil {
+		t.Fatal("partial IQ identity borrowed a legacy token")
 	}
 }

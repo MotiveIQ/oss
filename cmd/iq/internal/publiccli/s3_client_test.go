@@ -117,7 +117,7 @@ func TestIQS3UsesSignedStreamingFacade(t *testing.T) {
 		}
 		return ""
 	}
-	c.WebIdentityToken = func(context.Context) (string, error) { return "web-identity", nil }
+	useTestIdentity(c, func(context.Context) (string, error) { return "web-identity", nil })
 	dialer := func(context.Context, string) (net.Conn, error) { return listener.Dial() }
 	c.LoadSDKConfig = func(ctx context.Context, role string) (*motiveiq.Config, error) {
 		return c.loadSDKConfigWithOptions(ctx, role, motiveiq.WithTransportCredentials(insecure.NewCredentials()), motiveiq.WithClientTransportCredentials(insecure.NewCredentials()), motiveiq.WithDialOptions(grpc.WithContextDialer(dialer)), motiveiq.WithClientDialOptions(grpc.WithContextDialer(dialer)))

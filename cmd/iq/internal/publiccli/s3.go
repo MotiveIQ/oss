@@ -16,7 +16,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-const S3EndpointEnv = "MOTIVEIQ_IQ_S3_ENDPOINT"
+const S3EndpointEnv = "IQ_S3_ENDPOINT"
 
 type s3Options struct {
 	role, endpoint string
@@ -34,11 +34,11 @@ type s3Options struct {
 
 func (c *Command) s3Command() *cobra.Command {
 	o := &s3Options{}
-	command := &cobra.Command{Use: "s3", Short: "Manage MotiveIQ buckets and objects with S3-style commands.", Long: `Manage MotiveIQ S3 using your iq login and an IAM role.
+	command := &cobra.Command{Use: "s3", Short: "Manage MotiveIQ buckets and objects with S3-style commands.", Long: `Manage MotiveIQ S3 using your configured identity source and IAM role.
 Paths are local paths or s3://bucket/key. No AWS credentials are used.
 Run iq s3 COMMAND --help for supported options.`, RunE: func(cmd *cobra.Command, _ []string) error { _ = cmd.Help(); return errUsage }}
-	command.PersistentFlags().StringVar(&o.role, "role", IAMHumanRoleURN, "MotiveIQ IAM role URN to assume.")
-	command.PersistentFlags().StringVar(&o.endpoint, "endpoint-url", c.Env(S3EndpointEnv), "HTTPS S3 service endpoint (also MOTIVEIQ_IQ_S3_ENDPOINT).")
+	command.PersistentFlags().StringVar(&o.role, "role", "", "MotiveIQ IAM role URN to assume.")
+	command.PersistentFlags().StringVar(&o.endpoint, "endpoint-url", c.Env(S3EndpointEnv), "HTTPS S3 service endpoint (also IQ_S3_ENDPOINT).")
 	command.PersistentFlags().Int32Var(&o.pageSize, "page-size", 1000, "Number of entries per API page (1-1000); all pages are read.")
 	command.PersistentFlags().DurationVar(&o.timeout, "timeout", time.Hour, "Deadline for the entire command, including bucket readiness.")
 	for _, verb := range []string{"ls", "cp", "mv", "rm", "sync", "mb", "rb"} {

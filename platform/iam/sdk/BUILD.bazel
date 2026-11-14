@@ -24,6 +24,7 @@ go_library(
         "//platform/iam/internal/proofhttp",
         "//platform/iam/internal/proofstream",
         "//platform/iam/internal/urn",
+        "//platform/iam/sdk/internal/envconfig",
         "//platform/iam/sdk/internal/transport",
         "@org_golang_google_grpc//:grpc",
         "@org_golang_google_grpc//codes",
