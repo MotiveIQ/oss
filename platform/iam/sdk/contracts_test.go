@@ -30,8 +30,8 @@ var publicServices = map[protoreflect.FullName]bool{
 }
 
 func checkPublicDescriptor(fd protoreflect.FileDescriptor) error {
-	if strings.HasPrefix(fd.Path(), "platform/iam/pdp/") {
-		return fmt.Errorf("private PDP descriptor: %s", fd.Path())
+	if strings.HasPrefix(fd.Path(), "platform/iam/pdp/") || strings.HasPrefix(fd.Path(), "platform/iam/private/") {
+		return fmt.Errorf("private IAM descriptor: %s", fd.Path())
 	}
 	for i := 0; i < fd.Services().Len(); i++ {
 		name := fd.Services().Get(i).FullName()
@@ -78,7 +78,7 @@ func TestDescriptorGuardRejectsPrivateSymbolsInPublicPackage(t *testing.T) {
 	for _, tc := range []struct {
 		name    string
 		service bool
-	}{{"PDP", true}, {"SubjectAuthentication", false}, {"VerifiedRequestBinding", false}, {"DelegatedSubjectAuthentication", false}} {
+	}{{"PDP", true}, {"PrivateSTS", true}, {"SubjectAuthentication", false}, {"VerifiedRequestBinding", false}, {"DelegatedSubjectAuthentication", false}} {
 		t.Run(tc.name, func(t *testing.T) {
 			descriptor := &descriptorpb.FileDescriptorProto{Name: proto.String("platform/iam/api/v1/accidental.proto"), Package: proto.String("motiveiq.iam.v1"), Syntax: proto.String("proto3")}
 			if tc.service {
