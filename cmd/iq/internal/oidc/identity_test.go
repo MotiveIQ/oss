@@ -22,14 +22,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/bazelbuild/rules_go/go/runfiles"
 	jose "github.com/go-jose/go-jose/v4"
 	"github.com/pelletier/go-toml/v2"
 
 	sdkconfig "go.motiveiq.dev/platform/iam/sdk/config"
 )
-
-var helperRunfile = flag.String("oidc-helper", "", "OIDC helper executable runfile")
 
 type testIssuer struct {
 	server                     *httptest.Server
@@ -317,11 +314,26 @@ func TestCacheBindingPermissionsAndCancellation(t *testing.T) {
 	}
 }
 
+// Run the same command as iq-oidc in a separate process without requiring a
+// prebuilt binary or Bazel runfiles. Exit before the test runner writes to stdout
+// so the SDK receives only the command's JSON response.
+func TestOIDCProcessHelper(t *testing.T) {
+	args := flag.Args()
+	if len(args) == 0 || args[0] != "oidc-helper" {
+		return
+	}
+	if err := Run(t.Context(), args[1:], os.Stdout); err != nil {
+		fmt.Fprintf(os.Stderr, "iq-oidc: %v\n", err)
+		os.Exit(1)
+	}
+	os.Exit(0)
+}
+
 func TestSDKInvokesOIDCHelperAsExternalTokenProcess(t *testing.T) {
 	f := newIssuer(t)
 	s := f.source(t)
 	login(t, s)
-	helper, err := runfiles.Rlocation(*helperRunfile)
+	helper, err := os.Executable()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -331,7 +343,7 @@ func TestSDKInvokesOIDCHelperAsExternalTokenProcess(t *testing.T) {
 	}
 	t.Setenv("SSL_CERT_FILE", certPath)
 	config := sdkconfig.FileConfig{Profiles: map[string]sdkconfig.Profile{"default": {RoleURN: "urn:motiveiq:iam:role/example", WebIdentitySource: "process"}}, WebIdentitySources: map[string]sdkconfig.Source{
-		"process": {Type: "process", Config: sdkconfig.SourceConfig{"command": []string{helper, "token", "test"}}},
+		"process": {Type: "process", Config: sdkconfig.SourceConfig{"command": []string{helper, "-test.run=^TestOIDCProcessHelper$", "--", "oidc-helper", "token", "test"}}},
 		"test":    {Type: "oidc", Config: sdkconfig.SourceConfig{"issuer": s.config.Issuer, "client_id": "test-client", "scopes": s.config.Scopes, "token_file": s.path}},
 	}}
 	data, _ := toml.Marshal(config)

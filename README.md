@@ -4,47 +4,54 @@ Client packages for MotiveIQ IAM/STS, S3, KMS, and Secrets Manager. This reposit
 is synchronized from MotiveIQ's monorepo by Copybara. Submit source changes in the
 monorepo; direct changes here stop automatic synchronization.
 
-## Build and test
+## Install with Go
 
-Clone the repository and install [Bazelisk](https://github.com/bazelbuild/bazelisk):
+The public Go module is `go.motiveiq.dev`. Its discovery metadata maps those
+import paths to this repository. Use Go 1.27.1 or newer with the standard Go
+proxy and checksum settings; no GitHub credentials, `GOPRIVATE`, or local
+`replace` directive are required.
+
+Add the SDK to an existing Go module:
+
+```sh
+go get go.motiveiq.dev/platform/iam/sdk@latest
+```
+
+Install the API CLI without cloning the repository:
+
+```sh
+go install go.motiveiq.dev/cmd/iq@latest
+```
+
+Import SDK and API packages using the `go.motiveiq.dev` module prefix. The GitHub
+repository URL is the source location, not the Go module path. Tags and commit
+versions refer to this repository's exported history.
+
+## Build and test from source
+
+Generated protobuf Go clients are included, so a clone supports ordinary Go
+builds and tests:
 
 ```sh
 git clone https://github.com/MotiveIQ/oss.git
 cd oss
-bazel build //cmd/iq //cmd/iq/oidc:iq-oidc
-bazel test //...
-bazel run //cmd/iq -- --help
-```
-
-Bazel downloads pinned public toolchains and dependencies. Building requires no
-monorepo checkout, private registry, remote execution service, or API credentials.
-The first build needs internet access. Linux and macOS are supported.
-
-Generated protobuf Go clients are also included for ordinary Go consumers:
-
-```sh
 go test ./...
 go install ./cmd/iq
 go build -o iq-oidc ./cmd/iq/oidc
 ```
 
-These commands run from the clone. The Go module is `go.motiveiq.dev`, shared
-with the source monorepo. Go discovery metadata for that domain is not configured
-by this export, so fetching by module path or using
-`go install go.motiveiq.dev/cmd/iq@latest` is not supported yet.
-If the repository is private, GitHub access is required to clone it.
-
-To use the SDK in another Go module before discovery is configured, add a local
-replacement pointing at your clone:
+Alternatively, install [Bazelisk](https://github.com/bazelbuild/bazelisk) and run
+these commands from the clone:
 
 ```sh
-go mod edit -replace=go.motiveiq.dev=/absolute/path/to/oss
-go get go.motiveiq.dev/platform/iam/sdk
+bazel build //cmd/iq //cmd/iq/oidc:iq-oidc
+bazel test //...
+bazel run //cmd/iq -- --help
 ```
 
-The local replacement is a development setup; it does not propagate to consumers
-of your module. Published versions of `go.motiveiq.dev` will come from this
-repository, with tags and commit versions referring to the exported history.
+Bazel downloads pinned public toolchains and dependencies. Both build paths
+require no monorepo checkout, private registry, remote execution service, or API
+credentials. The first build needs internet access. Linux and macOS are supported.
 
 ## Use
 

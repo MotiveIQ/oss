@@ -21,15 +21,10 @@ go_library(
 go_test(
     name = "oidc_test",
     srcs = ["identity_test.go"],
-    args = ["-oidc-helper=$(rlocationpath //cmd/iq/oidc:iq-oidc)"],
-    data = [
-        "//cmd/iq/oidc:iq-oidc",
-    ],
     embed = [":oidc"],
     deps = [
         "//platform/iam/sdk/config",
         "@com_github_go_jose_go_jose_v4//:go-jose",
         "@com_github_pelletier_go_toml_v2//:go-toml",
-        "@rules_go//go/runfiles",
     ],
 )
