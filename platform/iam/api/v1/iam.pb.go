@@ -3316,54 +3316,7 @@ const file_platform_iam_api_v1_iam_proto_rawDesc = "" +
 	"\rGetDelegation\x12%.motiveiq.iam.v1.GetDelegationRequest\x1a\x1b.motiveiq.iam.v1.Delegation\x12d\n" +
 	"\x0fListDelegations\x12'.motiveiq.iam.v1.ListDelegationsRequest\x1a(.motiveiq.iam.v1.ListDelegationsResponse\x12Y\n" +
 	"\x10UpdateDelegation\x12(.motiveiq.iam.v1.UpdateDelegationRequest\x1a\x1b.motiveiq.iam.v1.Delegation\x12Y\n" +
-	"\x10DeleteDelegation\x12(.motiveiq.iam.v1.DeleteDelegationRequest\x1a\x1b.motiveiq.iam.v1.Delegation2\x9b\"\n" +
-	"\fControlPlane\x12_\n" +
-	"\x12CreateOIDCProvider\x12*.motiveiq.iam.v1.CreateOIDCProviderRequest\x1a\x1d.motiveiq.iam.v1.OIDCProvider\x12Y\n" +
-	"\x0fGetOIDCProvider\x12'.motiveiq.iam.v1.GetOIDCProviderRequest\x1a\x1d.motiveiq.iam.v1.OIDCProvider\x12j\n" +
-	"\x11ListOIDCProviders\x12).motiveiq.iam.v1.ListOIDCProvidersRequest\x1a*.motiveiq.iam.v1.ListOIDCProvidersResponse\x12m\n" +
-	"\x12DeleteOIDCProvider\x12*.motiveiq.iam.v1.DeleteOIDCProviderRequest\x1a+.motiveiq.iam.v1.DeleteOIDCProviderResponse\x12G\n" +
-	"\n" +
-	"CreateRole\x12\".motiveiq.iam.v1.CreateRoleRequest\x1a\x15.motiveiq.iam.v1.Role\x12A\n" +
-	"\aGetRole\x12\x1f.motiveiq.iam.v1.GetRoleRequest\x1a\x15.motiveiq.iam.v1.Role\x12R\n" +
-	"\tListRoles\x12!.motiveiq.iam.v1.ListRolesRequest\x1a\".motiveiq.iam.v1.ListRolesResponse\x12G\n" +
-	"\n" +
-	"UpdateRole\x12\".motiveiq.iam.v1.UpdateRoleRequest\x1a\x15.motiveiq.iam.v1.Role\x12_\n" +
-	"\x16UpdateAssumeRolePolicy\x12..motiveiq.iam.v1.UpdateAssumeRolePolicyRequest\x1a\x15.motiveiq.iam.v1.Role\x12U\n" +
-	"\n" +
-	"DeleteRole\x12\".motiveiq.iam.v1.DeleteRoleRequest\x1a#.motiveiq.iam.v1.DeleteRoleResponse\x12g\n" +
-	"\x10AttachRolePolicy\x12(.motiveiq.iam.v1.AttachRolePolicyRequest\x1a).motiveiq.iam.v1.AttachRolePolicyResponse\x12g\n" +
-	"\x10DetachRolePolicy\x12(.motiveiq.iam.v1.DetachRolePolicyRequest\x1a).motiveiq.iam.v1.DetachRolePolicyResponse\x12M\n" +
-	"\fCreatePolicy\x12$.motiveiq.iam.v1.CreatePolicyRequest\x1a\x17.motiveiq.iam.v1.Policy\x12G\n" +
-	"\tGetPolicy\x12!.motiveiq.iam.v1.GetPolicyRequest\x1a\x17.motiveiq.iam.v1.Policy\x12[\n" +
-	"\fListPolicies\x12$.motiveiq.iam.v1.ListPoliciesRequest\x1a%.motiveiq.iam.v1.ListPoliciesResponse\x12[\n" +
-	"\x13CreatePolicyVersion\x12+.motiveiq.iam.v1.CreatePolicyVersionRequest\x1a\x17.motiveiq.iam.v1.Policy\x12[\n" +
-	"\fDeletePolicy\x12$.motiveiq.iam.v1.DeletePolicyRequest\x1a%.motiveiq.iam.v1.DeletePolicyResponse\x12_\n" +
-	"\x11PutResourcePolicy\x12).motiveiq.iam.v1.PutResourcePolicyRequest\x1a\x1f.motiveiq.iam.v1.ResourcePolicy\x12_\n" +
-	"\x11GetResourcePolicy\x12).motiveiq.iam.v1.GetResourcePolicyRequest\x1a\x1f.motiveiq.iam.v1.ResourcePolicy\x12s\n" +
-	"\x14ListResourcePolicies\x12,.motiveiq.iam.v1.ListResourcePoliciesRequest\x1a-.motiveiq.iam.v1.ListResourcePoliciesResponse\x12s\n" +
-	"\x14DeleteResourcePolicy\x12,.motiveiq.iam.v1.DeleteResourcePolicyRequest\x1a-.motiveiq.iam.v1.DeleteResourcePolicyResponse\x12h\n" +
-	"\x14PutServiceDefinition\x12,.motiveiq.iam.v1.PutServiceDefinitionRequest\x1a\".motiveiq.iam.v1.ServiceDefinition\x12h\n" +
-	"\x14GetServiceDefinition\x12,.motiveiq.iam.v1.GetServiceDefinitionRequest\x1a\".motiveiq.iam.v1.ServiceDefinition\x12y\n" +
-	"\x16ListServiceDefinitions\x12..motiveiq.iam.v1.ListServiceDefinitionsRequest\x1a/.motiveiq.iam.v1.ListServiceDefinitionsResponse\x12|\n" +
-	"\x17DeleteServiceDefinition\x12/.motiveiq.iam.v1.DeleteServiceDefinitionRequest\x1a0.motiveiq.iam.v1.DeleteServiceDefinitionResponse\x12k\n" +
-	"\x16CreateServicePrincipal\x12..motiveiq.iam.v1.CreateServicePrincipalRequest\x1a!.motiveiq.iam.v1.ServicePrincipal\x12e\n" +
-	"\x13GetServicePrincipal\x12+.motiveiq.iam.v1.GetServicePrincipalRequest\x1a!.motiveiq.iam.v1.ServicePrincipal\x12v\n" +
-	"\x15ListServicePrincipals\x12-.motiveiq.iam.v1.ListServicePrincipalsRequest\x1a..motiveiq.iam.v1.ListServicePrincipalsResponse\x12k\n" +
-	"\x16UpdateServicePrincipal\x12..motiveiq.iam.v1.UpdateServicePrincipalRequest\x1a!.motiveiq.iam.v1.ServicePrincipal\x12k\n" +
-	"\x16DeleteServicePrincipal\x12..motiveiq.iam.v1.DeleteServicePrincipalRequest\x1a!.motiveiq.iam.v1.ServicePrincipal\x12z\n" +
-	"\x1aPutServicePrincipalBinding\x122.motiveiq.iam.v1.PutServicePrincipalBindingRequest\x1a(.motiveiq.iam.v1.ServicePrincipalBinding\x12\x80\x01\n" +
-	"\x1dDeleteServicePrincipalBinding\x125.motiveiq.iam.v1.DeleteServicePrincipalBindingRequest\x1a(.motiveiq.iam.v1.ServicePrincipalBinding\x12\x8b\x01\n" +
-	"\x1cListServicePrincipalBindings\x124.motiveiq.iam.v1.ListServicePrincipalBindingsRequest\x1a5.motiveiq.iam.v1.ListServicePrincipalBindingsResponse\x12h\n" +
-	"\x15CreateRequestContract\x12-.motiveiq.iam.v1.CreateRequestContractRequest\x1a .motiveiq.iam.v1.RequestContract\x12b\n" +
-	"\x12GetRequestContract\x12*.motiveiq.iam.v1.GetRequestContractRequest\x1a .motiveiq.iam.v1.RequestContract\x12s\n" +
-	"\x14ListRequestContracts\x12,.motiveiq.iam.v1.ListRequestContractsRequest\x1a-.motiveiq.iam.v1.ListRequestContractsResponse\x12h\n" +
-	"\x15UpdateRequestContract\x12-.motiveiq.iam.v1.UpdateRequestContractRequest\x1a .motiveiq.iam.v1.RequestContract\x12h\n" +
-	"\x15DeleteRequestContract\x12-.motiveiq.iam.v1.DeleteRequestContractRequest\x1a .motiveiq.iam.v1.RequestContract\x12Y\n" +
-	"\x10CreateDelegation\x12(.motiveiq.iam.v1.CreateDelegationRequest\x1a\x1b.motiveiq.iam.v1.Delegation\x12S\n" +
-	"\rGetDelegation\x12%.motiveiq.iam.v1.GetDelegationRequest\x1a\x1b.motiveiq.iam.v1.Delegation\x12d\n" +
-	"\x0fListDelegations\x12'.motiveiq.iam.v1.ListDelegationsRequest\x1a(.motiveiq.iam.v1.ListDelegationsResponse\x12Y\n" +
-	"\x10UpdateDelegation\x12(.motiveiq.iam.v1.UpdateDelegationRequest\x1a\x1b.motiveiq.iam.v1.Delegation\x12Y\n" +
-	"\x10DeleteDelegation\x12(.motiveiq.iam.v1.DeleteDelegationRequest\x1a\x1b.motiveiq.iam.v1.Delegation\x1a\x03\x88\x02\x01B+Z)go.motiveiq.dev/platform/iam/api/v1;iamv1b\x06proto3"
+	"\x10DeleteDelegation\x12(.motiveiq.iam.v1.DeleteDelegationRequest\x1a\x1b.motiveiq.iam.v1.DelegationB+Z)go.motiveiq.dev/platform/iam/api/v1;iamv1b\x06proto3"
 
 var (
 	file_platform_iam_api_v1_iam_proto_rawDescOnce sync.Once
@@ -3454,216 +3407,130 @@ var file_platform_iam_api_v1_iam_proto_goTypes = []any{
 	(*ListDelegationsResponse)(nil),              // 72: motiveiq.iam.v1.ListDelegationsResponse
 }
 var file_platform_iam_api_v1_iam_proto_depIdxs = []int32{
-	56,  // 0: motiveiq.iam.v1.OIDCProvider.create_time:type_name -> google.protobuf.Timestamp
-	56,  // 1: motiveiq.iam.v1.OIDCProvider.update_time:type_name -> google.protobuf.Timestamp
-	0,   // 2: motiveiq.iam.v1.ListOIDCProvidersResponse.providers:type_name -> motiveiq.iam.v1.OIDCProvider
-	56,  // 3: motiveiq.iam.v1.Role.create_time:type_name -> google.protobuf.Timestamp
-	56,  // 4: motiveiq.iam.v1.Role.update_time:type_name -> google.protobuf.Timestamp
-	7,   // 5: motiveiq.iam.v1.ListRolesResponse.roles:type_name -> motiveiq.iam.v1.Role
-	21,  // 6: motiveiq.iam.v1.Policy.default_version:type_name -> motiveiq.iam.v1.PolicyVersion
-	56,  // 7: motiveiq.iam.v1.Policy.create_time:type_name -> google.protobuf.Timestamp
-	56,  // 8: motiveiq.iam.v1.Policy.update_time:type_name -> google.protobuf.Timestamp
-	56,  // 9: motiveiq.iam.v1.PolicyVersion.create_time:type_name -> google.protobuf.Timestamp
-	20,  // 10: motiveiq.iam.v1.ListPoliciesResponse.policies:type_name -> motiveiq.iam.v1.Policy
-	56,  // 11: motiveiq.iam.v1.ResourcePolicy.create_time:type_name -> google.protobuf.Timestamp
-	56,  // 12: motiveiq.iam.v1.ResourcePolicy.update_time:type_name -> google.protobuf.Timestamp
-	29,  // 13: motiveiq.iam.v1.ListResourcePoliciesResponse.resource_policies:type_name -> motiveiq.iam.v1.ResourcePolicy
-	37,  // 14: motiveiq.iam.v1.ServiceDefinition.resource_types:type_name -> motiveiq.iam.v1.ServiceResourceType
-	56,  // 15: motiveiq.iam.v1.ServiceDefinition.create_time:type_name -> google.protobuf.Timestamp
-	56,  // 16: motiveiq.iam.v1.ServiceDefinition.update_time:type_name -> google.protobuf.Timestamp
-	37,  // 17: motiveiq.iam.v1.PutServiceDefinitionRequest.resource_types:type_name -> motiveiq.iam.v1.ServiceResourceType
-	36,  // 18: motiveiq.iam.v1.ListServiceDefinitionsResponse.service_definitions:type_name -> motiveiq.iam.v1.ServiceDefinition
-	56,  // 19: motiveiq.iam.v1.ServicePrincipal.create_time:type_name -> google.protobuf.Timestamp
-	56,  // 20: motiveiq.iam.v1.ServicePrincipal.update_time:type_name -> google.protobuf.Timestamp
-	56,  // 21: motiveiq.iam.v1.ServicePrincipal.retire_time:type_name -> google.protobuf.Timestamp
-	57,  // 22: motiveiq.iam.v1.ServicePrincipal.management:type_name -> motiveiq.iam.v1.ConfigurationOwner
-	58,  // 23: motiveiq.iam.v1.CreateServicePrincipalRequest.management:type_name -> motiveiq.iam.v1.ConfigurationWrite
-	44,  // 24: motiveiq.iam.v1.ListServicePrincipalsResponse.service_principals:type_name -> motiveiq.iam.v1.ServicePrincipal
-	58,  // 25: motiveiq.iam.v1.UpdateServicePrincipalRequest.management:type_name -> motiveiq.iam.v1.ConfigurationWrite
-	58,  // 26: motiveiq.iam.v1.DeleteServicePrincipalRequest.management:type_name -> motiveiq.iam.v1.ConfigurationWrite
-	56,  // 27: motiveiq.iam.v1.ServicePrincipalBinding.create_time:type_name -> google.protobuf.Timestamp
-	56,  // 28: motiveiq.iam.v1.ServicePrincipalBinding.update_time:type_name -> google.protobuf.Timestamp
-	57,  // 29: motiveiq.iam.v1.ServicePrincipalBinding.management:type_name -> motiveiq.iam.v1.ConfigurationOwner
-	58,  // 30: motiveiq.iam.v1.PutServicePrincipalBindingRequest.management:type_name -> motiveiq.iam.v1.ConfigurationWrite
-	58,  // 31: motiveiq.iam.v1.DeleteServicePrincipalBindingRequest.management:type_name -> motiveiq.iam.v1.ConfigurationWrite
-	51,  // 32: motiveiq.iam.v1.ListServicePrincipalBindingsResponse.bindings:type_name -> motiveiq.iam.v1.ServicePrincipalBinding
-	1,   // 33: motiveiq.iam.v1.IAM.CreateOIDCProvider:input_type -> motiveiq.iam.v1.CreateOIDCProviderRequest
-	2,   // 34: motiveiq.iam.v1.IAM.GetOIDCProvider:input_type -> motiveiq.iam.v1.GetOIDCProviderRequest
-	3,   // 35: motiveiq.iam.v1.IAM.ListOIDCProviders:input_type -> motiveiq.iam.v1.ListOIDCProvidersRequest
-	5,   // 36: motiveiq.iam.v1.IAM.DeleteOIDCProvider:input_type -> motiveiq.iam.v1.DeleteOIDCProviderRequest
-	8,   // 37: motiveiq.iam.v1.IAM.CreateRole:input_type -> motiveiq.iam.v1.CreateRoleRequest
-	9,   // 38: motiveiq.iam.v1.IAM.GetRole:input_type -> motiveiq.iam.v1.GetRoleRequest
-	10,  // 39: motiveiq.iam.v1.IAM.ListRoles:input_type -> motiveiq.iam.v1.ListRolesRequest
-	12,  // 40: motiveiq.iam.v1.IAM.UpdateRole:input_type -> motiveiq.iam.v1.UpdateRoleRequest
-	13,  // 41: motiveiq.iam.v1.IAM.UpdateAssumeRolePolicy:input_type -> motiveiq.iam.v1.UpdateAssumeRolePolicyRequest
-	14,  // 42: motiveiq.iam.v1.IAM.DeleteRole:input_type -> motiveiq.iam.v1.DeleteRoleRequest
-	16,  // 43: motiveiq.iam.v1.IAM.AttachRolePolicy:input_type -> motiveiq.iam.v1.AttachRolePolicyRequest
-	18,  // 44: motiveiq.iam.v1.IAM.DetachRolePolicy:input_type -> motiveiq.iam.v1.DetachRolePolicyRequest
-	22,  // 45: motiveiq.iam.v1.IAM.CreatePolicy:input_type -> motiveiq.iam.v1.CreatePolicyRequest
-	23,  // 46: motiveiq.iam.v1.IAM.GetPolicy:input_type -> motiveiq.iam.v1.GetPolicyRequest
-	24,  // 47: motiveiq.iam.v1.IAM.ListPolicies:input_type -> motiveiq.iam.v1.ListPoliciesRequest
-	26,  // 48: motiveiq.iam.v1.IAM.CreatePolicyVersion:input_type -> motiveiq.iam.v1.CreatePolicyVersionRequest
-	27,  // 49: motiveiq.iam.v1.IAM.DeletePolicy:input_type -> motiveiq.iam.v1.DeletePolicyRequest
-	30,  // 50: motiveiq.iam.v1.IAM.PutResourcePolicy:input_type -> motiveiq.iam.v1.PutResourcePolicyRequest
-	31,  // 51: motiveiq.iam.v1.IAM.GetResourcePolicy:input_type -> motiveiq.iam.v1.GetResourcePolicyRequest
-	32,  // 52: motiveiq.iam.v1.IAM.ListResourcePolicies:input_type -> motiveiq.iam.v1.ListResourcePoliciesRequest
-	34,  // 53: motiveiq.iam.v1.IAM.DeleteResourcePolicy:input_type -> motiveiq.iam.v1.DeleteResourcePolicyRequest
-	38,  // 54: motiveiq.iam.v1.IAM.PutServiceDefinition:input_type -> motiveiq.iam.v1.PutServiceDefinitionRequest
-	39,  // 55: motiveiq.iam.v1.IAM.GetServiceDefinition:input_type -> motiveiq.iam.v1.GetServiceDefinitionRequest
-	40,  // 56: motiveiq.iam.v1.IAM.ListServiceDefinitions:input_type -> motiveiq.iam.v1.ListServiceDefinitionsRequest
-	42,  // 57: motiveiq.iam.v1.IAM.DeleteServiceDefinition:input_type -> motiveiq.iam.v1.DeleteServiceDefinitionRequest
-	45,  // 58: motiveiq.iam.v1.IAM.CreateServicePrincipal:input_type -> motiveiq.iam.v1.CreateServicePrincipalRequest
-	46,  // 59: motiveiq.iam.v1.IAM.GetServicePrincipal:input_type -> motiveiq.iam.v1.GetServicePrincipalRequest
-	47,  // 60: motiveiq.iam.v1.IAM.ListServicePrincipals:input_type -> motiveiq.iam.v1.ListServicePrincipalsRequest
-	49,  // 61: motiveiq.iam.v1.IAM.UpdateServicePrincipal:input_type -> motiveiq.iam.v1.UpdateServicePrincipalRequest
-	50,  // 62: motiveiq.iam.v1.IAM.DeleteServicePrincipal:input_type -> motiveiq.iam.v1.DeleteServicePrincipalRequest
-	52,  // 63: motiveiq.iam.v1.IAM.PutServicePrincipalBinding:input_type -> motiveiq.iam.v1.PutServicePrincipalBindingRequest
-	53,  // 64: motiveiq.iam.v1.IAM.DeleteServicePrincipalBinding:input_type -> motiveiq.iam.v1.DeleteServicePrincipalBindingRequest
-	54,  // 65: motiveiq.iam.v1.IAM.ListServicePrincipalBindings:input_type -> motiveiq.iam.v1.ListServicePrincipalBindingsRequest
-	59,  // 66: motiveiq.iam.v1.IAM.CreateRequestContract:input_type -> motiveiq.iam.v1.CreateRequestContractRequest
-	60,  // 67: motiveiq.iam.v1.IAM.GetRequestContract:input_type -> motiveiq.iam.v1.GetRequestContractRequest
-	61,  // 68: motiveiq.iam.v1.IAM.ListRequestContracts:input_type -> motiveiq.iam.v1.ListRequestContractsRequest
-	62,  // 69: motiveiq.iam.v1.IAM.UpdateRequestContract:input_type -> motiveiq.iam.v1.UpdateRequestContractRequest
-	63,  // 70: motiveiq.iam.v1.IAM.DeleteRequestContract:input_type -> motiveiq.iam.v1.DeleteRequestContractRequest
-	64,  // 71: motiveiq.iam.v1.IAM.CreateDelegation:input_type -> motiveiq.iam.v1.CreateDelegationRequest
-	65,  // 72: motiveiq.iam.v1.IAM.GetDelegation:input_type -> motiveiq.iam.v1.GetDelegationRequest
-	66,  // 73: motiveiq.iam.v1.IAM.ListDelegations:input_type -> motiveiq.iam.v1.ListDelegationsRequest
-	67,  // 74: motiveiq.iam.v1.IAM.UpdateDelegation:input_type -> motiveiq.iam.v1.UpdateDelegationRequest
-	68,  // 75: motiveiq.iam.v1.IAM.DeleteDelegation:input_type -> motiveiq.iam.v1.DeleteDelegationRequest
-	1,   // 76: motiveiq.iam.v1.ControlPlane.CreateOIDCProvider:input_type -> motiveiq.iam.v1.CreateOIDCProviderRequest
-	2,   // 77: motiveiq.iam.v1.ControlPlane.GetOIDCProvider:input_type -> motiveiq.iam.v1.GetOIDCProviderRequest
-	3,   // 78: motiveiq.iam.v1.ControlPlane.ListOIDCProviders:input_type -> motiveiq.iam.v1.ListOIDCProvidersRequest
-	5,   // 79: motiveiq.iam.v1.ControlPlane.DeleteOIDCProvider:input_type -> motiveiq.iam.v1.DeleteOIDCProviderRequest
-	8,   // 80: motiveiq.iam.v1.ControlPlane.CreateRole:input_type -> motiveiq.iam.v1.CreateRoleRequest
-	9,   // 81: motiveiq.iam.v1.ControlPlane.GetRole:input_type -> motiveiq.iam.v1.GetRoleRequest
-	10,  // 82: motiveiq.iam.v1.ControlPlane.ListRoles:input_type -> motiveiq.iam.v1.ListRolesRequest
-	12,  // 83: motiveiq.iam.v1.ControlPlane.UpdateRole:input_type -> motiveiq.iam.v1.UpdateRoleRequest
-	13,  // 84: motiveiq.iam.v1.ControlPlane.UpdateAssumeRolePolicy:input_type -> motiveiq.iam.v1.UpdateAssumeRolePolicyRequest
-	14,  // 85: motiveiq.iam.v1.ControlPlane.DeleteRole:input_type -> motiveiq.iam.v1.DeleteRoleRequest
-	16,  // 86: motiveiq.iam.v1.ControlPlane.AttachRolePolicy:input_type -> motiveiq.iam.v1.AttachRolePolicyRequest
-	18,  // 87: motiveiq.iam.v1.ControlPlane.DetachRolePolicy:input_type -> motiveiq.iam.v1.DetachRolePolicyRequest
-	22,  // 88: motiveiq.iam.v1.ControlPlane.CreatePolicy:input_type -> motiveiq.iam.v1.CreatePolicyRequest
-	23,  // 89: motiveiq.iam.v1.ControlPlane.GetPolicy:input_type -> motiveiq.iam.v1.GetPolicyRequest
-	24,  // 90: motiveiq.iam.v1.ControlPlane.ListPolicies:input_type -> motiveiq.iam.v1.ListPoliciesRequest
-	26,  // 91: motiveiq.iam.v1.ControlPlane.CreatePolicyVersion:input_type -> motiveiq.iam.v1.CreatePolicyVersionRequest
-	27,  // 92: motiveiq.iam.v1.ControlPlane.DeletePolicy:input_type -> motiveiq.iam.v1.DeletePolicyRequest
-	30,  // 93: motiveiq.iam.v1.ControlPlane.PutResourcePolicy:input_type -> motiveiq.iam.v1.PutResourcePolicyRequest
-	31,  // 94: motiveiq.iam.v1.ControlPlane.GetResourcePolicy:input_type -> motiveiq.iam.v1.GetResourcePolicyRequest
-	32,  // 95: motiveiq.iam.v1.ControlPlane.ListResourcePolicies:input_type -> motiveiq.iam.v1.ListResourcePoliciesRequest
-	34,  // 96: motiveiq.iam.v1.ControlPlane.DeleteResourcePolicy:input_type -> motiveiq.iam.v1.DeleteResourcePolicyRequest
-	38,  // 97: motiveiq.iam.v1.ControlPlane.PutServiceDefinition:input_type -> motiveiq.iam.v1.PutServiceDefinitionRequest
-	39,  // 98: motiveiq.iam.v1.ControlPlane.GetServiceDefinition:input_type -> motiveiq.iam.v1.GetServiceDefinitionRequest
-	40,  // 99: motiveiq.iam.v1.ControlPlane.ListServiceDefinitions:input_type -> motiveiq.iam.v1.ListServiceDefinitionsRequest
-	42,  // 100: motiveiq.iam.v1.ControlPlane.DeleteServiceDefinition:input_type -> motiveiq.iam.v1.DeleteServiceDefinitionRequest
-	45,  // 101: motiveiq.iam.v1.ControlPlane.CreateServicePrincipal:input_type -> motiveiq.iam.v1.CreateServicePrincipalRequest
-	46,  // 102: motiveiq.iam.v1.ControlPlane.GetServicePrincipal:input_type -> motiveiq.iam.v1.GetServicePrincipalRequest
-	47,  // 103: motiveiq.iam.v1.ControlPlane.ListServicePrincipals:input_type -> motiveiq.iam.v1.ListServicePrincipalsRequest
-	49,  // 104: motiveiq.iam.v1.ControlPlane.UpdateServicePrincipal:input_type -> motiveiq.iam.v1.UpdateServicePrincipalRequest
-	50,  // 105: motiveiq.iam.v1.ControlPlane.DeleteServicePrincipal:input_type -> motiveiq.iam.v1.DeleteServicePrincipalRequest
-	52,  // 106: motiveiq.iam.v1.ControlPlane.PutServicePrincipalBinding:input_type -> motiveiq.iam.v1.PutServicePrincipalBindingRequest
-	53,  // 107: motiveiq.iam.v1.ControlPlane.DeleteServicePrincipalBinding:input_type -> motiveiq.iam.v1.DeleteServicePrincipalBindingRequest
-	54,  // 108: motiveiq.iam.v1.ControlPlane.ListServicePrincipalBindings:input_type -> motiveiq.iam.v1.ListServicePrincipalBindingsRequest
-	59,  // 109: motiveiq.iam.v1.ControlPlane.CreateRequestContract:input_type -> motiveiq.iam.v1.CreateRequestContractRequest
-	60,  // 110: motiveiq.iam.v1.ControlPlane.GetRequestContract:input_type -> motiveiq.iam.v1.GetRequestContractRequest
-	61,  // 111: motiveiq.iam.v1.ControlPlane.ListRequestContracts:input_type -> motiveiq.iam.v1.ListRequestContractsRequest
-	62,  // 112: motiveiq.iam.v1.ControlPlane.UpdateRequestContract:input_type -> motiveiq.iam.v1.UpdateRequestContractRequest
-	63,  // 113: motiveiq.iam.v1.ControlPlane.DeleteRequestContract:input_type -> motiveiq.iam.v1.DeleteRequestContractRequest
-	64,  // 114: motiveiq.iam.v1.ControlPlane.CreateDelegation:input_type -> motiveiq.iam.v1.CreateDelegationRequest
-	65,  // 115: motiveiq.iam.v1.ControlPlane.GetDelegation:input_type -> motiveiq.iam.v1.GetDelegationRequest
-	66,  // 116: motiveiq.iam.v1.ControlPlane.ListDelegations:input_type -> motiveiq.iam.v1.ListDelegationsRequest
-	67,  // 117: motiveiq.iam.v1.ControlPlane.UpdateDelegation:input_type -> motiveiq.iam.v1.UpdateDelegationRequest
-	68,  // 118: motiveiq.iam.v1.ControlPlane.DeleteDelegation:input_type -> motiveiq.iam.v1.DeleteDelegationRequest
-	0,   // 119: motiveiq.iam.v1.IAM.CreateOIDCProvider:output_type -> motiveiq.iam.v1.OIDCProvider
-	0,   // 120: motiveiq.iam.v1.IAM.GetOIDCProvider:output_type -> motiveiq.iam.v1.OIDCProvider
-	4,   // 121: motiveiq.iam.v1.IAM.ListOIDCProviders:output_type -> motiveiq.iam.v1.ListOIDCProvidersResponse
-	6,   // 122: motiveiq.iam.v1.IAM.DeleteOIDCProvider:output_type -> motiveiq.iam.v1.DeleteOIDCProviderResponse
-	7,   // 123: motiveiq.iam.v1.IAM.CreateRole:output_type -> motiveiq.iam.v1.Role
-	7,   // 124: motiveiq.iam.v1.IAM.GetRole:output_type -> motiveiq.iam.v1.Role
-	11,  // 125: motiveiq.iam.v1.IAM.ListRoles:output_type -> motiveiq.iam.v1.ListRolesResponse
-	7,   // 126: motiveiq.iam.v1.IAM.UpdateRole:output_type -> motiveiq.iam.v1.Role
-	7,   // 127: motiveiq.iam.v1.IAM.UpdateAssumeRolePolicy:output_type -> motiveiq.iam.v1.Role
-	15,  // 128: motiveiq.iam.v1.IAM.DeleteRole:output_type -> motiveiq.iam.v1.DeleteRoleResponse
-	17,  // 129: motiveiq.iam.v1.IAM.AttachRolePolicy:output_type -> motiveiq.iam.v1.AttachRolePolicyResponse
-	19,  // 130: motiveiq.iam.v1.IAM.DetachRolePolicy:output_type -> motiveiq.iam.v1.DetachRolePolicyResponse
-	20,  // 131: motiveiq.iam.v1.IAM.CreatePolicy:output_type -> motiveiq.iam.v1.Policy
-	20,  // 132: motiveiq.iam.v1.IAM.GetPolicy:output_type -> motiveiq.iam.v1.Policy
-	25,  // 133: motiveiq.iam.v1.IAM.ListPolicies:output_type -> motiveiq.iam.v1.ListPoliciesResponse
-	20,  // 134: motiveiq.iam.v1.IAM.CreatePolicyVersion:output_type -> motiveiq.iam.v1.Policy
-	28,  // 135: motiveiq.iam.v1.IAM.DeletePolicy:output_type -> motiveiq.iam.v1.DeletePolicyResponse
-	29,  // 136: motiveiq.iam.v1.IAM.PutResourcePolicy:output_type -> motiveiq.iam.v1.ResourcePolicy
-	29,  // 137: motiveiq.iam.v1.IAM.GetResourcePolicy:output_type -> motiveiq.iam.v1.ResourcePolicy
-	33,  // 138: motiveiq.iam.v1.IAM.ListResourcePolicies:output_type -> motiveiq.iam.v1.ListResourcePoliciesResponse
-	35,  // 139: motiveiq.iam.v1.IAM.DeleteResourcePolicy:output_type -> motiveiq.iam.v1.DeleteResourcePolicyResponse
-	36,  // 140: motiveiq.iam.v1.IAM.PutServiceDefinition:output_type -> motiveiq.iam.v1.ServiceDefinition
-	36,  // 141: motiveiq.iam.v1.IAM.GetServiceDefinition:output_type -> motiveiq.iam.v1.ServiceDefinition
-	41,  // 142: motiveiq.iam.v1.IAM.ListServiceDefinitions:output_type -> motiveiq.iam.v1.ListServiceDefinitionsResponse
-	43,  // 143: motiveiq.iam.v1.IAM.DeleteServiceDefinition:output_type -> motiveiq.iam.v1.DeleteServiceDefinitionResponse
-	44,  // 144: motiveiq.iam.v1.IAM.CreateServicePrincipal:output_type -> motiveiq.iam.v1.ServicePrincipal
-	44,  // 145: motiveiq.iam.v1.IAM.GetServicePrincipal:output_type -> motiveiq.iam.v1.ServicePrincipal
-	48,  // 146: motiveiq.iam.v1.IAM.ListServicePrincipals:output_type -> motiveiq.iam.v1.ListServicePrincipalsResponse
-	44,  // 147: motiveiq.iam.v1.IAM.UpdateServicePrincipal:output_type -> motiveiq.iam.v1.ServicePrincipal
-	44,  // 148: motiveiq.iam.v1.IAM.DeleteServicePrincipal:output_type -> motiveiq.iam.v1.ServicePrincipal
-	51,  // 149: motiveiq.iam.v1.IAM.PutServicePrincipalBinding:output_type -> motiveiq.iam.v1.ServicePrincipalBinding
-	51,  // 150: motiveiq.iam.v1.IAM.DeleteServicePrincipalBinding:output_type -> motiveiq.iam.v1.ServicePrincipalBinding
-	55,  // 151: motiveiq.iam.v1.IAM.ListServicePrincipalBindings:output_type -> motiveiq.iam.v1.ListServicePrincipalBindingsResponse
-	69,  // 152: motiveiq.iam.v1.IAM.CreateRequestContract:output_type -> motiveiq.iam.v1.RequestContract
-	69,  // 153: motiveiq.iam.v1.IAM.GetRequestContract:output_type -> motiveiq.iam.v1.RequestContract
-	70,  // 154: motiveiq.iam.v1.IAM.ListRequestContracts:output_type -> motiveiq.iam.v1.ListRequestContractsResponse
-	69,  // 155: motiveiq.iam.v1.IAM.UpdateRequestContract:output_type -> motiveiq.iam.v1.RequestContract
-	69,  // 156: motiveiq.iam.v1.IAM.DeleteRequestContract:output_type -> motiveiq.iam.v1.RequestContract
-	71,  // 157: motiveiq.iam.v1.IAM.CreateDelegation:output_type -> motiveiq.iam.v1.Delegation
-	71,  // 158: motiveiq.iam.v1.IAM.GetDelegation:output_type -> motiveiq.iam.v1.Delegation
-	72,  // 159: motiveiq.iam.v1.IAM.ListDelegations:output_type -> motiveiq.iam.v1.ListDelegationsResponse
-	71,  // 160: motiveiq.iam.v1.IAM.UpdateDelegation:output_type -> motiveiq.iam.v1.Delegation
-	71,  // 161: motiveiq.iam.v1.IAM.DeleteDelegation:output_type -> motiveiq.iam.v1.Delegation
-	0,   // 162: motiveiq.iam.v1.ControlPlane.CreateOIDCProvider:output_type -> motiveiq.iam.v1.OIDCProvider
-	0,   // 163: motiveiq.iam.v1.ControlPlane.GetOIDCProvider:output_type -> motiveiq.iam.v1.OIDCProvider
-	4,   // 164: motiveiq.iam.v1.ControlPlane.ListOIDCProviders:output_type -> motiveiq.iam.v1.ListOIDCProvidersResponse
-	6,   // 165: motiveiq.iam.v1.ControlPlane.DeleteOIDCProvider:output_type -> motiveiq.iam.v1.DeleteOIDCProviderResponse
-	7,   // 166: motiveiq.iam.v1.ControlPlane.CreateRole:output_type -> motiveiq.iam.v1.Role
-	7,   // 167: motiveiq.iam.v1.ControlPlane.GetRole:output_type -> motiveiq.iam.v1.Role
-	11,  // 168: motiveiq.iam.v1.ControlPlane.ListRoles:output_type -> motiveiq.iam.v1.ListRolesResponse
-	7,   // 169: motiveiq.iam.v1.ControlPlane.UpdateRole:output_type -> motiveiq.iam.v1.Role
-	7,   // 170: motiveiq.iam.v1.ControlPlane.UpdateAssumeRolePolicy:output_type -> motiveiq.iam.v1.Role
-	15,  // 171: motiveiq.iam.v1.ControlPlane.DeleteRole:output_type -> motiveiq.iam.v1.DeleteRoleResponse
-	17,  // 172: motiveiq.iam.v1.ControlPlane.AttachRolePolicy:output_type -> motiveiq.iam.v1.AttachRolePolicyResponse
-	19,  // 173: motiveiq.iam.v1.ControlPlane.DetachRolePolicy:output_type -> motiveiq.iam.v1.DetachRolePolicyResponse
-	20,  // 174: motiveiq.iam.v1.ControlPlane.CreatePolicy:output_type -> motiveiq.iam.v1.Policy
-	20,  // 175: motiveiq.iam.v1.ControlPlane.GetPolicy:output_type -> motiveiq.iam.v1.Policy
-	25,  // 176: motiveiq.iam.v1.ControlPlane.ListPolicies:output_type -> motiveiq.iam.v1.ListPoliciesResponse
-	20,  // 177: motiveiq.iam.v1.ControlPlane.CreatePolicyVersion:output_type -> motiveiq.iam.v1.Policy
-	28,  // 178: motiveiq.iam.v1.ControlPlane.DeletePolicy:output_type -> motiveiq.iam.v1.DeletePolicyResponse
-	29,  // 179: motiveiq.iam.v1.ControlPlane.PutResourcePolicy:output_type -> motiveiq.iam.v1.ResourcePolicy
-	29,  // 180: motiveiq.iam.v1.ControlPlane.GetResourcePolicy:output_type -> motiveiq.iam.v1.ResourcePolicy
-	33,  // 181: motiveiq.iam.v1.ControlPlane.ListResourcePolicies:output_type -> motiveiq.iam.v1.ListResourcePoliciesResponse
-	35,  // 182: motiveiq.iam.v1.ControlPlane.DeleteResourcePolicy:output_type -> motiveiq.iam.v1.DeleteResourcePolicyResponse
-	36,  // 183: motiveiq.iam.v1.ControlPlane.PutServiceDefinition:output_type -> motiveiq.iam.v1.ServiceDefinition
-	36,  // 184: motiveiq.iam.v1.ControlPlane.GetServiceDefinition:output_type -> motiveiq.iam.v1.ServiceDefinition
-	41,  // 185: motiveiq.iam.v1.ControlPlane.ListServiceDefinitions:output_type -> motiveiq.iam.v1.ListServiceDefinitionsResponse
-	43,  // 186: motiveiq.iam.v1.ControlPlane.DeleteServiceDefinition:output_type -> motiveiq.iam.v1.DeleteServiceDefinitionResponse
-	44,  // 187: motiveiq.iam.v1.ControlPlane.CreateServicePrincipal:output_type -> motiveiq.iam.v1.ServicePrincipal
-	44,  // 188: motiveiq.iam.v1.ControlPlane.GetServicePrincipal:output_type -> motiveiq.iam.v1.ServicePrincipal
-	48,  // 189: motiveiq.iam.v1.ControlPlane.ListServicePrincipals:output_type -> motiveiq.iam.v1.ListServicePrincipalsResponse
-	44,  // 190: motiveiq.iam.v1.ControlPlane.UpdateServicePrincipal:output_type -> motiveiq.iam.v1.ServicePrincipal
-	44,  // 191: motiveiq.iam.v1.ControlPlane.DeleteServicePrincipal:output_type -> motiveiq.iam.v1.ServicePrincipal
-	51,  // 192: motiveiq.iam.v1.ControlPlane.PutServicePrincipalBinding:output_type -> motiveiq.iam.v1.ServicePrincipalBinding
-	51,  // 193: motiveiq.iam.v1.ControlPlane.DeleteServicePrincipalBinding:output_type -> motiveiq.iam.v1.ServicePrincipalBinding
-	55,  // 194: motiveiq.iam.v1.ControlPlane.ListServicePrincipalBindings:output_type -> motiveiq.iam.v1.ListServicePrincipalBindingsResponse
-	69,  // 195: motiveiq.iam.v1.ControlPlane.CreateRequestContract:output_type -> motiveiq.iam.v1.RequestContract
-	69,  // 196: motiveiq.iam.v1.ControlPlane.GetRequestContract:output_type -> motiveiq.iam.v1.RequestContract
-	70,  // 197: motiveiq.iam.v1.ControlPlane.ListRequestContracts:output_type -> motiveiq.iam.v1.ListRequestContractsResponse
-	69,  // 198: motiveiq.iam.v1.ControlPlane.UpdateRequestContract:output_type -> motiveiq.iam.v1.RequestContract
-	69,  // 199: motiveiq.iam.v1.ControlPlane.DeleteRequestContract:output_type -> motiveiq.iam.v1.RequestContract
-	71,  // 200: motiveiq.iam.v1.ControlPlane.CreateDelegation:output_type -> motiveiq.iam.v1.Delegation
-	71,  // 201: motiveiq.iam.v1.ControlPlane.GetDelegation:output_type -> motiveiq.iam.v1.Delegation
-	72,  // 202: motiveiq.iam.v1.ControlPlane.ListDelegations:output_type -> motiveiq.iam.v1.ListDelegationsResponse
-	71,  // 203: motiveiq.iam.v1.ControlPlane.UpdateDelegation:output_type -> motiveiq.iam.v1.Delegation
-	71,  // 204: motiveiq.iam.v1.ControlPlane.DeleteDelegation:output_type -> motiveiq.iam.v1.Delegation
-	119, // [119:205] is the sub-list for method output_type
-	33,  // [33:119] is the sub-list for method input_type
-	33,  // [33:33] is the sub-list for extension type_name
-	33,  // [33:33] is the sub-list for extension extendee
-	0,   // [0:33] is the sub-list for field type_name
+	56, // 0: motiveiq.iam.v1.OIDCProvider.create_time:type_name -> google.protobuf.Timestamp
+	56, // 1: motiveiq.iam.v1.OIDCProvider.update_time:type_name -> google.protobuf.Timestamp
+	0,  // 2: motiveiq.iam.v1.ListOIDCProvidersResponse.providers:type_name -> motiveiq.iam.v1.OIDCProvider
+	56, // 3: motiveiq.iam.v1.Role.create_time:type_name -> google.protobuf.Timestamp
+	56, // 4: motiveiq.iam.v1.Role.update_time:type_name -> google.protobuf.Timestamp
+	7,  // 5: motiveiq.iam.v1.ListRolesResponse.roles:type_name -> motiveiq.iam.v1.Role
+	21, // 6: motiveiq.iam.v1.Policy.default_version:type_name -> motiveiq.iam.v1.PolicyVersion
+	56, // 7: motiveiq.iam.v1.Policy.create_time:type_name -> google.protobuf.Timestamp
+	56, // 8: motiveiq.iam.v1.Policy.update_time:type_name -> google.protobuf.Timestamp
+	56, // 9: motiveiq.iam.v1.PolicyVersion.create_time:type_name -> google.protobuf.Timestamp
+	20, // 10: motiveiq.iam.v1.ListPoliciesResponse.policies:type_name -> motiveiq.iam.v1.Policy
+	56, // 11: motiveiq.iam.v1.ResourcePolicy.create_time:type_name -> google.protobuf.Timestamp
+	56, // 12: motiveiq.iam.v1.ResourcePolicy.update_time:type_name -> google.protobuf.Timestamp
+	29, // 13: motiveiq.iam.v1.ListResourcePoliciesResponse.resource_policies:type_name -> motiveiq.iam.v1.ResourcePolicy
+	37, // 14: motiveiq.iam.v1.ServiceDefinition.resource_types:type_name -> motiveiq.iam.v1.ServiceResourceType
+	56, // 15: motiveiq.iam.v1.ServiceDefinition.create_time:type_name -> google.protobuf.Timestamp
+	56, // 16: motiveiq.iam.v1.ServiceDefinition.update_time:type_name -> google.protobuf.Timestamp
+	37, // 17: motiveiq.iam.v1.PutServiceDefinitionRequest.resource_types:type_name -> motiveiq.iam.v1.ServiceResourceType
+	36, // 18: motiveiq.iam.v1.ListServiceDefinitionsResponse.service_definitions:type_name -> motiveiq.iam.v1.ServiceDefinition
+	56, // 19: motiveiq.iam.v1.ServicePrincipal.create_time:type_name -> google.protobuf.Timestamp
+	56, // 20: motiveiq.iam.v1.ServicePrincipal.update_time:type_name -> google.protobuf.Timestamp
+	56, // 21: motiveiq.iam.v1.ServicePrincipal.retire_time:type_name -> google.protobuf.Timestamp
+	57, // 22: motiveiq.iam.v1.ServicePrincipal.management:type_name -> motiveiq.iam.v1.ConfigurationOwner
+	58, // 23: motiveiq.iam.v1.CreateServicePrincipalRequest.management:type_name -> motiveiq.iam.v1.ConfigurationWrite
+	44, // 24: motiveiq.iam.v1.ListServicePrincipalsResponse.service_principals:type_name -> motiveiq.iam.v1.ServicePrincipal
+	58, // 25: motiveiq.iam.v1.UpdateServicePrincipalRequest.management:type_name -> motiveiq.iam.v1.ConfigurationWrite
+	58, // 26: motiveiq.iam.v1.DeleteServicePrincipalRequest.management:type_name -> motiveiq.iam.v1.ConfigurationWrite
+	56, // 27: motiveiq.iam.v1.ServicePrincipalBinding.create_time:type_name -> google.protobuf.Timestamp
+	56, // 28: motiveiq.iam.v1.ServicePrincipalBinding.update_time:type_name -> google.protobuf.Timestamp
+	57, // 29: motiveiq.iam.v1.ServicePrincipalBinding.management:type_name -> motiveiq.iam.v1.ConfigurationOwner
+	58, // 30: motiveiq.iam.v1.PutServicePrincipalBindingRequest.management:type_name -> motiveiq.iam.v1.ConfigurationWrite
+	58, // 31: motiveiq.iam.v1.DeleteServicePrincipalBindingRequest.management:type_name -> motiveiq.iam.v1.ConfigurationWrite
+	51, // 32: motiveiq.iam.v1.ListServicePrincipalBindingsResponse.bindings:type_name -> motiveiq.iam.v1.ServicePrincipalBinding
+	1,  // 33: motiveiq.iam.v1.IAM.CreateOIDCProvider:input_type -> motiveiq.iam.v1.CreateOIDCProviderRequest
+	2,  // 34: motiveiq.iam.v1.IAM.GetOIDCProvider:input_type -> motiveiq.iam.v1.GetOIDCProviderRequest
+	3,  // 35: motiveiq.iam.v1.IAM.ListOIDCProviders:input_type -> motiveiq.iam.v1.ListOIDCProvidersRequest
+	5,  // 36: motiveiq.iam.v1.IAM.DeleteOIDCProvider:input_type -> motiveiq.iam.v1.DeleteOIDCProviderRequest
+	8,  // 37: motiveiq.iam.v1.IAM.CreateRole:input_type -> motiveiq.iam.v1.CreateRoleRequest
+	9,  // 38: motiveiq.iam.v1.IAM.GetRole:input_type -> motiveiq.iam.v1.GetRoleRequest
+	10, // 39: motiveiq.iam.v1.IAM.ListRoles:input_type -> motiveiq.iam.v1.ListRolesRequest
+	12, // 40: motiveiq.iam.v1.IAM.UpdateRole:input_type -> motiveiq.iam.v1.UpdateRoleRequest
+	13, // 41: motiveiq.iam.v1.IAM.UpdateAssumeRolePolicy:input_type -> motiveiq.iam.v1.UpdateAssumeRolePolicyRequest
+	14, // 42: motiveiq.iam.v1.IAM.DeleteRole:input_type -> motiveiq.iam.v1.DeleteRoleRequest
+	16, // 43: motiveiq.iam.v1.IAM.AttachRolePolicy:input_type -> motiveiq.iam.v1.AttachRolePolicyRequest
+	18, // 44: motiveiq.iam.v1.IAM.DetachRolePolicy:input_type -> motiveiq.iam.v1.DetachRolePolicyRequest
+	22, // 45: motiveiq.iam.v1.IAM.CreatePolicy:input_type -> motiveiq.iam.v1.CreatePolicyRequest
+	23, // 46: motiveiq.iam.v1.IAM.GetPolicy:input_type -> motiveiq.iam.v1.GetPolicyRequest
+	24, // 47: motiveiq.iam.v1.IAM.ListPolicies:input_type -> motiveiq.iam.v1.ListPoliciesRequest
+	26, // 48: motiveiq.iam.v1.IAM.CreatePolicyVersion:input_type -> motiveiq.iam.v1.CreatePolicyVersionRequest
+	27, // 49: motiveiq.iam.v1.IAM.DeletePolicy:input_type -> motiveiq.iam.v1.DeletePolicyRequest
+	30, // 50: motiveiq.iam.v1.IAM.PutResourcePolicy:input_type -> motiveiq.iam.v1.PutResourcePolicyRequest
+	31, // 51: motiveiq.iam.v1.IAM.GetResourcePolicy:input_type -> motiveiq.iam.v1.GetResourcePolicyRequest
+	32, // 52: motiveiq.iam.v1.IAM.ListResourcePolicies:input_type -> motiveiq.iam.v1.ListResourcePoliciesRequest
+	34, // 53: motiveiq.iam.v1.IAM.DeleteResourcePolicy:input_type -> motiveiq.iam.v1.DeleteResourcePolicyRequest
+	38, // 54: motiveiq.iam.v1.IAM.PutServiceDefinition:input_type -> motiveiq.iam.v1.PutServiceDefinitionRequest
+	39, // 55: motiveiq.iam.v1.IAM.GetServiceDefinition:input_type -> motiveiq.iam.v1.GetServiceDefinitionRequest
+	40, // 56: motiveiq.iam.v1.IAM.ListServiceDefinitions:input_type -> motiveiq.iam.v1.ListServiceDefinitionsRequest
+	42, // 57: motiveiq.iam.v1.IAM.DeleteServiceDefinition:input_type -> motiveiq.iam.v1.DeleteServiceDefinitionRequest
+	45, // 58: motiveiq.iam.v1.IAM.CreateServicePrincipal:input_type -> motiveiq.iam.v1.CreateServicePrincipalRequest
+	46, // 59: motiveiq.iam.v1.IAM.GetServicePrincipal:input_type -> motiveiq.iam.v1.GetServicePrincipalRequest
+	47, // 60: motiveiq.iam.v1.IAM.ListServicePrincipals:input_type -> motiveiq.iam.v1.ListServicePrincipalsRequest
+	49, // 61: motiveiq.iam.v1.IAM.UpdateServicePrincipal:input_type -> motiveiq.iam.v1.UpdateServicePrincipalRequest
+	50, // 62: motiveiq.iam.v1.IAM.DeleteServicePrincipal:input_type -> motiveiq.iam.v1.DeleteServicePrincipalRequest
+	52, // 63: motiveiq.iam.v1.IAM.PutServicePrincipalBinding:input_type -> motiveiq.iam.v1.PutServicePrincipalBindingRequest
+	53, // 64: motiveiq.iam.v1.IAM.DeleteServicePrincipalBinding:input_type -> motiveiq.iam.v1.DeleteServicePrincipalBindingRequest
+	54, // 65: motiveiq.iam.v1.IAM.ListServicePrincipalBindings:input_type -> motiveiq.iam.v1.ListServicePrincipalBindingsRequest
+	59, // 66: motiveiq.iam.v1.IAM.CreateRequestContract:input_type -> motiveiq.iam.v1.CreateRequestContractRequest
+	60, // 67: motiveiq.iam.v1.IAM.GetRequestContract:input_type -> motiveiq.iam.v1.GetRequestContractRequest
+	61, // 68: motiveiq.iam.v1.IAM.ListRequestContracts:input_type -> motiveiq.iam.v1.ListRequestContractsRequest
+	62, // 69: motiveiq.iam.v1.IAM.UpdateRequestContract:input_type -> motiveiq.iam.v1.UpdateRequestContractRequest
+	63, // 70: motiveiq.iam.v1.IAM.DeleteRequestContract:input_type -> motiveiq.iam.v1.DeleteRequestContractRequest
+	64, // 71: motiveiq.iam.v1.IAM.CreateDelegation:input_type -> motiveiq.iam.v1.CreateDelegationRequest
+	65, // 72: motiveiq.iam.v1.IAM.GetDelegation:input_type -> motiveiq.iam.v1.GetDelegationRequest
+	66, // 73: motiveiq.iam.v1.IAM.ListDelegations:input_type -> motiveiq.iam.v1.ListDelegationsRequest
+	67, // 74: motiveiq.iam.v1.IAM.UpdateDelegation:input_type -> motiveiq.iam.v1.UpdateDelegationRequest
+	68, // 75: motiveiq.iam.v1.IAM.DeleteDelegation:input_type -> motiveiq.iam.v1.DeleteDelegationRequest
+	0,  // 76: motiveiq.iam.v1.IAM.CreateOIDCProvider:output_type -> motiveiq.iam.v1.OIDCProvider
+	0,  // 77: motiveiq.iam.v1.IAM.GetOIDCProvider:output_type -> motiveiq.iam.v1.OIDCProvider
+	4,  // 78: motiveiq.iam.v1.IAM.ListOIDCProviders:output_type -> motiveiq.iam.v1.ListOIDCProvidersResponse
+	6,  // 79: motiveiq.iam.v1.IAM.DeleteOIDCProvider:output_type -> motiveiq.iam.v1.DeleteOIDCProviderResponse
+	7,  // 80: motiveiq.iam.v1.IAM.CreateRole:output_type -> motiveiq.iam.v1.Role
+	7,  // 81: motiveiq.iam.v1.IAM.GetRole:output_type -> motiveiq.iam.v1.Role
+	11, // 82: motiveiq.iam.v1.IAM.ListRoles:output_type -> motiveiq.iam.v1.ListRolesResponse
+	7,  // 83: motiveiq.iam.v1.IAM.UpdateRole:output_type -> motiveiq.iam.v1.Role
+	7,  // 84: motiveiq.iam.v1.IAM.UpdateAssumeRolePolicy:output_type -> motiveiq.iam.v1.Role
+	15, // 85: motiveiq.iam.v1.IAM.DeleteRole:output_type -> motiveiq.iam.v1.DeleteRoleResponse
+	17, // 86: motiveiq.iam.v1.IAM.AttachRolePolicy:output_type -> motiveiq.iam.v1.AttachRolePolicyResponse
+	19, // 87: motiveiq.iam.v1.IAM.DetachRolePolicy:output_type -> motiveiq.iam.v1.DetachRolePolicyResponse
+	20, // 88: motiveiq.iam.v1.IAM.CreatePolicy:output_type -> motiveiq.iam.v1.Policy
+	20, // 89: motiveiq.iam.v1.IAM.GetPolicy:output_type -> motiveiq.iam.v1.Policy
+	25, // 90: motiveiq.iam.v1.IAM.ListPolicies:output_type -> motiveiq.iam.v1.ListPoliciesResponse
+	20, // 91: motiveiq.iam.v1.IAM.CreatePolicyVersion:output_type -> motiveiq.iam.v1.Policy
+	28, // 92: motiveiq.iam.v1.IAM.DeletePolicy:output_type -> motiveiq.iam.v1.DeletePolicyResponse
+	29, // 93: motiveiq.iam.v1.IAM.PutResourcePolicy:output_type -> motiveiq.iam.v1.ResourcePolicy
+	29, // 94: motiveiq.iam.v1.IAM.GetResourcePolicy:output_type -> motiveiq.iam.v1.ResourcePolicy
+	33, // 95: motiveiq.iam.v1.IAM.ListResourcePolicies:output_type -> motiveiq.iam.v1.ListResourcePoliciesResponse
+	35, // 96: motiveiq.iam.v1.IAM.DeleteResourcePolicy:output_type -> motiveiq.iam.v1.DeleteResourcePolicyResponse
+	36, // 97: motiveiq.iam.v1.IAM.PutServiceDefinition:output_type -> motiveiq.iam.v1.ServiceDefinition
+	36, // 98: motiveiq.iam.v1.IAM.GetServiceDefinition:output_type -> motiveiq.iam.v1.ServiceDefinition
+	41, // 99: motiveiq.iam.v1.IAM.ListServiceDefinitions:output_type -> motiveiq.iam.v1.ListServiceDefinitionsResponse
+	43, // 100: motiveiq.iam.v1.IAM.DeleteServiceDefinition:output_type -> motiveiq.iam.v1.DeleteServiceDefinitionResponse
+	44, // 101: motiveiq.iam.v1.IAM.CreateServicePrincipal:output_type -> motiveiq.iam.v1.ServicePrincipal
+	44, // 102: motiveiq.iam.v1.IAM.GetServicePrincipal:output_type -> motiveiq.iam.v1.ServicePrincipal
+	48, // 103: motiveiq.iam.v1.IAM.ListServicePrincipals:output_type -> motiveiq.iam.v1.ListServicePrincipalsResponse
+	44, // 104: motiveiq.iam.v1.IAM.UpdateServicePrincipal:output_type -> motiveiq.iam.v1.ServicePrincipal
+	44, // 105: motiveiq.iam.v1.IAM.DeleteServicePrincipal:output_type -> motiveiq.iam.v1.ServicePrincipal
+	51, // 106: motiveiq.iam.v1.IAM.PutServicePrincipalBinding:output_type -> motiveiq.iam.v1.ServicePrincipalBinding
+	51, // 107: motiveiq.iam.v1.IAM.DeleteServicePrincipalBinding:output_type -> motiveiq.iam.v1.ServicePrincipalBinding
+	55, // 108: motiveiq.iam.v1.IAM.ListServicePrincipalBindings:output_type -> motiveiq.iam.v1.ListServicePrincipalBindingsResponse
+	69, // 109: motiveiq.iam.v1.IAM.CreateRequestContract:output_type -> motiveiq.iam.v1.RequestContract
+	69, // 110: motiveiq.iam.v1.IAM.GetRequestContract:output_type -> motiveiq.iam.v1.RequestContract
+	70, // 111: motiveiq.iam.v1.IAM.ListRequestContracts:output_type -> motiveiq.iam.v1.ListRequestContractsResponse
+	69, // 112: motiveiq.iam.v1.IAM.UpdateRequestContract:output_type -> motiveiq.iam.v1.RequestContract
+	69, // 113: motiveiq.iam.v1.IAM.DeleteRequestContract:output_type -> motiveiq.iam.v1.RequestContract
+	71, // 114: motiveiq.iam.v1.IAM.CreateDelegation:output_type -> motiveiq.iam.v1.Delegation
+	71, // 115: motiveiq.iam.v1.IAM.GetDelegation:output_type -> motiveiq.iam.v1.Delegation
+	72, // 116: motiveiq.iam.v1.IAM.ListDelegations:output_type -> motiveiq.iam.v1.ListDelegationsResponse
+	71, // 117: motiveiq.iam.v1.IAM.UpdateDelegation:output_type -> motiveiq.iam.v1.Delegation
+	71, // 118: motiveiq.iam.v1.IAM.DeleteDelegation:output_type -> motiveiq.iam.v1.Delegation
+	76, // [76:119] is the sub-list for method output_type
+	33, // [33:76] is the sub-list for method input_type
+	33, // [33:33] is the sub-list for extension type_name
+	33, // [33:33] is the sub-list for extension extendee
+	0,  // [0:33] is the sub-list for field type_name
 }
 
 func init() { file_platform_iam_api_v1_iam_proto_init() }
@@ -3682,7 +3549,7 @@ func file_platform_iam_api_v1_iam_proto_init() {
 			NumEnums:      0,
 			NumMessages:   56,
 			NumExtensions: 0,
-			NumServices:   2,
+			NumServices:   1,
 		},
 		GoTypes:           file_platform_iam_api_v1_iam_proto_goTypes,
 		DependencyIndexes: file_platform_iam_api_v1_iam_proto_depIdxs,

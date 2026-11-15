@@ -45,27 +45,6 @@ func (*recordingConn) NewStream(context.Context, *grpc.StreamDesc, string, ...gr
 	panic("unexpected stream")
 }
 
-func TestNewControlPlaneFromConfigUsesServiceProfileAndGeneratedClient(t *testing.T) {
-	conn := &recordingConn{}
-	cfg := &recordingConfig{conn: conn}
-	client := NewControlPlaneFromConfig(cfg)
-
-	request := &ListRolesRequest{}
-	response, err := client.ListRoles(context.Background(), request, grpc.WaitForReady(true))
-	if err != nil {
-		t.Fatalf("ListRoles: %v", err)
-	}
-	if len(response.GetRoles()) != 1 || response.GetRoles()[0].GetName() != "human" {
-		t.Fatalf("roles = %v", response.GetRoles())
-	}
-	if cfg.serviceKey != ControlPlaneServiceKey || cfg.endpoint != defaultEndpoint || cfg.origin != ControlPlaneServiceOrigin || cfg.endpointOver != "" {
-		t.Fatalf("config call = (%q, %q, %q, %q)", cfg.serviceKey, cfg.endpoint, cfg.origin, cfg.endpointOver)
-	}
-	if conn.method != ControlPlane_ListRoles_FullMethodName || conn.request != request || conn.options != 2 {
-		t.Fatalf("Invoke = method %q request %p options %d", conn.method, conn.request, conn.options)
-	}
-}
-
 func TestNewFromConfigUsesServiceProfileAndGeneratedClient(t *testing.T) {
 	conn := &recordingConn{}
 	cfg := &recordingConfig{conn: conn}
@@ -116,11 +95,6 @@ func TestIAMClientsApplyTrimmedLocalEndpointOverride(t *testing.T) {
 		{"IAM", func(cfg *recordingConfig) {
 			_ = NewFromConfig(cfg, func(options *ClientOptions) { options.BaseEndpoint = "  dns:///iam.test:8443  " })
 		}},
-		{"control plane", func(cfg *recordingConfig) {
-			_ = NewControlPlaneFromConfig(cfg, func(options *ClientOptions) {
-				options.BaseEndpoint = "  dns:///iam.test:8443  "
-			})
-		}},
 		{"STS", func(cfg *recordingConfig) {
 			_ = NewSTSFromConfig(cfg, func(options *ClientOptions) {
 				options.BaseEndpoint = "  dns:///iam.test:8443  "
@@ -135,21 +109,5 @@ func TestIAMClientsApplyTrimmedLocalEndpointOverride(t *testing.T) {
 				t.Fatalf("endpoint override = %q", cfg.endpointOver)
 			}
 		})
-	}
-}
-
-// The compatibility service must preserve every request/response signature.
-func TestIAMAndControlPlaneDescriptorsMatch(t *testing.T) {
-	services := File_platform_iam_api_v1_iam_proto.Services()
-	current, legacy := services.ByName("IAM"), services.ByName("ControlPlane")
-	if current == nil || legacy == nil || current.Methods().Len() != legacy.Methods().Len() {
-		t.Fatal("IAM and ControlPlane must expose the same methods during migration")
-	}
-	for i := 0; i < current.Methods().Len(); i++ {
-		method := current.Methods().Get(i)
-		old := legacy.Methods().ByName(method.Name())
-		if old == nil || old.Input().FullName() != method.Input().FullName() || old.Output().FullName() != method.Output().FullName() || old.IsStreamingClient() != method.IsStreamingClient() || old.IsStreamingServer() != method.IsStreamingServer() {
-			t.Errorf("compatibility signature differs for %s", method.Name())
-		}
 	}
 }

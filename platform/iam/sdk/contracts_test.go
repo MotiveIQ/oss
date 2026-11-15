@@ -21,7 +21,6 @@ import (
 // public proto package. Check all descriptors linked by the public clients.
 var publicServices = map[protoreflect.FullName]bool{
 	"motiveiq.iam.v1.IAM":                       true,
-	"motiveiq.iam.v1.ControlPlane":              true,
 	"motiveiq.iam.v1.STS":                       true,
 	"motiveiq.kms.v1.ControlPlane":              true,
 	"motiveiq.kms.v1.DataPlane":                 true,
@@ -91,11 +90,11 @@ func TestPublicDescriptorsExcludePrivateAuthorization(t *testing.T) {
 	}
 }
 
-func TestDescriptorGuardRejectsPrivateSymbolsInPublicPackage(t *testing.T) {
+func TestDescriptorGuardRejectsUnexpectedSymbolsInPublicPackage(t *testing.T) {
 	for _, tc := range []struct {
 		name    string
 		service bool
-	}{{"PDP", true}, {"PrivateSTS", true}, {"SubjectAuthentication", false}, {"VerifiedRequestBinding", false}, {"DelegatedSubjectAuthentication", false}, {"IssueDelegationTokenRequest", false}, {"DelegationScope", false}} {
+	}{{"ControlPlane", true}, {"PDP", true}, {"PrivateSTS", true}, {"SubjectAuthentication", false}, {"VerifiedRequestBinding", false}, {"DelegatedSubjectAuthentication", false}, {"IssueDelegationTokenRequest", false}, {"DelegationScope", false}} {
 		t.Run(tc.name, func(t *testing.T) {
 			descriptor := &descriptorpb.FileDescriptorProto{Name: proto.String("platform/iam/api/v1/accidental.proto"), Package: proto.String("motiveiq.iam.v1"), Syntax: proto.String("proto3")}
 			if tc.service {
@@ -108,7 +107,7 @@ func TestDescriptorGuardRejectsPrivateSymbolsInPublicPackage(t *testing.T) {
 				t.Fatal(err)
 			}
 			if err := checkPublicDescriptor(fd); err == nil {
-				t.Fatal("private symbol accepted")
+				t.Fatal("unexpected symbol accepted")
 			}
 		})
 	}

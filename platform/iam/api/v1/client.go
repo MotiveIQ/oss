@@ -12,14 +12,6 @@ const (
 	ServiceKey = "iam"
 	// ServiceOrigin is the logical HTTPS origin bound into IAM request proofs.
 	ServiceOrigin = "https://iam.platform.motiveiq.net"
-	// ControlPlaneServiceKey selects IAM endpoint and origin configuration in
-	// the shared SDK.
-	// Deprecated: use ServiceKey.
-	ControlPlaneServiceKey = ServiceKey
-	// ControlPlaneServiceOrigin is the logical HTTPS origin bound into IAM
-	// control-plane request proofs.
-	// Deprecated: use ServiceOrigin.
-	ControlPlaneServiceOrigin = ServiceOrigin
 	// STSServiceKey selects STS endpoint and origin configuration in the shared
 	// SDK. It differs from the control-plane key because both APIs may be routed
 	// independently even though they currently share a transport endpoint.
@@ -57,24 +49,6 @@ func NewFromConfig(cfg GRPCClientConfig, optFns ...func(*ClientOptions)) *IAM {
 	options := resolveClientOptions(optFns)
 	conn := cfg.GRPCClientConn(ServiceKey, defaultEndpoint, ServiceOrigin, options.BaseEndpoint)
 	return &IAM{IAMClient: NewIAMClient(conn)}
-}
-
-// ControlPlane is a configured IAM control-plane client. It is a lightweight
-// view over transports owned by the shared Config; callers close the Config,
-// not this client.
-// Deprecated: use IAM.
-type ControlPlane struct {
-	ControlPlaneClient
-}
-
-// NewControlPlaneFromConfig constructs an IAM control-plane client from shared
-// MotiveIQ configuration. It performs no network I/O; configuration and
-// transport errors surface from the first RPC.
-// Deprecated: use NewFromConfig after the server supports IAM.
-func NewControlPlaneFromConfig(cfg GRPCClientConfig, optFns ...func(*ClientOptions)) *ControlPlane {
-	options := resolveClientOptions(optFns)
-	conn := cfg.GRPCClientConn(ControlPlaneServiceKey, defaultEndpoint, ControlPlaneServiceOrigin, options.BaseEndpoint)
-	return &ControlPlane{ControlPlaneClient: NewControlPlaneClient(conn)}
 }
 
 // STS is a configured client for authenticated STS operations. Session
