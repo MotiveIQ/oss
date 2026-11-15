@@ -7,7 +7,7 @@ import "platform/iam/api/v1/delegation.proto";
 
 option go_package = "go.motiveiq.dev/platform/iam/api/v1;iamv1";
 
-// ControlPlane manages IAM's durable objects, modeled 1:1 on their AWS
+// IAM manages its durable objects, modeled 1:1 on their AWS
 // counterparts: roles carry their trust policy as a document
 // (AssumeRolePolicyDocument); permission policies are managed policies
 // attached directly to roles (AttachRolePolicy) and versioned as
@@ -21,7 +21,85 @@ option go_package = "go.motiveiq.dev/platform/iam/api/v1;iamv1";
 // Authorization: DPoP plus a fresh proof bound to the session token, canonical
 // IAM origin, exact method, and deterministic protobuf body. IAM derives the
 // semantic action/resource from the RPC and authorizes it through the PDP.
+service IAM {
+  rpc CreateOIDCProvider(CreateOIDCProviderRequest) returns (OIDCProvider);
+  rpc GetOIDCProvider(GetOIDCProviderRequest) returns (OIDCProvider);
+  rpc ListOIDCProviders(ListOIDCProvidersRequest) returns (ListOIDCProvidersResponse);
+  rpc DeleteOIDCProvider(DeleteOIDCProviderRequest) returns (DeleteOIDCProviderResponse);
+
+  rpc CreateRole(CreateRoleRequest) returns (Role);
+  rpc GetRole(GetRoleRequest) returns (Role);
+  rpc ListRoles(ListRolesRequest) returns (ListRolesResponse);
+  // UpdateRole changes the role's max session duration.
+  rpc UpdateRole(UpdateRoleRequest) returns (Role);
+  // UpdateAssumeRolePolicy replaces the role's trust policy document.
+  rpc UpdateAssumeRolePolicy(UpdateAssumeRolePolicyRequest) returns (Role);
+  rpc DeleteRole(DeleteRoleRequest) returns (DeleteRoleResponse);
+
+  rpc AttachRolePolicy(AttachRolePolicyRequest) returns (AttachRolePolicyResponse);
+  rpc DetachRolePolicy(DetachRolePolicyRequest) returns (DetachRolePolicyResponse);
+
+  rpc CreatePolicy(CreatePolicyRequest) returns (Policy);
+  rpc GetPolicy(GetPolicyRequest) returns (Policy);
+  rpc ListPolicies(ListPoliciesRequest) returns (ListPoliciesResponse);
+  // CreatePolicyVersion adds an immutable version and moves the default.
+  rpc CreatePolicyVersion(CreatePolicyVersionRequest) returns (Policy);
+  // DeletePolicy fails while the policy is attached to any live role.
+  rpc DeletePolicy(DeletePolicyRequest) returns (DeletePolicyResponse);
+
+  // Resource policies attach one document (v1 resource statements —
+  // principal patterns + actions, never resources) to one concrete resource
+  // URN of any registered service. The resource layer evaluates them
+  // independently of identity policies: both must allow.
+  rpc PutResourcePolicy(PutResourcePolicyRequest) returns (ResourcePolicy);
+  rpc GetResourcePolicy(GetResourcePolicyRequest) returns (ResourcePolicy);
+  rpc ListResourcePolicies(ListResourcePoliciesRequest) returns (ListResourcePoliciesResponse);
+  rpc DeleteResourcePolicy(DeleteResourcePolicyRequest) returns (DeleteResourcePolicyResponse);
+
+  // Service definitions are the write-time validation registry: one entry
+  // per URN service segment carrying its resource types (each with a default
+  // resource-policy posture) and its unprefixed action vocabulary.
+  // Authorize-time evaluation never consults the registry.
+  rpc PutServiceDefinition(PutServiceDefinitionRequest) returns (ServiceDefinition);
+  rpc GetServiceDefinition(GetServiceDefinitionRequest) returns (ServiceDefinition);
+  rpc ListServiceDefinitions(ListServiceDefinitionsRequest) returns (ListServiceDefinitionsResponse);
+  // DeleteServiceDefinition fails while any live resource policy targets the
+  // service's URN prefix.
+  rpc DeleteServiceDefinition(DeleteServiceDefinitionRequest) returns (DeleteServiceDefinitionResponse);
+
+  // Stable service identities and revisioned, immutable-role bindings.
+  rpc CreateServicePrincipal(CreateServicePrincipalRequest) returns (ServicePrincipal);
+  rpc GetServicePrincipal(GetServicePrincipalRequest) returns (ServicePrincipal);
+  rpc ListServicePrincipals(ListServicePrincipalsRequest) returns (ListServicePrincipalsResponse);
+  rpc UpdateServicePrincipal(UpdateServicePrincipalRequest) returns (ServicePrincipal);
+  rpc DeleteServicePrincipal(DeleteServicePrincipalRequest) returns (ServicePrincipal);
+  rpc PutServicePrincipalBinding(PutServicePrincipalBindingRequest) returns (ServicePrincipalBinding);
+  rpc DeleteServicePrincipalBinding(DeleteServicePrincipalBindingRequest) returns (ServicePrincipalBinding);
+  rpc ListServicePrincipalBindings(ListServicePrincipalBindingsRequest) returns (ListServicePrincipalBindingsResponse);
+
+  // Proposed transport-aware request contracts and delegation interfaces.
+  // These control-plane RPCs remain gRPC. No runtime handlers or
+  // permissions are enabled by these declarations. Definitions are privileged
+  // configuration; application callers never choose a delegation profile.
+  rpc CreateRequestContract(CreateRequestContractRequest) returns (RequestContract);
+  rpc GetRequestContract(GetRequestContractRequest) returns (RequestContract);
+  rpc ListRequestContracts(ListRequestContractsRequest) returns (ListRequestContractsResponse);
+  rpc UpdateRequestContract(UpdateRequestContractRequest) returns (RequestContract);
+  // Retirement preserves the immutable ID/name. Disabled or retired contracts
+  // cannot be used by STS to admit new requests or establish delegation eligibility.
+  rpc DeleteRequestContract(DeleteRequestContractRequest) returns (RequestContract);
+
+  rpc CreateDelegation(CreateDelegationRequest) returns (Delegation);
+  rpc GetDelegation(GetDelegationRequest) returns (Delegation);
+  rpc ListDelegations(ListDelegationsRequest) returns (ListDelegationsResponse);
+  rpc UpdateDelegation(UpdateDelegationRequest) returns (Delegation);
+  rpc DeleteDelegation(DeleteDelegationRequest) returns (Delegation);
+}
+
+// ControlPlane preserves the previous RPC paths during the IAM service rename.
+// New callers use IAM. Both services require proofs bound to the actual RPC path.
 service ControlPlane {
+  option deprecated = true;
   rpc CreateOIDCProvider(CreateOIDCProviderRequest) returns (OIDCProvider);
   rpc GetOIDCProvider(GetOIDCProviderRequest) returns (OIDCProvider);
   rpc ListOIDCProviders(ListOIDCProvidersRequest) returns (ListOIDCProvidersResponse);

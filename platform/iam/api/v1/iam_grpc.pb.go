@@ -19,6 +19,1702 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
+	IAM_CreateOIDCProvider_FullMethodName            = "/motiveiq.iam.v1.IAM/CreateOIDCProvider"
+	IAM_GetOIDCProvider_FullMethodName               = "/motiveiq.iam.v1.IAM/GetOIDCProvider"
+	IAM_ListOIDCProviders_FullMethodName             = "/motiveiq.iam.v1.IAM/ListOIDCProviders"
+	IAM_DeleteOIDCProvider_FullMethodName            = "/motiveiq.iam.v1.IAM/DeleteOIDCProvider"
+	IAM_CreateRole_FullMethodName                    = "/motiveiq.iam.v1.IAM/CreateRole"
+	IAM_GetRole_FullMethodName                       = "/motiveiq.iam.v1.IAM/GetRole"
+	IAM_ListRoles_FullMethodName                     = "/motiveiq.iam.v1.IAM/ListRoles"
+	IAM_UpdateRole_FullMethodName                    = "/motiveiq.iam.v1.IAM/UpdateRole"
+	IAM_UpdateAssumeRolePolicy_FullMethodName        = "/motiveiq.iam.v1.IAM/UpdateAssumeRolePolicy"
+	IAM_DeleteRole_FullMethodName                    = "/motiveiq.iam.v1.IAM/DeleteRole"
+	IAM_AttachRolePolicy_FullMethodName              = "/motiveiq.iam.v1.IAM/AttachRolePolicy"
+	IAM_DetachRolePolicy_FullMethodName              = "/motiveiq.iam.v1.IAM/DetachRolePolicy"
+	IAM_CreatePolicy_FullMethodName                  = "/motiveiq.iam.v1.IAM/CreatePolicy"
+	IAM_GetPolicy_FullMethodName                     = "/motiveiq.iam.v1.IAM/GetPolicy"
+	IAM_ListPolicies_FullMethodName                  = "/motiveiq.iam.v1.IAM/ListPolicies"
+	IAM_CreatePolicyVersion_FullMethodName           = "/motiveiq.iam.v1.IAM/CreatePolicyVersion"
+	IAM_DeletePolicy_FullMethodName                  = "/motiveiq.iam.v1.IAM/DeletePolicy"
+	IAM_PutResourcePolicy_FullMethodName             = "/motiveiq.iam.v1.IAM/PutResourcePolicy"
+	IAM_GetResourcePolicy_FullMethodName             = "/motiveiq.iam.v1.IAM/GetResourcePolicy"
+	IAM_ListResourcePolicies_FullMethodName          = "/motiveiq.iam.v1.IAM/ListResourcePolicies"
+	IAM_DeleteResourcePolicy_FullMethodName          = "/motiveiq.iam.v1.IAM/DeleteResourcePolicy"
+	IAM_PutServiceDefinition_FullMethodName          = "/motiveiq.iam.v1.IAM/PutServiceDefinition"
+	IAM_GetServiceDefinition_FullMethodName          = "/motiveiq.iam.v1.IAM/GetServiceDefinition"
+	IAM_ListServiceDefinitions_FullMethodName        = "/motiveiq.iam.v1.IAM/ListServiceDefinitions"
+	IAM_DeleteServiceDefinition_FullMethodName       = "/motiveiq.iam.v1.IAM/DeleteServiceDefinition"
+	IAM_CreateServicePrincipal_FullMethodName        = "/motiveiq.iam.v1.IAM/CreateServicePrincipal"
+	IAM_GetServicePrincipal_FullMethodName           = "/motiveiq.iam.v1.IAM/GetServicePrincipal"
+	IAM_ListServicePrincipals_FullMethodName         = "/motiveiq.iam.v1.IAM/ListServicePrincipals"
+	IAM_UpdateServicePrincipal_FullMethodName        = "/motiveiq.iam.v1.IAM/UpdateServicePrincipal"
+	IAM_DeleteServicePrincipal_FullMethodName        = "/motiveiq.iam.v1.IAM/DeleteServicePrincipal"
+	IAM_PutServicePrincipalBinding_FullMethodName    = "/motiveiq.iam.v1.IAM/PutServicePrincipalBinding"
+	IAM_DeleteServicePrincipalBinding_FullMethodName = "/motiveiq.iam.v1.IAM/DeleteServicePrincipalBinding"
+	IAM_ListServicePrincipalBindings_FullMethodName  = "/motiveiq.iam.v1.IAM/ListServicePrincipalBindings"
+	IAM_CreateRequestContract_FullMethodName         = "/motiveiq.iam.v1.IAM/CreateRequestContract"
+	IAM_GetRequestContract_FullMethodName            = "/motiveiq.iam.v1.IAM/GetRequestContract"
+	IAM_ListRequestContracts_FullMethodName          = "/motiveiq.iam.v1.IAM/ListRequestContracts"
+	IAM_UpdateRequestContract_FullMethodName         = "/motiveiq.iam.v1.IAM/UpdateRequestContract"
+	IAM_DeleteRequestContract_FullMethodName         = "/motiveiq.iam.v1.IAM/DeleteRequestContract"
+	IAM_CreateDelegation_FullMethodName              = "/motiveiq.iam.v1.IAM/CreateDelegation"
+	IAM_GetDelegation_FullMethodName                 = "/motiveiq.iam.v1.IAM/GetDelegation"
+	IAM_ListDelegations_FullMethodName               = "/motiveiq.iam.v1.IAM/ListDelegations"
+	IAM_UpdateDelegation_FullMethodName              = "/motiveiq.iam.v1.IAM/UpdateDelegation"
+	IAM_DeleteDelegation_FullMethodName              = "/motiveiq.iam.v1.IAM/DeleteDelegation"
+)
+
+// IAMClient is the client API for IAM service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type IAMClient interface {
+	CreateOIDCProvider(ctx context.Context, in *CreateOIDCProviderRequest, opts ...grpc.CallOption) (*OIDCProvider, error)
+	GetOIDCProvider(ctx context.Context, in *GetOIDCProviderRequest, opts ...grpc.CallOption) (*OIDCProvider, error)
+	ListOIDCProviders(ctx context.Context, in *ListOIDCProvidersRequest, opts ...grpc.CallOption) (*ListOIDCProvidersResponse, error)
+	DeleteOIDCProvider(ctx context.Context, in *DeleteOIDCProviderRequest, opts ...grpc.CallOption) (*DeleteOIDCProviderResponse, error)
+	CreateRole(ctx context.Context, in *CreateRoleRequest, opts ...grpc.CallOption) (*Role, error)
+	GetRole(ctx context.Context, in *GetRoleRequest, opts ...grpc.CallOption) (*Role, error)
+	ListRoles(ctx context.Context, in *ListRolesRequest, opts ...grpc.CallOption) (*ListRolesResponse, error)
+	UpdateRole(ctx context.Context, in *UpdateRoleRequest, opts ...grpc.CallOption) (*Role, error)
+	UpdateAssumeRolePolicy(ctx context.Context, in *UpdateAssumeRolePolicyRequest, opts ...grpc.CallOption) (*Role, error)
+	DeleteRole(ctx context.Context, in *DeleteRoleRequest, opts ...grpc.CallOption) (*DeleteRoleResponse, error)
+	AttachRolePolicy(ctx context.Context, in *AttachRolePolicyRequest, opts ...grpc.CallOption) (*AttachRolePolicyResponse, error)
+	DetachRolePolicy(ctx context.Context, in *DetachRolePolicyRequest, opts ...grpc.CallOption) (*DetachRolePolicyResponse, error)
+	CreatePolicy(ctx context.Context, in *CreatePolicyRequest, opts ...grpc.CallOption) (*Policy, error)
+	GetPolicy(ctx context.Context, in *GetPolicyRequest, opts ...grpc.CallOption) (*Policy, error)
+	ListPolicies(ctx context.Context, in *ListPoliciesRequest, opts ...grpc.CallOption) (*ListPoliciesResponse, error)
+	CreatePolicyVersion(ctx context.Context, in *CreatePolicyVersionRequest, opts ...grpc.CallOption) (*Policy, error)
+	DeletePolicy(ctx context.Context, in *DeletePolicyRequest, opts ...grpc.CallOption) (*DeletePolicyResponse, error)
+	PutResourcePolicy(ctx context.Context, in *PutResourcePolicyRequest, opts ...grpc.CallOption) (*ResourcePolicy, error)
+	GetResourcePolicy(ctx context.Context, in *GetResourcePolicyRequest, opts ...grpc.CallOption) (*ResourcePolicy, error)
+	ListResourcePolicies(ctx context.Context, in *ListResourcePoliciesRequest, opts ...grpc.CallOption) (*ListResourcePoliciesResponse, error)
+	DeleteResourcePolicy(ctx context.Context, in *DeleteResourcePolicyRequest, opts ...grpc.CallOption) (*DeleteResourcePolicyResponse, error)
+	PutServiceDefinition(ctx context.Context, in *PutServiceDefinitionRequest, opts ...grpc.CallOption) (*ServiceDefinition, error)
+	GetServiceDefinition(ctx context.Context, in *GetServiceDefinitionRequest, opts ...grpc.CallOption) (*ServiceDefinition, error)
+	ListServiceDefinitions(ctx context.Context, in *ListServiceDefinitionsRequest, opts ...grpc.CallOption) (*ListServiceDefinitionsResponse, error)
+	DeleteServiceDefinition(ctx context.Context, in *DeleteServiceDefinitionRequest, opts ...grpc.CallOption) (*DeleteServiceDefinitionResponse, error)
+	CreateServicePrincipal(ctx context.Context, in *CreateServicePrincipalRequest, opts ...grpc.CallOption) (*ServicePrincipal, error)
+	GetServicePrincipal(ctx context.Context, in *GetServicePrincipalRequest, opts ...grpc.CallOption) (*ServicePrincipal, error)
+	ListServicePrincipals(ctx context.Context, in *ListServicePrincipalsRequest, opts ...grpc.CallOption) (*ListServicePrincipalsResponse, error)
+	UpdateServicePrincipal(ctx context.Context, in *UpdateServicePrincipalRequest, opts ...grpc.CallOption) (*ServicePrincipal, error)
+	DeleteServicePrincipal(ctx context.Context, in *DeleteServicePrincipalRequest, opts ...grpc.CallOption) (*ServicePrincipal, error)
+	PutServicePrincipalBinding(ctx context.Context, in *PutServicePrincipalBindingRequest, opts ...grpc.CallOption) (*ServicePrincipalBinding, error)
+	DeleteServicePrincipalBinding(ctx context.Context, in *DeleteServicePrincipalBindingRequest, opts ...grpc.CallOption) (*ServicePrincipalBinding, error)
+	ListServicePrincipalBindings(ctx context.Context, in *ListServicePrincipalBindingsRequest, opts ...grpc.CallOption) (*ListServicePrincipalBindingsResponse, error)
+	CreateRequestContract(ctx context.Context, in *CreateRequestContractRequest, opts ...grpc.CallOption) (*RequestContract, error)
+	GetRequestContract(ctx context.Context, in *GetRequestContractRequest, opts ...grpc.CallOption) (*RequestContract, error)
+	ListRequestContracts(ctx context.Context, in *ListRequestContractsRequest, opts ...grpc.CallOption) (*ListRequestContractsResponse, error)
+	UpdateRequestContract(ctx context.Context, in *UpdateRequestContractRequest, opts ...grpc.CallOption) (*RequestContract, error)
+	DeleteRequestContract(ctx context.Context, in *DeleteRequestContractRequest, opts ...grpc.CallOption) (*RequestContract, error)
+	CreateDelegation(ctx context.Context, in *CreateDelegationRequest, opts ...grpc.CallOption) (*Delegation, error)
+	GetDelegation(ctx context.Context, in *GetDelegationRequest, opts ...grpc.CallOption) (*Delegation, error)
+	ListDelegations(ctx context.Context, in *ListDelegationsRequest, opts ...grpc.CallOption) (*ListDelegationsResponse, error)
+	UpdateDelegation(ctx context.Context, in *UpdateDelegationRequest, opts ...grpc.CallOption) (*Delegation, error)
+	DeleteDelegation(ctx context.Context, in *DeleteDelegationRequest, opts ...grpc.CallOption) (*Delegation, error)
+}
+
+type iAMClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewIAMClient(cc grpc.ClientConnInterface) IAMClient {
+	return &iAMClient{cc}
+}
+
+func (c *iAMClient) CreateOIDCProvider(ctx context.Context, in *CreateOIDCProviderRequest, opts ...grpc.CallOption) (*OIDCProvider, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(OIDCProvider)
+	err := c.cc.Invoke(ctx, IAM_CreateOIDCProvider_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) GetOIDCProvider(ctx context.Context, in *GetOIDCProviderRequest, opts ...grpc.CallOption) (*OIDCProvider, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(OIDCProvider)
+	err := c.cc.Invoke(ctx, IAM_GetOIDCProvider_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) ListOIDCProviders(ctx context.Context, in *ListOIDCProvidersRequest, opts ...grpc.CallOption) (*ListOIDCProvidersResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListOIDCProvidersResponse)
+	err := c.cc.Invoke(ctx, IAM_ListOIDCProviders_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) DeleteOIDCProvider(ctx context.Context, in *DeleteOIDCProviderRequest, opts ...grpc.CallOption) (*DeleteOIDCProviderResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteOIDCProviderResponse)
+	err := c.cc.Invoke(ctx, IAM_DeleteOIDCProvider_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) CreateRole(ctx context.Context, in *CreateRoleRequest, opts ...grpc.CallOption) (*Role, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Role)
+	err := c.cc.Invoke(ctx, IAM_CreateRole_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) GetRole(ctx context.Context, in *GetRoleRequest, opts ...grpc.CallOption) (*Role, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Role)
+	err := c.cc.Invoke(ctx, IAM_GetRole_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) ListRoles(ctx context.Context, in *ListRolesRequest, opts ...grpc.CallOption) (*ListRolesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListRolesResponse)
+	err := c.cc.Invoke(ctx, IAM_ListRoles_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) UpdateRole(ctx context.Context, in *UpdateRoleRequest, opts ...grpc.CallOption) (*Role, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Role)
+	err := c.cc.Invoke(ctx, IAM_UpdateRole_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) UpdateAssumeRolePolicy(ctx context.Context, in *UpdateAssumeRolePolicyRequest, opts ...grpc.CallOption) (*Role, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Role)
+	err := c.cc.Invoke(ctx, IAM_UpdateAssumeRolePolicy_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) DeleteRole(ctx context.Context, in *DeleteRoleRequest, opts ...grpc.CallOption) (*DeleteRoleResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteRoleResponse)
+	err := c.cc.Invoke(ctx, IAM_DeleteRole_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) AttachRolePolicy(ctx context.Context, in *AttachRolePolicyRequest, opts ...grpc.CallOption) (*AttachRolePolicyResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AttachRolePolicyResponse)
+	err := c.cc.Invoke(ctx, IAM_AttachRolePolicy_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) DetachRolePolicy(ctx context.Context, in *DetachRolePolicyRequest, opts ...grpc.CallOption) (*DetachRolePolicyResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DetachRolePolicyResponse)
+	err := c.cc.Invoke(ctx, IAM_DetachRolePolicy_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) CreatePolicy(ctx context.Context, in *CreatePolicyRequest, opts ...grpc.CallOption) (*Policy, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Policy)
+	err := c.cc.Invoke(ctx, IAM_CreatePolicy_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) GetPolicy(ctx context.Context, in *GetPolicyRequest, opts ...grpc.CallOption) (*Policy, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Policy)
+	err := c.cc.Invoke(ctx, IAM_GetPolicy_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) ListPolicies(ctx context.Context, in *ListPoliciesRequest, opts ...grpc.CallOption) (*ListPoliciesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListPoliciesResponse)
+	err := c.cc.Invoke(ctx, IAM_ListPolicies_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) CreatePolicyVersion(ctx context.Context, in *CreatePolicyVersionRequest, opts ...grpc.CallOption) (*Policy, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Policy)
+	err := c.cc.Invoke(ctx, IAM_CreatePolicyVersion_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) DeletePolicy(ctx context.Context, in *DeletePolicyRequest, opts ...grpc.CallOption) (*DeletePolicyResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeletePolicyResponse)
+	err := c.cc.Invoke(ctx, IAM_DeletePolicy_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) PutResourcePolicy(ctx context.Context, in *PutResourcePolicyRequest, opts ...grpc.CallOption) (*ResourcePolicy, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ResourcePolicy)
+	err := c.cc.Invoke(ctx, IAM_PutResourcePolicy_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) GetResourcePolicy(ctx context.Context, in *GetResourcePolicyRequest, opts ...grpc.CallOption) (*ResourcePolicy, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ResourcePolicy)
+	err := c.cc.Invoke(ctx, IAM_GetResourcePolicy_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) ListResourcePolicies(ctx context.Context, in *ListResourcePoliciesRequest, opts ...grpc.CallOption) (*ListResourcePoliciesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListResourcePoliciesResponse)
+	err := c.cc.Invoke(ctx, IAM_ListResourcePolicies_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) DeleteResourcePolicy(ctx context.Context, in *DeleteResourcePolicyRequest, opts ...grpc.CallOption) (*DeleteResourcePolicyResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteResourcePolicyResponse)
+	err := c.cc.Invoke(ctx, IAM_DeleteResourcePolicy_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) PutServiceDefinition(ctx context.Context, in *PutServiceDefinitionRequest, opts ...grpc.CallOption) (*ServiceDefinition, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ServiceDefinition)
+	err := c.cc.Invoke(ctx, IAM_PutServiceDefinition_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) GetServiceDefinition(ctx context.Context, in *GetServiceDefinitionRequest, opts ...grpc.CallOption) (*ServiceDefinition, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ServiceDefinition)
+	err := c.cc.Invoke(ctx, IAM_GetServiceDefinition_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) ListServiceDefinitions(ctx context.Context, in *ListServiceDefinitionsRequest, opts ...grpc.CallOption) (*ListServiceDefinitionsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListServiceDefinitionsResponse)
+	err := c.cc.Invoke(ctx, IAM_ListServiceDefinitions_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) DeleteServiceDefinition(ctx context.Context, in *DeleteServiceDefinitionRequest, opts ...grpc.CallOption) (*DeleteServiceDefinitionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteServiceDefinitionResponse)
+	err := c.cc.Invoke(ctx, IAM_DeleteServiceDefinition_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) CreateServicePrincipal(ctx context.Context, in *CreateServicePrincipalRequest, opts ...grpc.CallOption) (*ServicePrincipal, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ServicePrincipal)
+	err := c.cc.Invoke(ctx, IAM_CreateServicePrincipal_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) GetServicePrincipal(ctx context.Context, in *GetServicePrincipalRequest, opts ...grpc.CallOption) (*ServicePrincipal, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ServicePrincipal)
+	err := c.cc.Invoke(ctx, IAM_GetServicePrincipal_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) ListServicePrincipals(ctx context.Context, in *ListServicePrincipalsRequest, opts ...grpc.CallOption) (*ListServicePrincipalsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListServicePrincipalsResponse)
+	err := c.cc.Invoke(ctx, IAM_ListServicePrincipals_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) UpdateServicePrincipal(ctx context.Context, in *UpdateServicePrincipalRequest, opts ...grpc.CallOption) (*ServicePrincipal, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ServicePrincipal)
+	err := c.cc.Invoke(ctx, IAM_UpdateServicePrincipal_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) DeleteServicePrincipal(ctx context.Context, in *DeleteServicePrincipalRequest, opts ...grpc.CallOption) (*ServicePrincipal, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ServicePrincipal)
+	err := c.cc.Invoke(ctx, IAM_DeleteServicePrincipal_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) PutServicePrincipalBinding(ctx context.Context, in *PutServicePrincipalBindingRequest, opts ...grpc.CallOption) (*ServicePrincipalBinding, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ServicePrincipalBinding)
+	err := c.cc.Invoke(ctx, IAM_PutServicePrincipalBinding_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) DeleteServicePrincipalBinding(ctx context.Context, in *DeleteServicePrincipalBindingRequest, opts ...grpc.CallOption) (*ServicePrincipalBinding, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ServicePrincipalBinding)
+	err := c.cc.Invoke(ctx, IAM_DeleteServicePrincipalBinding_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) ListServicePrincipalBindings(ctx context.Context, in *ListServicePrincipalBindingsRequest, opts ...grpc.CallOption) (*ListServicePrincipalBindingsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListServicePrincipalBindingsResponse)
+	err := c.cc.Invoke(ctx, IAM_ListServicePrincipalBindings_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) CreateRequestContract(ctx context.Context, in *CreateRequestContractRequest, opts ...grpc.CallOption) (*RequestContract, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RequestContract)
+	err := c.cc.Invoke(ctx, IAM_CreateRequestContract_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) GetRequestContract(ctx context.Context, in *GetRequestContractRequest, opts ...grpc.CallOption) (*RequestContract, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RequestContract)
+	err := c.cc.Invoke(ctx, IAM_GetRequestContract_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) ListRequestContracts(ctx context.Context, in *ListRequestContractsRequest, opts ...grpc.CallOption) (*ListRequestContractsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListRequestContractsResponse)
+	err := c.cc.Invoke(ctx, IAM_ListRequestContracts_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) UpdateRequestContract(ctx context.Context, in *UpdateRequestContractRequest, opts ...grpc.CallOption) (*RequestContract, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RequestContract)
+	err := c.cc.Invoke(ctx, IAM_UpdateRequestContract_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) DeleteRequestContract(ctx context.Context, in *DeleteRequestContractRequest, opts ...grpc.CallOption) (*RequestContract, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RequestContract)
+	err := c.cc.Invoke(ctx, IAM_DeleteRequestContract_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) CreateDelegation(ctx context.Context, in *CreateDelegationRequest, opts ...grpc.CallOption) (*Delegation, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Delegation)
+	err := c.cc.Invoke(ctx, IAM_CreateDelegation_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) GetDelegation(ctx context.Context, in *GetDelegationRequest, opts ...grpc.CallOption) (*Delegation, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Delegation)
+	err := c.cc.Invoke(ctx, IAM_GetDelegation_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) ListDelegations(ctx context.Context, in *ListDelegationsRequest, opts ...grpc.CallOption) (*ListDelegationsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListDelegationsResponse)
+	err := c.cc.Invoke(ctx, IAM_ListDelegations_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) UpdateDelegation(ctx context.Context, in *UpdateDelegationRequest, opts ...grpc.CallOption) (*Delegation, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Delegation)
+	err := c.cc.Invoke(ctx, IAM_UpdateDelegation_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) DeleteDelegation(ctx context.Context, in *DeleteDelegationRequest, opts ...grpc.CallOption) (*Delegation, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Delegation)
+	err := c.cc.Invoke(ctx, IAM_DeleteDelegation_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// IAMServer is the server API for IAM service.
+// All implementations should embed UnimplementedIAMServer
+// for forward compatibility.
+type IAMServer interface {
+	CreateOIDCProvider(context.Context, *CreateOIDCProviderRequest) (*OIDCProvider, error)
+	GetOIDCProvider(context.Context, *GetOIDCProviderRequest) (*OIDCProvider, error)
+	ListOIDCProviders(context.Context, *ListOIDCProvidersRequest) (*ListOIDCProvidersResponse, error)
+	DeleteOIDCProvider(context.Context, *DeleteOIDCProviderRequest) (*DeleteOIDCProviderResponse, error)
+	CreateRole(context.Context, *CreateRoleRequest) (*Role, error)
+	GetRole(context.Context, *GetRoleRequest) (*Role, error)
+	ListRoles(context.Context, *ListRolesRequest) (*ListRolesResponse, error)
+	UpdateRole(context.Context, *UpdateRoleRequest) (*Role, error)
+	UpdateAssumeRolePolicy(context.Context, *UpdateAssumeRolePolicyRequest) (*Role, error)
+	DeleteRole(context.Context, *DeleteRoleRequest) (*DeleteRoleResponse, error)
+	AttachRolePolicy(context.Context, *AttachRolePolicyRequest) (*AttachRolePolicyResponse, error)
+	DetachRolePolicy(context.Context, *DetachRolePolicyRequest) (*DetachRolePolicyResponse, error)
+	CreatePolicy(context.Context, *CreatePolicyRequest) (*Policy, error)
+	GetPolicy(context.Context, *GetPolicyRequest) (*Policy, error)
+	ListPolicies(context.Context, *ListPoliciesRequest) (*ListPoliciesResponse, error)
+	CreatePolicyVersion(context.Context, *CreatePolicyVersionRequest) (*Policy, error)
+	DeletePolicy(context.Context, *DeletePolicyRequest) (*DeletePolicyResponse, error)
+	PutResourcePolicy(context.Context, *PutResourcePolicyRequest) (*ResourcePolicy, error)
+	GetResourcePolicy(context.Context, *GetResourcePolicyRequest) (*ResourcePolicy, error)
+	ListResourcePolicies(context.Context, *ListResourcePoliciesRequest) (*ListResourcePoliciesResponse, error)
+	DeleteResourcePolicy(context.Context, *DeleteResourcePolicyRequest) (*DeleteResourcePolicyResponse, error)
+	PutServiceDefinition(context.Context, *PutServiceDefinitionRequest) (*ServiceDefinition, error)
+	GetServiceDefinition(context.Context, *GetServiceDefinitionRequest) (*ServiceDefinition, error)
+	ListServiceDefinitions(context.Context, *ListServiceDefinitionsRequest) (*ListServiceDefinitionsResponse, error)
+	DeleteServiceDefinition(context.Context, *DeleteServiceDefinitionRequest) (*DeleteServiceDefinitionResponse, error)
+	CreateServicePrincipal(context.Context, *CreateServicePrincipalRequest) (*ServicePrincipal, error)
+	GetServicePrincipal(context.Context, *GetServicePrincipalRequest) (*ServicePrincipal, error)
+	ListServicePrincipals(context.Context, *ListServicePrincipalsRequest) (*ListServicePrincipalsResponse, error)
+	UpdateServicePrincipal(context.Context, *UpdateServicePrincipalRequest) (*ServicePrincipal, error)
+	DeleteServicePrincipal(context.Context, *DeleteServicePrincipalRequest) (*ServicePrincipal, error)
+	PutServicePrincipalBinding(context.Context, *PutServicePrincipalBindingRequest) (*ServicePrincipalBinding, error)
+	DeleteServicePrincipalBinding(context.Context, *DeleteServicePrincipalBindingRequest) (*ServicePrincipalBinding, error)
+	ListServicePrincipalBindings(context.Context, *ListServicePrincipalBindingsRequest) (*ListServicePrincipalBindingsResponse, error)
+	CreateRequestContract(context.Context, *CreateRequestContractRequest) (*RequestContract, error)
+	GetRequestContract(context.Context, *GetRequestContractRequest) (*RequestContract, error)
+	ListRequestContracts(context.Context, *ListRequestContractsRequest) (*ListRequestContractsResponse, error)
+	UpdateRequestContract(context.Context, *UpdateRequestContractRequest) (*RequestContract, error)
+	DeleteRequestContract(context.Context, *DeleteRequestContractRequest) (*RequestContract, error)
+	CreateDelegation(context.Context, *CreateDelegationRequest) (*Delegation, error)
+	GetDelegation(context.Context, *GetDelegationRequest) (*Delegation, error)
+	ListDelegations(context.Context, *ListDelegationsRequest) (*ListDelegationsResponse, error)
+	UpdateDelegation(context.Context, *UpdateDelegationRequest) (*Delegation, error)
+	DeleteDelegation(context.Context, *DeleteDelegationRequest) (*Delegation, error)
+}
+
+// UnimplementedIAMServer should be embedded to have
+// forward compatible implementations.
+//
+// NOTE: this should be embedded by value instead of pointer to avoid a nil
+// pointer dereference when methods are called.
+type UnimplementedIAMServer struct{}
+
+func (UnimplementedIAMServer) CreateOIDCProvider(context.Context, *CreateOIDCProviderRequest) (*OIDCProvider, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateOIDCProvider not implemented")
+}
+func (UnimplementedIAMServer) GetOIDCProvider(context.Context, *GetOIDCProviderRequest) (*OIDCProvider, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetOIDCProvider not implemented")
+}
+func (UnimplementedIAMServer) ListOIDCProviders(context.Context, *ListOIDCProvidersRequest) (*ListOIDCProvidersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListOIDCProviders not implemented")
+}
+func (UnimplementedIAMServer) DeleteOIDCProvider(context.Context, *DeleteOIDCProviderRequest) (*DeleteOIDCProviderResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteOIDCProvider not implemented")
+}
+func (UnimplementedIAMServer) CreateRole(context.Context, *CreateRoleRequest) (*Role, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateRole not implemented")
+}
+func (UnimplementedIAMServer) GetRole(context.Context, *GetRoleRequest) (*Role, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRole not implemented")
+}
+func (UnimplementedIAMServer) ListRoles(context.Context, *ListRolesRequest) (*ListRolesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListRoles not implemented")
+}
+func (UnimplementedIAMServer) UpdateRole(context.Context, *UpdateRoleRequest) (*Role, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateRole not implemented")
+}
+func (UnimplementedIAMServer) UpdateAssumeRolePolicy(context.Context, *UpdateAssumeRolePolicyRequest) (*Role, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateAssumeRolePolicy not implemented")
+}
+func (UnimplementedIAMServer) DeleteRole(context.Context, *DeleteRoleRequest) (*DeleteRoleResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteRole not implemented")
+}
+func (UnimplementedIAMServer) AttachRolePolicy(context.Context, *AttachRolePolicyRequest) (*AttachRolePolicyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AttachRolePolicy not implemented")
+}
+func (UnimplementedIAMServer) DetachRolePolicy(context.Context, *DetachRolePolicyRequest) (*DetachRolePolicyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DetachRolePolicy not implemented")
+}
+func (UnimplementedIAMServer) CreatePolicy(context.Context, *CreatePolicyRequest) (*Policy, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreatePolicy not implemented")
+}
+func (UnimplementedIAMServer) GetPolicy(context.Context, *GetPolicyRequest) (*Policy, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPolicy not implemented")
+}
+func (UnimplementedIAMServer) ListPolicies(context.Context, *ListPoliciesRequest) (*ListPoliciesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListPolicies not implemented")
+}
+func (UnimplementedIAMServer) CreatePolicyVersion(context.Context, *CreatePolicyVersionRequest) (*Policy, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreatePolicyVersion not implemented")
+}
+func (UnimplementedIAMServer) DeletePolicy(context.Context, *DeletePolicyRequest) (*DeletePolicyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeletePolicy not implemented")
+}
+func (UnimplementedIAMServer) PutResourcePolicy(context.Context, *PutResourcePolicyRequest) (*ResourcePolicy, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PutResourcePolicy not implemented")
+}
+func (UnimplementedIAMServer) GetResourcePolicy(context.Context, *GetResourcePolicyRequest) (*ResourcePolicy, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetResourcePolicy not implemented")
+}
+func (UnimplementedIAMServer) ListResourcePolicies(context.Context, *ListResourcePoliciesRequest) (*ListResourcePoliciesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListResourcePolicies not implemented")
+}
+func (UnimplementedIAMServer) DeleteResourcePolicy(context.Context, *DeleteResourcePolicyRequest) (*DeleteResourcePolicyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteResourcePolicy not implemented")
+}
+func (UnimplementedIAMServer) PutServiceDefinition(context.Context, *PutServiceDefinitionRequest) (*ServiceDefinition, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PutServiceDefinition not implemented")
+}
+func (UnimplementedIAMServer) GetServiceDefinition(context.Context, *GetServiceDefinitionRequest) (*ServiceDefinition, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetServiceDefinition not implemented")
+}
+func (UnimplementedIAMServer) ListServiceDefinitions(context.Context, *ListServiceDefinitionsRequest) (*ListServiceDefinitionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListServiceDefinitions not implemented")
+}
+func (UnimplementedIAMServer) DeleteServiceDefinition(context.Context, *DeleteServiceDefinitionRequest) (*DeleteServiceDefinitionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteServiceDefinition not implemented")
+}
+func (UnimplementedIAMServer) CreateServicePrincipal(context.Context, *CreateServicePrincipalRequest) (*ServicePrincipal, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateServicePrincipal not implemented")
+}
+func (UnimplementedIAMServer) GetServicePrincipal(context.Context, *GetServicePrincipalRequest) (*ServicePrincipal, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetServicePrincipal not implemented")
+}
+func (UnimplementedIAMServer) ListServicePrincipals(context.Context, *ListServicePrincipalsRequest) (*ListServicePrincipalsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListServicePrincipals not implemented")
+}
+func (UnimplementedIAMServer) UpdateServicePrincipal(context.Context, *UpdateServicePrincipalRequest) (*ServicePrincipal, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateServicePrincipal not implemented")
+}
+func (UnimplementedIAMServer) DeleteServicePrincipal(context.Context, *DeleteServicePrincipalRequest) (*ServicePrincipal, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteServicePrincipal not implemented")
+}
+func (UnimplementedIAMServer) PutServicePrincipalBinding(context.Context, *PutServicePrincipalBindingRequest) (*ServicePrincipalBinding, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PutServicePrincipalBinding not implemented")
+}
+func (UnimplementedIAMServer) DeleteServicePrincipalBinding(context.Context, *DeleteServicePrincipalBindingRequest) (*ServicePrincipalBinding, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteServicePrincipalBinding not implemented")
+}
+func (UnimplementedIAMServer) ListServicePrincipalBindings(context.Context, *ListServicePrincipalBindingsRequest) (*ListServicePrincipalBindingsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListServicePrincipalBindings not implemented")
+}
+func (UnimplementedIAMServer) CreateRequestContract(context.Context, *CreateRequestContractRequest) (*RequestContract, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateRequestContract not implemented")
+}
+func (UnimplementedIAMServer) GetRequestContract(context.Context, *GetRequestContractRequest) (*RequestContract, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRequestContract not implemented")
+}
+func (UnimplementedIAMServer) ListRequestContracts(context.Context, *ListRequestContractsRequest) (*ListRequestContractsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListRequestContracts not implemented")
+}
+func (UnimplementedIAMServer) UpdateRequestContract(context.Context, *UpdateRequestContractRequest) (*RequestContract, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateRequestContract not implemented")
+}
+func (UnimplementedIAMServer) DeleteRequestContract(context.Context, *DeleteRequestContractRequest) (*RequestContract, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteRequestContract not implemented")
+}
+func (UnimplementedIAMServer) CreateDelegation(context.Context, *CreateDelegationRequest) (*Delegation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateDelegation not implemented")
+}
+func (UnimplementedIAMServer) GetDelegation(context.Context, *GetDelegationRequest) (*Delegation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetDelegation not implemented")
+}
+func (UnimplementedIAMServer) ListDelegations(context.Context, *ListDelegationsRequest) (*ListDelegationsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListDelegations not implemented")
+}
+func (UnimplementedIAMServer) UpdateDelegation(context.Context, *UpdateDelegationRequest) (*Delegation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateDelegation not implemented")
+}
+func (UnimplementedIAMServer) DeleteDelegation(context.Context, *DeleteDelegationRequest) (*Delegation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteDelegation not implemented")
+}
+func (UnimplementedIAMServer) testEmbeddedByValue() {}
+
+// UnsafeIAMServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to IAMServer will
+// result in compilation errors.
+type UnsafeIAMServer interface {
+	mustEmbedUnimplementedIAMServer()
+}
+
+func RegisterIAMServer(s grpc.ServiceRegistrar, srv IAMServer) {
+	// If the following call pancis, it indicates UnimplementedIAMServer was
+	// embedded by pointer and is nil.  This will cause panics if an
+	// unimplemented method is ever invoked, so we test this at initialization
+	// time to prevent it from happening at runtime later due to I/O.
+	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
+		t.testEmbeddedByValue()
+	}
+	s.RegisterService(&IAM_ServiceDesc, srv)
+}
+
+func _IAM_CreateOIDCProvider_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateOIDCProviderRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).CreateOIDCProvider(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_CreateOIDCProvider_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).CreateOIDCProvider(ctx, req.(*CreateOIDCProviderRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_GetOIDCProvider_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetOIDCProviderRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).GetOIDCProvider(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_GetOIDCProvider_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).GetOIDCProvider(ctx, req.(*GetOIDCProviderRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_ListOIDCProviders_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListOIDCProvidersRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).ListOIDCProviders(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_ListOIDCProviders_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).ListOIDCProviders(ctx, req.(*ListOIDCProvidersRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_DeleteOIDCProvider_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteOIDCProviderRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).DeleteOIDCProvider(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_DeleteOIDCProvider_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).DeleteOIDCProvider(ctx, req.(*DeleteOIDCProviderRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_CreateRole_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateRoleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).CreateRole(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_CreateRole_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).CreateRole(ctx, req.(*CreateRoleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_GetRole_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRoleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).GetRole(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_GetRole_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).GetRole(ctx, req.(*GetRoleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_ListRoles_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListRolesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).ListRoles(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_ListRoles_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).ListRoles(ctx, req.(*ListRolesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_UpdateRole_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateRoleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).UpdateRole(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_UpdateRole_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).UpdateRole(ctx, req.(*UpdateRoleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_UpdateAssumeRolePolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateAssumeRolePolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).UpdateAssumeRolePolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_UpdateAssumeRolePolicy_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).UpdateAssumeRolePolicy(ctx, req.(*UpdateAssumeRolePolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_DeleteRole_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteRoleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).DeleteRole(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_DeleteRole_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).DeleteRole(ctx, req.(*DeleteRoleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_AttachRolePolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AttachRolePolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).AttachRolePolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_AttachRolePolicy_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).AttachRolePolicy(ctx, req.(*AttachRolePolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_DetachRolePolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DetachRolePolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).DetachRolePolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_DetachRolePolicy_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).DetachRolePolicy(ctx, req.(*DetachRolePolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_CreatePolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreatePolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).CreatePolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_CreatePolicy_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).CreatePolicy(ctx, req.(*CreatePolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_GetPolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).GetPolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_GetPolicy_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).GetPolicy(ctx, req.(*GetPolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_ListPolicies_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListPoliciesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).ListPolicies(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_ListPolicies_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).ListPolicies(ctx, req.(*ListPoliciesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_CreatePolicyVersion_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreatePolicyVersionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).CreatePolicyVersion(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_CreatePolicyVersion_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).CreatePolicyVersion(ctx, req.(*CreatePolicyVersionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_DeletePolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeletePolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).DeletePolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_DeletePolicy_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).DeletePolicy(ctx, req.(*DeletePolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_PutResourcePolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PutResourcePolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).PutResourcePolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_PutResourcePolicy_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).PutResourcePolicy(ctx, req.(*PutResourcePolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_GetResourcePolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetResourcePolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).GetResourcePolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_GetResourcePolicy_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).GetResourcePolicy(ctx, req.(*GetResourcePolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_ListResourcePolicies_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListResourcePoliciesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).ListResourcePolicies(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_ListResourcePolicies_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).ListResourcePolicies(ctx, req.(*ListResourcePoliciesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_DeleteResourcePolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteResourcePolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).DeleteResourcePolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_DeleteResourcePolicy_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).DeleteResourcePolicy(ctx, req.(*DeleteResourcePolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_PutServiceDefinition_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PutServiceDefinitionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).PutServiceDefinition(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_PutServiceDefinition_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).PutServiceDefinition(ctx, req.(*PutServiceDefinitionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_GetServiceDefinition_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetServiceDefinitionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).GetServiceDefinition(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_GetServiceDefinition_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).GetServiceDefinition(ctx, req.(*GetServiceDefinitionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_ListServiceDefinitions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListServiceDefinitionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).ListServiceDefinitions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_ListServiceDefinitions_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).ListServiceDefinitions(ctx, req.(*ListServiceDefinitionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_DeleteServiceDefinition_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteServiceDefinitionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).DeleteServiceDefinition(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_DeleteServiceDefinition_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).DeleteServiceDefinition(ctx, req.(*DeleteServiceDefinitionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_CreateServicePrincipal_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateServicePrincipalRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).CreateServicePrincipal(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_CreateServicePrincipal_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).CreateServicePrincipal(ctx, req.(*CreateServicePrincipalRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_GetServicePrincipal_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetServicePrincipalRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).GetServicePrincipal(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_GetServicePrincipal_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).GetServicePrincipal(ctx, req.(*GetServicePrincipalRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_ListServicePrincipals_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListServicePrincipalsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).ListServicePrincipals(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_ListServicePrincipals_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).ListServicePrincipals(ctx, req.(*ListServicePrincipalsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_UpdateServicePrincipal_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateServicePrincipalRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).UpdateServicePrincipal(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_UpdateServicePrincipal_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).UpdateServicePrincipal(ctx, req.(*UpdateServicePrincipalRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_DeleteServicePrincipal_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteServicePrincipalRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).DeleteServicePrincipal(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_DeleteServicePrincipal_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).DeleteServicePrincipal(ctx, req.(*DeleteServicePrincipalRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_PutServicePrincipalBinding_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PutServicePrincipalBindingRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).PutServicePrincipalBinding(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_PutServicePrincipalBinding_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).PutServicePrincipalBinding(ctx, req.(*PutServicePrincipalBindingRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_DeleteServicePrincipalBinding_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteServicePrincipalBindingRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).DeleteServicePrincipalBinding(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_DeleteServicePrincipalBinding_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).DeleteServicePrincipalBinding(ctx, req.(*DeleteServicePrincipalBindingRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_ListServicePrincipalBindings_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListServicePrincipalBindingsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).ListServicePrincipalBindings(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_ListServicePrincipalBindings_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).ListServicePrincipalBindings(ctx, req.(*ListServicePrincipalBindingsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_CreateRequestContract_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateRequestContractRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).CreateRequestContract(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_CreateRequestContract_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).CreateRequestContract(ctx, req.(*CreateRequestContractRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_GetRequestContract_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRequestContractRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).GetRequestContract(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_GetRequestContract_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).GetRequestContract(ctx, req.(*GetRequestContractRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_ListRequestContracts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListRequestContractsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).ListRequestContracts(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_ListRequestContracts_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).ListRequestContracts(ctx, req.(*ListRequestContractsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_UpdateRequestContract_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateRequestContractRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).UpdateRequestContract(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_UpdateRequestContract_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).UpdateRequestContract(ctx, req.(*UpdateRequestContractRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_DeleteRequestContract_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteRequestContractRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).DeleteRequestContract(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_DeleteRequestContract_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).DeleteRequestContract(ctx, req.(*DeleteRequestContractRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_CreateDelegation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateDelegationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).CreateDelegation(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_CreateDelegation_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).CreateDelegation(ctx, req.(*CreateDelegationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_GetDelegation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetDelegationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).GetDelegation(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_GetDelegation_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).GetDelegation(ctx, req.(*GetDelegationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_ListDelegations_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListDelegationsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).ListDelegations(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_ListDelegations_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).ListDelegations(ctx, req.(*ListDelegationsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_UpdateDelegation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateDelegationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).UpdateDelegation(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_UpdateDelegation_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).UpdateDelegation(ctx, req.(*UpdateDelegationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_DeleteDelegation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteDelegationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).DeleteDelegation(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_DeleteDelegation_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).DeleteDelegation(ctx, req.(*DeleteDelegationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// IAM_ServiceDesc is the grpc.ServiceDesc for IAM service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var IAM_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "motiveiq.iam.v1.IAM",
+	HandlerType: (*IAMServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "CreateOIDCProvider",
+			Handler:    _IAM_CreateOIDCProvider_Handler,
+		},
+		{
+			MethodName: "GetOIDCProvider",
+			Handler:    _IAM_GetOIDCProvider_Handler,
+		},
+		{
+			MethodName: "ListOIDCProviders",
+			Handler:    _IAM_ListOIDCProviders_Handler,
+		},
+		{
+			MethodName: "DeleteOIDCProvider",
+			Handler:    _IAM_DeleteOIDCProvider_Handler,
+		},
+		{
+			MethodName: "CreateRole",
+			Handler:    _IAM_CreateRole_Handler,
+		},
+		{
+			MethodName: "GetRole",
+			Handler:    _IAM_GetRole_Handler,
+		},
+		{
+			MethodName: "ListRoles",
+			Handler:    _IAM_ListRoles_Handler,
+		},
+		{
+			MethodName: "UpdateRole",
+			Handler:    _IAM_UpdateRole_Handler,
+		},
+		{
+			MethodName: "UpdateAssumeRolePolicy",
+			Handler:    _IAM_UpdateAssumeRolePolicy_Handler,
+		},
+		{
+			MethodName: "DeleteRole",
+			Handler:    _IAM_DeleteRole_Handler,
+		},
+		{
+			MethodName: "AttachRolePolicy",
+			Handler:    _IAM_AttachRolePolicy_Handler,
+		},
+		{
+			MethodName: "DetachRolePolicy",
+			Handler:    _IAM_DetachRolePolicy_Handler,
+		},
+		{
+			MethodName: "CreatePolicy",
+			Handler:    _IAM_CreatePolicy_Handler,
+		},
+		{
+			MethodName: "GetPolicy",
+			Handler:    _IAM_GetPolicy_Handler,
+		},
+		{
+			MethodName: "ListPolicies",
+			Handler:    _IAM_ListPolicies_Handler,
+		},
+		{
+			MethodName: "CreatePolicyVersion",
+			Handler:    _IAM_CreatePolicyVersion_Handler,
+		},
+		{
+			MethodName: "DeletePolicy",
+			Handler:    _IAM_DeletePolicy_Handler,
+		},
+		{
+			MethodName: "PutResourcePolicy",
+			Handler:    _IAM_PutResourcePolicy_Handler,
+		},
+		{
+			MethodName: "GetResourcePolicy",
+			Handler:    _IAM_GetResourcePolicy_Handler,
+		},
+		{
+			MethodName: "ListResourcePolicies",
+			Handler:    _IAM_ListResourcePolicies_Handler,
+		},
+		{
+			MethodName: "DeleteResourcePolicy",
+			Handler:    _IAM_DeleteResourcePolicy_Handler,
+		},
+		{
+			MethodName: "PutServiceDefinition",
+			Handler:    _IAM_PutServiceDefinition_Handler,
+		},
+		{
+			MethodName: "GetServiceDefinition",
+			Handler:    _IAM_GetServiceDefinition_Handler,
+		},
+		{
+			MethodName: "ListServiceDefinitions",
+			Handler:    _IAM_ListServiceDefinitions_Handler,
+		},
+		{
+			MethodName: "DeleteServiceDefinition",
+			Handler:    _IAM_DeleteServiceDefinition_Handler,
+		},
+		{
+			MethodName: "CreateServicePrincipal",
+			Handler:    _IAM_CreateServicePrincipal_Handler,
+		},
+		{
+			MethodName: "GetServicePrincipal",
+			Handler:    _IAM_GetServicePrincipal_Handler,
+		},
+		{
+			MethodName: "ListServicePrincipals",
+			Handler:    _IAM_ListServicePrincipals_Handler,
+		},
+		{
+			MethodName: "UpdateServicePrincipal",
+			Handler:    _IAM_UpdateServicePrincipal_Handler,
+		},
+		{
+			MethodName: "DeleteServicePrincipal",
+			Handler:    _IAM_DeleteServicePrincipal_Handler,
+		},
+		{
+			MethodName: "PutServicePrincipalBinding",
+			Handler:    _IAM_PutServicePrincipalBinding_Handler,
+		},
+		{
+			MethodName: "DeleteServicePrincipalBinding",
+			Handler:    _IAM_DeleteServicePrincipalBinding_Handler,
+		},
+		{
+			MethodName: "ListServicePrincipalBindings",
+			Handler:    _IAM_ListServicePrincipalBindings_Handler,
+		},
+		{
+			MethodName: "CreateRequestContract",
+			Handler:    _IAM_CreateRequestContract_Handler,
+		},
+		{
+			MethodName: "GetRequestContract",
+			Handler:    _IAM_GetRequestContract_Handler,
+		},
+		{
+			MethodName: "ListRequestContracts",
+			Handler:    _IAM_ListRequestContracts_Handler,
+		},
+		{
+			MethodName: "UpdateRequestContract",
+			Handler:    _IAM_UpdateRequestContract_Handler,
+		},
+		{
+			MethodName: "DeleteRequestContract",
+			Handler:    _IAM_DeleteRequestContract_Handler,
+		},
+		{
+			MethodName: "CreateDelegation",
+			Handler:    _IAM_CreateDelegation_Handler,
+		},
+		{
+			MethodName: "GetDelegation",
+			Handler:    _IAM_GetDelegation_Handler,
+		},
+		{
+			MethodName: "ListDelegations",
+			Handler:    _IAM_ListDelegations_Handler,
+		},
+		{
+			MethodName: "UpdateDelegation",
+			Handler:    _IAM_UpdateDelegation_Handler,
+		},
+		{
+			MethodName: "DeleteDelegation",
+			Handler:    _IAM_DeleteDelegation_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "platform/iam/api/v1/iam.proto",
+}
+
+const (
 	ControlPlane_CreateOIDCProvider_FullMethodName            = "/motiveiq.iam.v1.ControlPlane/CreateOIDCProvider"
 	ControlPlane_GetOIDCProvider_FullMethodName               = "/motiveiq.iam.v1.ControlPlane/GetOIDCProvider"
 	ControlPlane_ListOIDCProviders_FullMethodName             = "/motiveiq.iam.v1.ControlPlane/ListOIDCProviders"
@@ -67,6 +1763,8 @@ const (
 // ControlPlaneClient is the client API for ControlPlane service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+//
+// Deprecated: Do not use.
 type ControlPlaneClient interface {
 	CreateOIDCProvider(ctx context.Context, in *CreateOIDCProviderRequest, opts ...grpc.CallOption) (*OIDCProvider, error)
 	GetOIDCProvider(ctx context.Context, in *GetOIDCProviderRequest, opts ...grpc.CallOption) (*OIDCProvider, error)
@@ -117,6 +1815,7 @@ type controlPlaneClient struct {
 	cc grpc.ClientConnInterface
 }
 
+// Deprecated: Do not use.
 func NewControlPlaneClient(cc grpc.ClientConnInterface) ControlPlaneClient {
 	return &controlPlaneClient{cc}
 }
@@ -554,6 +2253,8 @@ func (c *controlPlaneClient) DeleteDelegation(ctx context.Context, in *DeleteDel
 // ControlPlaneServer is the server API for ControlPlane service.
 // All implementations should embed UnimplementedControlPlaneServer
 // for forward compatibility.
+//
+// Deprecated: Do not use.
 type ControlPlaneServer interface {
 	CreateOIDCProvider(context.Context, *CreateOIDCProviderRequest) (*OIDCProvider, error)
 	GetOIDCProvider(context.Context, *GetOIDCProviderRequest) (*OIDCProvider, error)
@@ -745,6 +2446,7 @@ type UnsafeControlPlaneServer interface {
 	mustEmbedUnimplementedControlPlaneServer()
 }
 
+// Deprecated: Do not use.
 func RegisterControlPlaneServer(s grpc.ServiceRegistrar, srv ControlPlaneServer) {
 	// If the following call pancis, it indicates UnimplementedControlPlaneServer was
 	// embedded by pointer and is nil.  This will cause panics if an

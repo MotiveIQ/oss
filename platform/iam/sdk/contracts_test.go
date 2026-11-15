@@ -20,6 +20,7 @@ import (
 // A package graph alone cannot detect a private service placed in an otherwise
 // public proto package. Check all descriptors linked by the public clients.
 var publicServices = map[protoreflect.FullName]bool{
+	"motiveiq.iam.v1.IAM":                       true,
 	"motiveiq.iam.v1.ControlPlane":              true,
 	"motiveiq.iam.v1.STS":                       true,
 	"motiveiq.kms.v1.ControlPlane":              true,
