@@ -21,7 +21,6 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	STS_AssumeRoleWithWebIdentity_FullMethodName = "/motiveiq.iam.v1.STS/AssumeRoleWithWebIdentity"
 	STS_GetCallerIdentity_FullMethodName         = "/motiveiq.iam.v1.STS/GetCallerIdentity"
-	STS_IssueDelegationToken_FullMethodName      = "/motiveiq.iam.v1.STS/IssueDelegationToken"
 )
 
 // STSClient is the client API for STS service.
@@ -30,7 +29,6 @@ const (
 type STSClient interface {
 	AssumeRoleWithWebIdentity(ctx context.Context, in *AssumeRoleWithWebIdentityRequest, opts ...grpc.CallOption) (*AssumeRoleWithWebIdentityResponse, error)
 	GetCallerIdentity(ctx context.Context, in *GetCallerIdentityRequest, opts ...grpc.CallOption) (*GetCallerIdentityResponse, error)
-	IssueDelegationToken(ctx context.Context, in *IssueDelegationTokenRequest, opts ...grpc.CallOption) (*IssueDelegationTokenResponse, error)
 }
 
 type sTSClient struct {
@@ -61,23 +59,12 @@ func (c *sTSClient) GetCallerIdentity(ctx context.Context, in *GetCallerIdentity
 	return out, nil
 }
 
-func (c *sTSClient) IssueDelegationToken(ctx context.Context, in *IssueDelegationTokenRequest, opts ...grpc.CallOption) (*IssueDelegationTokenResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(IssueDelegationTokenResponse)
-	err := c.cc.Invoke(ctx, STS_IssueDelegationToken_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // STSServer is the server API for STS service.
 // All implementations should embed UnimplementedSTSServer
 // for forward compatibility.
 type STSServer interface {
 	AssumeRoleWithWebIdentity(context.Context, *AssumeRoleWithWebIdentityRequest) (*AssumeRoleWithWebIdentityResponse, error)
 	GetCallerIdentity(context.Context, *GetCallerIdentityRequest) (*GetCallerIdentityResponse, error)
-	IssueDelegationToken(context.Context, *IssueDelegationTokenRequest) (*IssueDelegationTokenResponse, error)
 }
 
 // UnimplementedSTSServer should be embedded to have
@@ -92,9 +79,6 @@ func (UnimplementedSTSServer) AssumeRoleWithWebIdentity(context.Context, *Assume
 }
 func (UnimplementedSTSServer) GetCallerIdentity(context.Context, *GetCallerIdentityRequest) (*GetCallerIdentityResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCallerIdentity not implemented")
-}
-func (UnimplementedSTSServer) IssueDelegationToken(context.Context, *IssueDelegationTokenRequest) (*IssueDelegationTokenResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method IssueDelegationToken not implemented")
 }
 func (UnimplementedSTSServer) testEmbeddedByValue() {}
 
@@ -152,24 +136,6 @@ func _STS_GetCallerIdentity_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
-func _STS_IssueDelegationToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(IssueDelegationTokenRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(STSServer).IssueDelegationToken(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: STS_IssueDelegationToken_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(STSServer).IssueDelegationToken(ctx, req.(*IssueDelegationTokenRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // STS_ServiceDesc is the grpc.ServiceDesc for STS service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -184,10 +150,6 @@ var STS_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetCallerIdentity",
 			Handler:    _STS_GetCallerIdentity_Handler,
-		},
-		{
-			MethodName: "IssueDelegationToken",
-			Handler:    _STS_IssueDelegationToken_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -10,7 +10,6 @@ import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	descriptorpb "google.golang.org/protobuf/types/descriptorpb"
-	structpb "google.golang.org/protobuf/types/known/structpb"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
@@ -125,55 +124,6 @@ func (SourceResourceSelectorKind) EnumDescriptor() ([]byte, []int) {
 	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{1}
 }
 
-type SourcePayloadVerification int32
-
-const (
-	SourcePayloadVerification_SOURCE_PAYLOAD_VERIFICATION_UNSPECIFIED        SourcePayloadVerification = 0
-	SourcePayloadVerification_SOURCE_PAYLOAD_VERIFICATION_BODY_VERIFIED      SourcePayloadVerification = 1
-	SourcePayloadVerification_SOURCE_PAYLOAD_VERIFICATION_SIGNED_DIGEST_ONLY SourcePayloadVerification = 2
-)
-
-// Enum value maps for SourcePayloadVerification.
-var (
-	SourcePayloadVerification_name = map[int32]string{
-		0: "SOURCE_PAYLOAD_VERIFICATION_UNSPECIFIED",
-		1: "SOURCE_PAYLOAD_VERIFICATION_BODY_VERIFIED",
-		2: "SOURCE_PAYLOAD_VERIFICATION_SIGNED_DIGEST_ONLY",
-	}
-	SourcePayloadVerification_value = map[string]int32{
-		"SOURCE_PAYLOAD_VERIFICATION_UNSPECIFIED":        0,
-		"SOURCE_PAYLOAD_VERIFICATION_BODY_VERIFIED":      1,
-		"SOURCE_PAYLOAD_VERIFICATION_SIGNED_DIGEST_ONLY": 2,
-	}
-)
-
-func (x SourcePayloadVerification) Enum() *SourcePayloadVerification {
-	p := new(SourcePayloadVerification)
-	*p = x
-	return p
-}
-
-func (x SourcePayloadVerification) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (SourcePayloadVerification) Descriptor() protoreflect.EnumDescriptor {
-	return file_platform_iam_api_v1_delegation_proto_enumTypes[2].Descriptor()
-}
-
-func (SourcePayloadVerification) Type() protoreflect.EnumType {
-	return &file_platform_iam_api_v1_delegation_proto_enumTypes[2]
-}
-
-func (x SourcePayloadVerification) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use SourcePayloadVerification.Descriptor instead.
-func (SourcePayloadVerification) EnumDescriptor() ([]byte, []int) {
-	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{2}
-}
-
 type SourceResourceProvenance int32
 
 const (
@@ -213,11 +163,11 @@ func (x SourceResourceProvenance) String() string {
 }
 
 func (SourceResourceProvenance) Descriptor() protoreflect.EnumDescriptor {
-	return file_platform_iam_api_v1_delegation_proto_enumTypes[3].Descriptor()
+	return file_platform_iam_api_v1_delegation_proto_enumTypes[2].Descriptor()
 }
 
 func (SourceResourceProvenance) Type() protoreflect.EnumType {
-	return &file_platform_iam_api_v1_delegation_proto_enumTypes[3]
+	return &file_platform_iam_api_v1_delegation_proto_enumTypes[2]
 }
 
 func (x SourceResourceProvenance) Number() protoreflect.EnumNumber {
@@ -226,7 +176,7 @@ func (x SourceResourceProvenance) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use SourceResourceProvenance.Descriptor instead.
 func (SourceResourceProvenance) EnumDescriptor() ([]byte, []int) {
-	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{3}
+	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{2}
 }
 
 type ConfigurationWrite struct {
@@ -1405,792 +1355,6 @@ func (x *ResourceDerivation) GetInputs() map[string]*RequestStringSource {
 	return nil
 }
 
-type SourceResourceSelector struct {
-	state         protoimpl.MessageState     `protogen:"open.v1"`
-	Kind          SourceResourceSelectorKind `protobuf:"varint,1,opt,name=kind,proto3,enum=motiveiq.iam.v1.SourceResourceSelectorKind" json:"kind,omitempty"`
-	Value         string                     `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *SourceResourceSelector) Reset() {
-	*x = SourceResourceSelector{}
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[16]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *SourceResourceSelector) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SourceResourceSelector) ProtoMessage() {}
-
-func (x *SourceResourceSelector) ProtoReflect() protoreflect.Message {
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[16]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SourceResourceSelector.ProtoReflect.Descriptor instead.
-func (*SourceResourceSelector) Descriptor() ([]byte, []int) {
-	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{16}
-}
-
-func (x *SourceResourceSelector) GetKind() SourceResourceSelectorKind {
-	if x != nil {
-		return x.Kind
-	}
-	return SourceResourceSelectorKind_SOURCE_RESOURCE_SELECTOR_KIND_UNSPECIFIED
-}
-
-func (x *SourceResourceSelector) GetValue() string {
-	if x != nil {
-		return x.Value
-	}
-	return ""
-}
-
-type DerivedSourceResource struct {
-	state             protoimpl.MessageState        `protogen:"open.v1"`
-	Constructor       *ResourceConstructorReference `protobuf:"bytes,1,opt,name=constructor,proto3" json:"constructor,omitempty"`
-	Inputs            map[string]string             `protobuf:"bytes,2,rep,name=inputs,proto3" json:"inputs,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	ResourceUrn       string                        `protobuf:"bytes,3,opt,name=resource_urn,json=resourceUrn,proto3" json:"resource_urn,omitempty"`
-	ResourcePolicyUrn *string                       `protobuf:"bytes,4,opt,name=resource_policy_urn,json=resourcePolicyUrn,proto3,oneof" json:"resource_policy_urn,omitempty"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
-}
-
-func (x *DerivedSourceResource) Reset() {
-	*x = DerivedSourceResource{}
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[17]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DerivedSourceResource) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DerivedSourceResource) ProtoMessage() {}
-
-func (x *DerivedSourceResource) ProtoReflect() protoreflect.Message {
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[17]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DerivedSourceResource.ProtoReflect.Descriptor instead.
-func (*DerivedSourceResource) Descriptor() ([]byte, []int) {
-	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{17}
-}
-
-func (x *DerivedSourceResource) GetConstructor() *ResourceConstructorReference {
-	if x != nil {
-		return x.Constructor
-	}
-	return nil
-}
-
-func (x *DerivedSourceResource) GetInputs() map[string]string {
-	if x != nil {
-		return x.Inputs
-	}
-	return nil
-}
-
-func (x *DerivedSourceResource) GetResourceUrn() string {
-	if x != nil {
-		return x.ResourceUrn
-	}
-	return ""
-}
-
-func (x *DerivedSourceResource) GetResourcePolicyUrn() string {
-	if x != nil && x.ResourcePolicyUrn != nil {
-		return *x.ResourcePolicyUrn
-	}
-	return ""
-}
-
-type SourceRequestEvidence struct {
-	state                protoimpl.MessageState `protogen:"open.v1"`
-	SubjectSessionToken  string                 `protobuf:"bytes,1,opt,name=subject_session_token,json=subjectSessionToken,proto3" json:"subject_session_token,omitempty"`
-	OriginalRequestProof string                 `protobuf:"bytes,2,opt,name=original_request_proof,json=originalRequestProof,proto3" json:"original_request_proof,omitempty"`
-	Origin               string                 `protobuf:"bytes,3,opt,name=origin,proto3" json:"origin,omitempty"`
-	// Types that are valid to be assigned to Transport:
-	//
-	//	*SourceRequestEvidence_Grpc
-	//	*SourceRequestEvidence_Http
-	Transport      isSourceRequestEvidence_Transport `protobuf_oneof:"transport"`
-	RequestPayload []byte                            `protobuf:"bytes,5,opt,name=request_payload,json=requestPayload,proto3,oneof" json:"request_payload,omitempty"`
-	SignedMetadata map[string]string                 `protobuf:"bytes,6,rep,name=signed_metadata,json=signedMetadata,proto3" json:"signed_metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
-}
-
-func (x *SourceRequestEvidence) Reset() {
-	*x = SourceRequestEvidence{}
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[18]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *SourceRequestEvidence) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SourceRequestEvidence) ProtoMessage() {}
-
-func (x *SourceRequestEvidence) ProtoReflect() protoreflect.Message {
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[18]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SourceRequestEvidence.ProtoReflect.Descriptor instead.
-func (*SourceRequestEvidence) Descriptor() ([]byte, []int) {
-	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{18}
-}
-
-func (x *SourceRequestEvidence) GetSubjectSessionToken() string {
-	if x != nil {
-		return x.SubjectSessionToken
-	}
-	return ""
-}
-
-func (x *SourceRequestEvidence) GetOriginalRequestProof() string {
-	if x != nil {
-		return x.OriginalRequestProof
-	}
-	return ""
-}
-
-func (x *SourceRequestEvidence) GetOrigin() string {
-	if x != nil {
-		return x.Origin
-	}
-	return ""
-}
-
-func (x *SourceRequestEvidence) GetTransport() isSourceRequestEvidence_Transport {
-	if x != nil {
-		return x.Transport
-	}
-	return nil
-}
-
-func (x *SourceRequestEvidence) GetGrpc() *GRPCRequestEvidence {
-	if x != nil {
-		if x, ok := x.Transport.(*SourceRequestEvidence_Grpc); ok {
-			return x.Grpc
-		}
-	}
-	return nil
-}
-
-func (x *SourceRequestEvidence) GetHttp() *HTTPRequestEvidence {
-	if x != nil {
-		if x, ok := x.Transport.(*SourceRequestEvidence_Http); ok {
-			return x.Http
-		}
-	}
-	return nil
-}
-
-func (x *SourceRequestEvidence) GetRequestPayload() []byte {
-	if x != nil {
-		return x.RequestPayload
-	}
-	return nil
-}
-
-func (x *SourceRequestEvidence) GetSignedMetadata() map[string]string {
-	if x != nil {
-		return x.SignedMetadata
-	}
-	return nil
-}
-
-type isSourceRequestEvidence_Transport interface {
-	isSourceRequestEvidence_Transport()
-}
-
-type SourceRequestEvidence_Grpc struct {
-	Grpc *GRPCRequestEvidence `protobuf:"bytes,4,opt,name=grpc,proto3,oneof"`
-}
-
-type SourceRequestEvidence_Http struct {
-	Http *HTTPRequestEvidence `protobuf:"bytes,7,opt,name=http,proto3,oneof"`
-}
-
-func (*SourceRequestEvidence_Grpc) isSourceRequestEvidence_Transport() {}
-
-func (*SourceRequestEvidence_Http) isSourceRequestEvidence_Transport() {}
-
-type GRPCRequestEvidence struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	FullMethod    string                 `protobuf:"bytes,1,opt,name=full_method,json=fullMethod,proto3" json:"full_method,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GRPCRequestEvidence) Reset() {
-	*x = GRPCRequestEvidence{}
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[19]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GRPCRequestEvidence) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GRPCRequestEvidence) ProtoMessage() {}
-
-func (x *GRPCRequestEvidence) ProtoReflect() protoreflect.Message {
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[19]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GRPCRequestEvidence.ProtoReflect.Descriptor instead.
-func (*GRPCRequestEvidence) Descriptor() ([]byte, []int) {
-	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{19}
-}
-
-func (x *GRPCRequestEvidence) GetFullMethod() string {
-	if x != nil {
-		return x.FullMethod
-	}
-	return ""
-}
-
-type HTTPRequestEvidence struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Method        string                 `protobuf:"bytes,1,opt,name=method,proto3" json:"method,omitempty"`
-	RequestTarget string                 `protobuf:"bytes,2,opt,name=request_target,json=requestTarget,proto3" json:"request_target,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *HTTPRequestEvidence) Reset() {
-	*x = HTTPRequestEvidence{}
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[20]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *HTTPRequestEvidence) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*HTTPRequestEvidence) ProtoMessage() {}
-
-func (x *HTTPRequestEvidence) ProtoReflect() protoreflect.Message {
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[20]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use HTTPRequestEvidence.ProtoReflect.Descriptor instead.
-func (*HTTPRequestEvidence) Descriptor() ([]byte, []int) {
-	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{20}
-}
-
-func (x *HTTPRequestEvidence) GetMethod() string {
-	if x != nil {
-		return x.Method
-	}
-	return ""
-}
-
-func (x *HTTPRequestEvidence) GetRequestTarget() string {
-	if x != nil {
-		return x.RequestTarget
-	}
-	return ""
-}
-
-type VerifiedSourceRequest struct {
-	state               protoimpl.MessageState `protogen:"open.v1"`
-	SubjectSessionToken string                 `protobuf:"bytes,1,opt,name=subject_session_token,json=subjectSessionToken,proto3" json:"subject_session_token,omitempty"`
-	Context             *SourceRequestContext  `protobuf:"bytes,2,opt,name=context,proto3" json:"context,omitempty"`
-	unknownFields       protoimpl.UnknownFields
-	sizeCache           protoimpl.SizeCache
-}
-
-func (x *VerifiedSourceRequest) Reset() {
-	*x = VerifiedSourceRequest{}
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[21]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *VerifiedSourceRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*VerifiedSourceRequest) ProtoMessage() {}
-
-func (x *VerifiedSourceRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[21]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use VerifiedSourceRequest.ProtoReflect.Descriptor instead.
-func (*VerifiedSourceRequest) Descriptor() ([]byte, []int) {
-	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{21}
-}
-
-func (x *VerifiedSourceRequest) GetSubjectSessionToken() string {
-	if x != nil {
-		return x.SubjectSessionToken
-	}
-	return ""
-}
-
-func (x *VerifiedSourceRequest) GetContext() *SourceRequestContext {
-	if x != nil {
-		return x.Context
-	}
-	return nil
-}
-
-type SourceRequestContext struct {
-	state              protoimpl.MessageState    `protogen:"open.v1"`
-	Contract           *RequestContractReference `protobuf:"bytes,1,opt,name=contract,proto3" json:"contract,omitempty"`
-	Request            *RequestIdentity          `protobuf:"bytes,2,opt,name=request,proto3" json:"request,omitempty"`
-	ProofId            string                    `protobuf:"bytes,3,opt,name=proof_id,json=proofId,proto3" json:"proof_id,omitempty"`
-	ProofVersion       uint32                    `protobuf:"varint,4,opt,name=proof_version,json=proofVersion,proto3" json:"proof_version,omitempty"`
-	Subject            *SessionReference         `protobuf:"bytes,5,opt,name=subject,proto3" json:"subject,omitempty"`
-	SubjectTokenSha256 []byte                    `protobuf:"bytes,6,opt,name=subject_token_sha256,json=subjectTokenSha256,proto3" json:"subject_token_sha256,omitempty"`
-	ServicePrincipalId string                    `protobuf:"bytes,7,opt,name=service_principal_id,json=servicePrincipalId,proto3" json:"service_principal_id,omitempty"`
-	Action             string                    `protobuf:"bytes,8,opt,name=action,proto3" json:"action,omitempty"`
-	// Types that are valid to be assigned to Resource:
-	//
-	//	*SourceRequestContext_ResourceSelector
-	//	*SourceRequestContext_DerivedResource
-	Resource            isSourceRequestContext_Resource `protobuf_oneof:"resource"`
-	RequestAttributes   map[string]string               `protobuf:"bytes,10,rep,name=request_attributes,json=requestAttributes,proto3" json:"request_attributes,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	ProofTime           *timestamppb.Timestamp          `protobuf:"bytes,11,opt,name=proof_time,json=proofTime,proto3" json:"proof_time,omitempty"`
-	VerifiedTime        *timestamppb.Timestamp          `protobuf:"bytes,12,opt,name=verified_time,json=verifiedTime,proto3" json:"verified_time,omitempty"`
-	ExpireTime          *timestamppb.Timestamp          `protobuf:"bytes,13,opt,name=expire_time,json=expireTime,proto3" json:"expire_time,omitempty"`
-	PayloadVerification SourcePayloadVerification       `protobuf:"varint,14,opt,name=payload_verification,json=payloadVerification,proto3,enum=motiveiq.iam.v1.SourcePayloadVerification" json:"payload_verification,omitempty"`
-	unknownFields       protoimpl.UnknownFields
-	sizeCache           protoimpl.SizeCache
-}
-
-func (x *SourceRequestContext) Reset() {
-	*x = SourceRequestContext{}
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[22]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *SourceRequestContext) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SourceRequestContext) ProtoMessage() {}
-
-func (x *SourceRequestContext) ProtoReflect() protoreflect.Message {
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[22]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SourceRequestContext.ProtoReflect.Descriptor instead.
-func (*SourceRequestContext) Descriptor() ([]byte, []int) {
-	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{22}
-}
-
-func (x *SourceRequestContext) GetContract() *RequestContractReference {
-	if x != nil {
-		return x.Contract
-	}
-	return nil
-}
-
-func (x *SourceRequestContext) GetRequest() *RequestIdentity {
-	if x != nil {
-		return x.Request
-	}
-	return nil
-}
-
-func (x *SourceRequestContext) GetProofId() string {
-	if x != nil {
-		return x.ProofId
-	}
-	return ""
-}
-
-func (x *SourceRequestContext) GetProofVersion() uint32 {
-	if x != nil {
-		return x.ProofVersion
-	}
-	return 0
-}
-
-func (x *SourceRequestContext) GetSubject() *SessionReference {
-	if x != nil {
-		return x.Subject
-	}
-	return nil
-}
-
-func (x *SourceRequestContext) GetSubjectTokenSha256() []byte {
-	if x != nil {
-		return x.SubjectTokenSha256
-	}
-	return nil
-}
-
-func (x *SourceRequestContext) GetServicePrincipalId() string {
-	if x != nil {
-		return x.ServicePrincipalId
-	}
-	return ""
-}
-
-func (x *SourceRequestContext) GetAction() string {
-	if x != nil {
-		return x.Action
-	}
-	return ""
-}
-
-func (x *SourceRequestContext) GetResource() isSourceRequestContext_Resource {
-	if x != nil {
-		return x.Resource
-	}
-	return nil
-}
-
-func (x *SourceRequestContext) GetResourceSelector() *SourceResourceSelector {
-	if x != nil {
-		if x, ok := x.Resource.(*SourceRequestContext_ResourceSelector); ok {
-			return x.ResourceSelector
-		}
-	}
-	return nil
-}
-
-func (x *SourceRequestContext) GetDerivedResource() *DerivedSourceResource {
-	if x != nil {
-		if x, ok := x.Resource.(*SourceRequestContext_DerivedResource); ok {
-			return x.DerivedResource
-		}
-	}
-	return nil
-}
-
-func (x *SourceRequestContext) GetRequestAttributes() map[string]string {
-	if x != nil {
-		return x.RequestAttributes
-	}
-	return nil
-}
-
-func (x *SourceRequestContext) GetProofTime() *timestamppb.Timestamp {
-	if x != nil {
-		return x.ProofTime
-	}
-	return nil
-}
-
-func (x *SourceRequestContext) GetVerifiedTime() *timestamppb.Timestamp {
-	if x != nil {
-		return x.VerifiedTime
-	}
-	return nil
-}
-
-func (x *SourceRequestContext) GetExpireTime() *timestamppb.Timestamp {
-	if x != nil {
-		return x.ExpireTime
-	}
-	return nil
-}
-
-func (x *SourceRequestContext) GetPayloadVerification() SourcePayloadVerification {
-	if x != nil {
-		return x.PayloadVerification
-	}
-	return SourcePayloadVerification_SOURCE_PAYLOAD_VERIFICATION_UNSPECIFIED
-}
-
-type isSourceRequestContext_Resource interface {
-	isSourceRequestContext_Resource()
-}
-
-type SourceRequestContext_ResourceSelector struct {
-	ResourceSelector *SourceResourceSelector `protobuf:"bytes,9,opt,name=resource_selector,json=resourceSelector,proto3,oneof"`
-}
-
-type SourceRequestContext_DerivedResource struct {
-	DerivedResource *DerivedSourceResource `protobuf:"bytes,15,opt,name=derived_resource,json=derivedResource,proto3,oneof"`
-}
-
-func (*SourceRequestContext_ResourceSelector) isSourceRequestContext_Resource() {}
-
-func (*SourceRequestContext_DerivedResource) isSourceRequestContext_Resource() {}
-
-type RequestIdentity struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	Origin         string                 `protobuf:"bytes,1,opt,name=origin,proto3" json:"origin,omitempty"`
-	RequestSha256  []byte                 `protobuf:"bytes,2,opt,name=request_sha256,json=requestSha256,proto3" json:"request_sha256,omitempty"`
-	SignedMetadata map[string]string      `protobuf:"bytes,3,rep,name=signed_metadata,json=signedMetadata,proto3" json:"signed_metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	// Types that are valid to be assigned to Transport:
-	//
-	//	*RequestIdentity_Grpc
-	//	*RequestIdentity_Http
-	Transport     isRequestIdentity_Transport `protobuf_oneof:"transport"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *RequestIdentity) Reset() {
-	*x = RequestIdentity{}
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[23]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *RequestIdentity) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*RequestIdentity) ProtoMessage() {}
-
-func (x *RequestIdentity) ProtoReflect() protoreflect.Message {
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[23]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use RequestIdentity.ProtoReflect.Descriptor instead.
-func (*RequestIdentity) Descriptor() ([]byte, []int) {
-	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{23}
-}
-
-func (x *RequestIdentity) GetOrigin() string {
-	if x != nil {
-		return x.Origin
-	}
-	return ""
-}
-
-func (x *RequestIdentity) GetRequestSha256() []byte {
-	if x != nil {
-		return x.RequestSha256
-	}
-	return nil
-}
-
-func (x *RequestIdentity) GetSignedMetadata() map[string]string {
-	if x != nil {
-		return x.SignedMetadata
-	}
-	return nil
-}
-
-func (x *RequestIdentity) GetTransport() isRequestIdentity_Transport {
-	if x != nil {
-		return x.Transport
-	}
-	return nil
-}
-
-func (x *RequestIdentity) GetGrpc() *GRPCRequestIdentity {
-	if x != nil {
-		if x, ok := x.Transport.(*RequestIdentity_Grpc); ok {
-			return x.Grpc
-		}
-	}
-	return nil
-}
-
-func (x *RequestIdentity) GetHttp() *HTTPRequestIdentity {
-	if x != nil {
-		if x, ok := x.Transport.(*RequestIdentity_Http); ok {
-			return x.Http
-		}
-	}
-	return nil
-}
-
-type isRequestIdentity_Transport interface {
-	isRequestIdentity_Transport()
-}
-
-type RequestIdentity_Grpc struct {
-	Grpc *GRPCRequestIdentity `protobuf:"bytes,4,opt,name=grpc,proto3,oneof"`
-}
-
-type RequestIdentity_Http struct {
-	Http *HTTPRequestIdentity `protobuf:"bytes,5,opt,name=http,proto3,oneof"`
-}
-
-func (*RequestIdentity_Grpc) isRequestIdentity_Transport() {}
-
-func (*RequestIdentity_Http) isRequestIdentity_Transport() {}
-
-type GRPCRequestIdentity struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	FullMethod    string                 `protobuf:"bytes,1,opt,name=full_method,json=fullMethod,proto3" json:"full_method,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GRPCRequestIdentity) Reset() {
-	*x = GRPCRequestIdentity{}
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[24]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GRPCRequestIdentity) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GRPCRequestIdentity) ProtoMessage() {}
-
-func (x *GRPCRequestIdentity) ProtoReflect() protoreflect.Message {
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[24]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GRPCRequestIdentity.ProtoReflect.Descriptor instead.
-func (*GRPCRequestIdentity) Descriptor() ([]byte, []int) {
-	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{24}
-}
-
-func (x *GRPCRequestIdentity) GetFullMethod() string {
-	if x != nil {
-		return x.FullMethod
-	}
-	return ""
-}
-
-type HTTPRequestIdentity struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	Method         string                 `protobuf:"bytes,1,opt,name=method,proto3" json:"method,omitempty"`
-	RequestTarget  string                 `protobuf:"bytes,2,opt,name=request_target,json=requestTarget,proto3" json:"request_target,omitempty"`
-	ProofOperation string                 `protobuf:"bytes,3,opt,name=proof_operation,json=proofOperation,proto3" json:"proof_operation,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
-}
-
-func (x *HTTPRequestIdentity) Reset() {
-	*x = HTTPRequestIdentity{}
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[25]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *HTTPRequestIdentity) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*HTTPRequestIdentity) ProtoMessage() {}
-
-func (x *HTTPRequestIdentity) ProtoReflect() protoreflect.Message {
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[25]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use HTTPRequestIdentity.ProtoReflect.Descriptor instead.
-func (*HTTPRequestIdentity) Descriptor() ([]byte, []int) {
-	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{25}
-}
-
-func (x *HTTPRequestIdentity) GetMethod() string {
-	if x != nil {
-		return x.Method
-	}
-	return ""
-}
-
-func (x *HTTPRequestIdentity) GetRequestTarget() string {
-	if x != nil {
-		return x.RequestTarget
-	}
-	return ""
-}
-
-func (x *HTTPRequestIdentity) GetProofOperation() string {
-	if x != nil {
-		return x.ProofOperation
-	}
-	return ""
-}
-
 type RequestMatcher struct {
 	state   protoimpl.MessageState `protogen:"open.v1"`
 	Origins []string               `protobuf:"bytes,1,rep,name=origins,proto3" json:"origins,omitempty"`
@@ -2206,7 +1370,7 @@ type RequestMatcher struct {
 
 func (x *RequestMatcher) Reset() {
 	*x = RequestMatcher{}
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[26]
+	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2218,7 +1382,7 @@ func (x *RequestMatcher) String() string {
 func (*RequestMatcher) ProtoMessage() {}
 
 func (x *RequestMatcher) ProtoReflect() protoreflect.Message {
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[26]
+	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2231,7 +1395,7 @@ func (x *RequestMatcher) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RequestMatcher.ProtoReflect.Descriptor instead.
 func (*RequestMatcher) Descriptor() ([]byte, []int) {
-	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{26}
+	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *RequestMatcher) GetOrigins() []string {
@@ -2298,7 +1462,7 @@ type GRPCRequestMatcher struct {
 
 func (x *GRPCRequestMatcher) Reset() {
 	*x = GRPCRequestMatcher{}
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[27]
+	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2310,7 +1474,7 @@ func (x *GRPCRequestMatcher) String() string {
 func (*GRPCRequestMatcher) ProtoMessage() {}
 
 func (x *GRPCRequestMatcher) ProtoReflect() protoreflect.Message {
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[27]
+	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2323,7 +1487,7 @@ func (x *GRPCRequestMatcher) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GRPCRequestMatcher.ProtoReflect.Descriptor instead.
 func (*GRPCRequestMatcher) Descriptor() ([]byte, []int) {
-	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{27}
+	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *GRPCRequestMatcher) GetFullMethod() string {
@@ -2331,158 +1495,6 @@ func (x *GRPCRequestMatcher) GetFullMethod() string {
 		return x.FullMethod
 	}
 	return ""
-}
-
-type SessionReference struct {
-	state              protoimpl.MessageState `protogen:"open.v1"`
-	SessionId          string                 `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
-	RoleId             string                 `protobuf:"bytes,2,opt,name=role_id,json=roleId,proto3" json:"role_id,omitempty"`
-	ProofKeyThumbprint string                 `protobuf:"bytes,3,opt,name=proof_key_thumbprint,json=proofKeyThumbprint,proto3" json:"proof_key_thumbprint,omitempty"`
-	ExpireTime         *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=expire_time,json=expireTime,proto3" json:"expire_time,omitempty"`
-	SessionUrn         string                 `protobuf:"bytes,5,opt,name=session_urn,json=sessionUrn,proto3" json:"session_urn,omitempty"`
-	RoleUrn            string                 `protobuf:"bytes,6,opt,name=role_urn,json=roleUrn,proto3" json:"role_urn,omitempty"`
-	SessionName        string                 `protobuf:"bytes,7,opt,name=session_name,json=sessionName,proto3" json:"session_name,omitempty"`
-	SourceIdentity     string                 `protobuf:"bytes,8,opt,name=source_identity,json=sourceIdentity,proto3" json:"source_identity,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
-}
-
-func (x *SessionReference) Reset() {
-	*x = SessionReference{}
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[28]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *SessionReference) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SessionReference) ProtoMessage() {}
-
-func (x *SessionReference) ProtoReflect() protoreflect.Message {
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[28]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SessionReference.ProtoReflect.Descriptor instead.
-func (*SessionReference) Descriptor() ([]byte, []int) {
-	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{28}
-}
-
-func (x *SessionReference) GetSessionId() string {
-	if x != nil {
-		return x.SessionId
-	}
-	return ""
-}
-
-func (x *SessionReference) GetRoleId() string {
-	if x != nil {
-		return x.RoleId
-	}
-	return ""
-}
-
-func (x *SessionReference) GetProofKeyThumbprint() string {
-	if x != nil {
-		return x.ProofKeyThumbprint
-	}
-	return ""
-}
-
-func (x *SessionReference) GetExpireTime() *timestamppb.Timestamp {
-	if x != nil {
-		return x.ExpireTime
-	}
-	return nil
-}
-
-func (x *SessionReference) GetSessionUrn() string {
-	if x != nil {
-		return x.SessionUrn
-	}
-	return ""
-}
-
-func (x *SessionReference) GetRoleUrn() string {
-	if x != nil {
-		return x.RoleUrn
-	}
-	return ""
-}
-
-func (x *SessionReference) GetSessionName() string {
-	if x != nil {
-		return x.SessionName
-	}
-	return ""
-}
-
-func (x *SessionReference) GetSourceIdentity() string {
-	if x != nil {
-		return x.SourceIdentity
-	}
-	return ""
-}
-
-type SourceCatalogAssertions struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ResourceUrn   string                 `protobuf:"bytes,1,opt,name=resource_urn,json=resourceUrn,proto3" json:"resource_urn,omitempty"`
-	Attributes    map[string]string      `protobuf:"bytes,2,rep,name=attributes,proto3" json:"attributes,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *SourceCatalogAssertions) Reset() {
-	*x = SourceCatalogAssertions{}
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[29]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *SourceCatalogAssertions) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SourceCatalogAssertions) ProtoMessage() {}
-
-func (x *SourceCatalogAssertions) ProtoReflect() protoreflect.Message {
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[29]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SourceCatalogAssertions.ProtoReflect.Descriptor instead.
-func (*SourceCatalogAssertions) Descriptor() ([]byte, []int) {
-	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{29}
-}
-
-func (x *SourceCatalogAssertions) GetResourceUrn() string {
-	if x != nil {
-		return x.ResourceUrn
-	}
-	return ""
-}
-
-func (x *SourceCatalogAssertions) GetAttributes() map[string]string {
-	if x != nil {
-		return x.Attributes
-	}
-	return nil
 }
 
 type Delegation struct {
@@ -2503,7 +1515,7 @@ type Delegation struct {
 
 func (x *Delegation) Reset() {
 	*x = Delegation{}
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[30]
+	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2515,7 +1527,7 @@ func (x *Delegation) String() string {
 func (*Delegation) ProtoMessage() {}
 
 func (x *Delegation) ProtoReflect() protoreflect.Message {
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[30]
+	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2528,7 +1540,7 @@ func (x *Delegation) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Delegation.ProtoReflect.Descriptor instead.
 func (*Delegation) Descriptor() ([]byte, []int) {
-	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{30}
+	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *Delegation) GetId() string {
@@ -2601,66 +1613,6 @@ func (x *Delegation) GetManagement() *ConfigurationOwner {
 	return nil
 }
 
-type DelegationReference struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Urn           string                 `protobuf:"bytes,1,opt,name=urn,proto3" json:"urn,omitempty"`
-	Id            string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
-	Revision      int64                  `protobuf:"varint,3,opt,name=revision,proto3" json:"revision,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DelegationReference) Reset() {
-	*x = DelegationReference{}
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[31]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DelegationReference) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DelegationReference) ProtoMessage() {}
-
-func (x *DelegationReference) ProtoReflect() protoreflect.Message {
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[31]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DelegationReference.ProtoReflect.Descriptor instead.
-func (*DelegationReference) Descriptor() ([]byte, []int) {
-	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{31}
-}
-
-func (x *DelegationReference) GetUrn() string {
-	if x != nil {
-		return x.Urn
-	}
-	return ""
-}
-
-func (x *DelegationReference) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-func (x *DelegationReference) GetRevision() int64 {
-	if x != nil {
-		return x.Revision
-	}
-	return 0
-}
-
 type DelegationSpec struct {
 	state                         protoimpl.MessageState     `protogen:"open.v1"`
 	ActorServicePrincipalId       string                     `protobuf:"bytes,1,opt,name=actor_service_principal_id,json=actorServicePrincipalId,proto3" json:"actor_service_principal_id,omitempty"`
@@ -2678,7 +1630,7 @@ type DelegationSpec struct {
 
 func (x *DelegationSpec) Reset() {
 	*x = DelegationSpec{}
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[32]
+	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2690,7 +1642,7 @@ func (x *DelegationSpec) String() string {
 func (*DelegationSpec) ProtoMessage() {}
 
 func (x *DelegationSpec) ProtoReflect() protoreflect.Message {
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[32]
+	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2703,7 +1655,7 @@ func (x *DelegationSpec) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DelegationSpec.ProtoReflect.Descriptor instead.
 func (*DelegationSpec) Descriptor() ([]byte, []int) {
-	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{32}
+	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *DelegationSpec) GetActorServicePrincipalId() string {
@@ -2769,206 +1721,6 @@ func (x *DelegationSpec) GetMaxLifetimeSeconds() uint32 {
 	return 0
 }
 
-type DelegationTarget struct {
-	state         protoimpl.MessageState     `protogen:"open.v1"`
-	Request       *RequestIdentity           `protobuf:"bytes,1,opt,name=request,proto3" json:"request,omitempty"`
-	Action        string                     `protobuf:"bytes,2,opt,name=action,proto3" json:"action,omitempty"`
-	ResourceUrn   string                     `protobuf:"bytes,3,opt,name=resource_urn,json=resourceUrn,proto3" json:"resource_urn,omitempty"`
-	Attributes    map[string]*structpb.Value `protobuf:"bytes,4,rep,name=attributes,proto3" json:"attributes,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DelegationTarget) Reset() {
-	*x = DelegationTarget{}
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[33]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DelegationTarget) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DelegationTarget) ProtoMessage() {}
-
-func (x *DelegationTarget) ProtoReflect() protoreflect.Message {
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[33]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DelegationTarget.ProtoReflect.Descriptor instead.
-func (*DelegationTarget) Descriptor() ([]byte, []int) {
-	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{33}
-}
-
-func (x *DelegationTarget) GetRequest() *RequestIdentity {
-	if x != nil {
-		return x.Request
-	}
-	return nil
-}
-
-func (x *DelegationTarget) GetAction() string {
-	if x != nil {
-		return x.Action
-	}
-	return ""
-}
-
-func (x *DelegationTarget) GetResourceUrn() string {
-	if x != nil {
-		return x.ResourceUrn
-	}
-	return ""
-}
-
-func (x *DelegationTarget) GetAttributes() map[string]*structpb.Value {
-	if x != nil {
-		return x.Attributes
-	}
-	return nil
-}
-
-type DelegationScope struct {
-	state                    protoimpl.MessageState   `protogen:"open.v1"`
-	Delegation               *DelegationReference     `protobuf:"bytes,1,opt,name=delegation,proto3" json:"delegation,omitempty"`
-	Source                   *SourceRequestContext    `protobuf:"bytes,2,opt,name=source,proto3" json:"source,omitempty"`
-	SourceResourceUrn        string                   `protobuf:"bytes,3,opt,name=source_resource_urn,json=sourceResourceUrn,proto3" json:"source_resource_urn,omitempty"`
-	SourceResourceProvenance SourceResourceProvenance `protobuf:"varint,4,opt,name=source_resource_provenance,json=sourceResourceProvenance,proto3,enum=motiveiq.iam.v1.SourceResourceProvenance" json:"source_resource_provenance,omitempty"`
-	CatalogAssertions        *SourceCatalogAssertions `protobuf:"bytes,5,opt,name=catalog_assertions,json=catalogAssertions,proto3" json:"catalog_assertions,omitempty"`
-	Actor                    *SessionReference        `protobuf:"bytes,6,opt,name=actor,proto3" json:"actor,omitempty"`
-	ActorServicePrincipalId  string                   `protobuf:"bytes,7,opt,name=actor_service_principal_id,json=actorServicePrincipalId,proto3" json:"actor_service_principal_id,omitempty"`
-	TargetServicePrincipalId string                   `protobuf:"bytes,8,opt,name=target_service_principal_id,json=targetServicePrincipalId,proto3" json:"target_service_principal_id,omitempty"`
-	Target                   *DelegationTarget        `protobuf:"bytes,9,opt,name=target,proto3" json:"target,omitempty"`
-	ExpireTime               *timestamppb.Timestamp   `protobuf:"bytes,10,opt,name=expire_time,json=expireTime,proto3" json:"expire_time,omitempty"`
-	ProofKeyThumbprint       string                   `protobuf:"bytes,11,opt,name=proof_key_thumbprint,json=proofKeyThumbprint,proto3" json:"proof_key_thumbprint,omitempty"`
-	IssueTime                *timestamppb.Timestamp   `protobuf:"bytes,12,opt,name=issue_time,json=issueTime,proto3" json:"issue_time,omitempty"`
-	unknownFields            protoimpl.UnknownFields
-	sizeCache                protoimpl.SizeCache
-}
-
-func (x *DelegationScope) Reset() {
-	*x = DelegationScope{}
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[34]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DelegationScope) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DelegationScope) ProtoMessage() {}
-
-func (x *DelegationScope) ProtoReflect() protoreflect.Message {
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[34]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DelegationScope.ProtoReflect.Descriptor instead.
-func (*DelegationScope) Descriptor() ([]byte, []int) {
-	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{34}
-}
-
-func (x *DelegationScope) GetDelegation() *DelegationReference {
-	if x != nil {
-		return x.Delegation
-	}
-	return nil
-}
-
-func (x *DelegationScope) GetSource() *SourceRequestContext {
-	if x != nil {
-		return x.Source
-	}
-	return nil
-}
-
-func (x *DelegationScope) GetSourceResourceUrn() string {
-	if x != nil {
-		return x.SourceResourceUrn
-	}
-	return ""
-}
-
-func (x *DelegationScope) GetSourceResourceProvenance() SourceResourceProvenance {
-	if x != nil {
-		return x.SourceResourceProvenance
-	}
-	return SourceResourceProvenance_SOURCE_RESOURCE_PROVENANCE_UNSPECIFIED
-}
-
-func (x *DelegationScope) GetCatalogAssertions() *SourceCatalogAssertions {
-	if x != nil {
-		return x.CatalogAssertions
-	}
-	return nil
-}
-
-func (x *DelegationScope) GetActor() *SessionReference {
-	if x != nil {
-		return x.Actor
-	}
-	return nil
-}
-
-func (x *DelegationScope) GetActorServicePrincipalId() string {
-	if x != nil {
-		return x.ActorServicePrincipalId
-	}
-	return ""
-}
-
-func (x *DelegationScope) GetTargetServicePrincipalId() string {
-	if x != nil {
-		return x.TargetServicePrincipalId
-	}
-	return ""
-}
-
-func (x *DelegationScope) GetTarget() *DelegationTarget {
-	if x != nil {
-		return x.Target
-	}
-	return nil
-}
-
-func (x *DelegationScope) GetExpireTime() *timestamppb.Timestamp {
-	if x != nil {
-		return x.ExpireTime
-	}
-	return nil
-}
-
-func (x *DelegationScope) GetProofKeyThumbprint() string {
-	if x != nil {
-		return x.ProofKeyThumbprint
-	}
-	return ""
-}
-
-func (x *DelegationScope) GetIssueTime() *timestamppb.Timestamp {
-	if x != nil {
-		return x.IssueTime
-	}
-	return nil
-}
-
 type CreateRequestContractRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
@@ -2981,7 +1733,7 @@ type CreateRequestContractRequest struct {
 
 func (x *CreateRequestContractRequest) Reset() {
 	*x = CreateRequestContractRequest{}
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[35]
+	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2993,7 +1745,7 @@ func (x *CreateRequestContractRequest) String() string {
 func (*CreateRequestContractRequest) ProtoMessage() {}
 
 func (x *CreateRequestContractRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[35]
+	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3006,7 +1758,7 @@ func (x *CreateRequestContractRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateRequestContractRequest.ProtoReflect.Descriptor instead.
 func (*CreateRequestContractRequest) Descriptor() ([]byte, []int) {
-	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{35}
+	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *CreateRequestContractRequest) GetName() string {
@@ -3046,7 +1798,7 @@ type GetRequestContractRequest struct {
 
 func (x *GetRequestContractRequest) Reset() {
 	*x = GetRequestContractRequest{}
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[36]
+	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3058,7 +1810,7 @@ func (x *GetRequestContractRequest) String() string {
 func (*GetRequestContractRequest) ProtoMessage() {}
 
 func (x *GetRequestContractRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[36]
+	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3071,7 +1823,7 @@ func (x *GetRequestContractRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetRequestContractRequest.ProtoReflect.Descriptor instead.
 func (*GetRequestContractRequest) Descriptor() ([]byte, []int) {
-	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{36}
+	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *GetRequestContractRequest) GetName() string {
@@ -3091,7 +1843,7 @@ type ListRequestContractsRequest struct {
 
 func (x *ListRequestContractsRequest) Reset() {
 	*x = ListRequestContractsRequest{}
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[37]
+	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3103,7 +1855,7 @@ func (x *ListRequestContractsRequest) String() string {
 func (*ListRequestContractsRequest) ProtoMessage() {}
 
 func (x *ListRequestContractsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[37]
+	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3116,7 +1868,7 @@ func (x *ListRequestContractsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListRequestContractsRequest.ProtoReflect.Descriptor instead.
 func (*ListRequestContractsRequest) Descriptor() ([]byte, []int) {
-	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{37}
+	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *ListRequestContractsRequest) GetPageSize() uint32 {
@@ -3143,7 +1895,7 @@ type ListRequestContractsResponse struct {
 
 func (x *ListRequestContractsResponse) Reset() {
 	*x = ListRequestContractsResponse{}
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[38]
+	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3155,7 +1907,7 @@ func (x *ListRequestContractsResponse) String() string {
 func (*ListRequestContractsResponse) ProtoMessage() {}
 
 func (x *ListRequestContractsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[38]
+	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3168,7 +1920,7 @@ func (x *ListRequestContractsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListRequestContractsResponse.ProtoReflect.Descriptor instead.
 func (*ListRequestContractsResponse) Descriptor() ([]byte, []int) {
-	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{38}
+	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *ListRequestContractsResponse) GetContracts() []*RequestContract {
@@ -3198,7 +1950,7 @@ type UpdateRequestContractRequest struct {
 
 func (x *UpdateRequestContractRequest) Reset() {
 	*x = UpdateRequestContractRequest{}
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[39]
+	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3210,7 +1962,7 @@ func (x *UpdateRequestContractRequest) String() string {
 func (*UpdateRequestContractRequest) ProtoMessage() {}
 
 func (x *UpdateRequestContractRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[39]
+	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3223,7 +1975,7 @@ func (x *UpdateRequestContractRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateRequestContractRequest.ProtoReflect.Descriptor instead.
 func (*UpdateRequestContractRequest) Descriptor() ([]byte, []int) {
-	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{39}
+	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *UpdateRequestContractRequest) GetName() string {
@@ -3272,7 +2024,7 @@ type DeleteRequestContractRequest struct {
 
 func (x *DeleteRequestContractRequest) Reset() {
 	*x = DeleteRequestContractRequest{}
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[40]
+	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3284,7 +2036,7 @@ func (x *DeleteRequestContractRequest) String() string {
 func (*DeleteRequestContractRequest) ProtoMessage() {}
 
 func (x *DeleteRequestContractRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[40]
+	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3297,7 +2049,7 @@ func (x *DeleteRequestContractRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteRequestContractRequest.ProtoReflect.Descriptor instead.
 func (*DeleteRequestContractRequest) Descriptor() ([]byte, []int) {
-	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{40}
+	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *DeleteRequestContractRequest) GetName() string {
@@ -3333,7 +2085,7 @@ type CreateDelegationRequest struct {
 
 func (x *CreateDelegationRequest) Reset() {
 	*x = CreateDelegationRequest{}
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[41]
+	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3345,7 +2097,7 @@ func (x *CreateDelegationRequest) String() string {
 func (*CreateDelegationRequest) ProtoMessage() {}
 
 func (x *CreateDelegationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[41]
+	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3358,7 +2110,7 @@ func (x *CreateDelegationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateDelegationRequest.ProtoReflect.Descriptor instead.
 func (*CreateDelegationRequest) Descriptor() ([]byte, []int) {
-	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{41}
+	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *CreateDelegationRequest) GetName() string {
@@ -3398,7 +2150,7 @@ type GetDelegationRequest struct {
 
 func (x *GetDelegationRequest) Reset() {
 	*x = GetDelegationRequest{}
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[42]
+	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3410,7 +2162,7 @@ func (x *GetDelegationRequest) String() string {
 func (*GetDelegationRequest) ProtoMessage() {}
 
 func (x *GetDelegationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[42]
+	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3423,7 +2175,7 @@ func (x *GetDelegationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetDelegationRequest.ProtoReflect.Descriptor instead.
 func (*GetDelegationRequest) Descriptor() ([]byte, []int) {
-	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{42}
+	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *GetDelegationRequest) GetName() string {
@@ -3443,7 +2195,7 @@ type ListDelegationsRequest struct {
 
 func (x *ListDelegationsRequest) Reset() {
 	*x = ListDelegationsRequest{}
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[43]
+	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3455,7 +2207,7 @@ func (x *ListDelegationsRequest) String() string {
 func (*ListDelegationsRequest) ProtoMessage() {}
 
 func (x *ListDelegationsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[43]
+	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3468,7 +2220,7 @@ func (x *ListDelegationsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListDelegationsRequest.ProtoReflect.Descriptor instead.
 func (*ListDelegationsRequest) Descriptor() ([]byte, []int) {
-	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{43}
+	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *ListDelegationsRequest) GetPageSize() uint32 {
@@ -3495,7 +2247,7 @@ type ListDelegationsResponse struct {
 
 func (x *ListDelegationsResponse) Reset() {
 	*x = ListDelegationsResponse{}
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[44]
+	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3507,7 +2259,7 @@ func (x *ListDelegationsResponse) String() string {
 func (*ListDelegationsResponse) ProtoMessage() {}
 
 func (x *ListDelegationsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[44]
+	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3520,7 +2272,7 @@ func (x *ListDelegationsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListDelegationsResponse.ProtoReflect.Descriptor instead.
 func (*ListDelegationsResponse) Descriptor() ([]byte, []int) {
-	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{44}
+	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *ListDelegationsResponse) GetDelegations() []*Delegation {
@@ -3550,7 +2302,7 @@ type UpdateDelegationRequest struct {
 
 func (x *UpdateDelegationRequest) Reset() {
 	*x = UpdateDelegationRequest{}
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[45]
+	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3562,7 +2314,7 @@ func (x *UpdateDelegationRequest) String() string {
 func (*UpdateDelegationRequest) ProtoMessage() {}
 
 func (x *UpdateDelegationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[45]
+	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3575,7 +2327,7 @@ func (x *UpdateDelegationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateDelegationRequest.ProtoReflect.Descriptor instead.
 func (*UpdateDelegationRequest) Descriptor() ([]byte, []int) {
-	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{45}
+	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *UpdateDelegationRequest) GetName() string {
@@ -3624,7 +2376,7 @@ type DeleteDelegationRequest struct {
 
 func (x *DeleteDelegationRequest) Reset() {
 	*x = DeleteDelegationRequest{}
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[46]
+	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3636,7 +2388,7 @@ func (x *DeleteDelegationRequest) String() string {
 func (*DeleteDelegationRequest) ProtoMessage() {}
 
 func (x *DeleteDelegationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[46]
+	mi := &file_platform_iam_api_v1_delegation_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3649,7 +2401,7 @@ func (x *DeleteDelegationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteDelegationRequest.ProtoReflect.Descriptor instead.
 func (*DeleteDelegationRequest) Descriptor() ([]byte, []int) {
-	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{46}
+	return file_platform_iam_api_v1_delegation_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *DeleteDelegationRequest) GetName() string {
@@ -3677,7 +2429,7 @@ var File_platform_iam_api_v1_delegation_proto protoreflect.FileDescriptor
 
 const file_platform_iam_api_v1_delegation_proto_rawDesc = "" +
 	"\n" +
-	"$platform/iam/api/v1/delegation.proto\x12\x0fmotiveiq.iam.v1\x1a google/protobuf/descriptor.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"l\n" +
+	"$platform/iam/api/v1/delegation.proto\x12\x0fmotiveiq.iam.v1\x1a google/protobuf/descriptor.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"l\n" +
 	"\x12ConfigurationWrite\x12\x1b\n" +
 	"\towner_uid\x18\x01 \x01(\tR\bownerUid\x12\x1e\n" +
 	"\n" +
@@ -3778,82 +2530,7 @@ const file_platform_iam_api_v1_delegation_proto_rawDesc = "" +
 	"\x06inputs\x18\x02 \x03(\v2/.motiveiq.iam.v1.ResourceDerivation.InputsEntryR\x06inputs\x1a_\n" +
 	"\vInputsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12:\n" +
-	"\x05value\x18\x02 \x01(\v2$.motiveiq.iam.v1.RequestStringSourceR\x05value:\x028\x01\"o\n" +
-	"\x16SourceResourceSelector\x12?\n" +
-	"\x04kind\x18\x01 \x01(\x0e2+.motiveiq.iam.v1.SourceResourceSelectorKindR\x04kind\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value\"\xdf\x02\n" +
-	"\x15DerivedSourceResource\x12O\n" +
-	"\vconstructor\x18\x01 \x01(\v2-.motiveiq.iam.v1.ResourceConstructorReferenceR\vconstructor\x12J\n" +
-	"\x06inputs\x18\x02 \x03(\v22.motiveiq.iam.v1.DerivedSourceResource.InputsEntryR\x06inputs\x12!\n" +
-	"\fresource_urn\x18\x03 \x01(\tR\vresourceUrn\x123\n" +
-	"\x13resource_policy_urn\x18\x04 \x01(\tH\x00R\x11resourcePolicyUrn\x88\x01\x01\x1a9\n" +
-	"\vInputsEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\x16\n" +
-	"\x14_resource_policy_urn\"\x9c\x04\n" +
-	"\x15SourceRequestEvidence\x127\n" +
-	"\x15subject_session_token\x18\x01 \x01(\tB\x03\x80\x01\x01R\x13subjectSessionToken\x129\n" +
-	"\x16original_request_proof\x18\x02 \x01(\tB\x03\x80\x01\x01R\x14originalRequestProof\x12\x16\n" +
-	"\x06origin\x18\x03 \x01(\tR\x06origin\x12:\n" +
-	"\x04grpc\x18\x04 \x01(\v2$.motiveiq.iam.v1.GRPCRequestEvidenceH\x00R\x04grpc\x12:\n" +
-	"\x04http\x18\a \x01(\v2$.motiveiq.iam.v1.HTTPRequestEvidenceH\x00R\x04http\x121\n" +
-	"\x0frequest_payload\x18\x05 \x01(\fB\x03\x80\x01\x01H\x01R\x0erequestPayload\x88\x01\x01\x12h\n" +
-	"\x0fsigned_metadata\x18\x06 \x03(\v2:.motiveiq.iam.v1.SourceRequestEvidence.SignedMetadataEntryB\x03\x80\x01\x01R\x0esignedMetadata\x1aA\n" +
-	"\x13SignedMetadataEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\v\n" +
-	"\ttransportB\x12\n" +
-	"\x10_request_payload\"6\n" +
-	"\x13GRPCRequestEvidence\x12\x1f\n" +
-	"\vfull_method\x18\x01 \x01(\tR\n" +
-	"fullMethod\"Y\n" +
-	"\x13HTTPRequestEvidence\x12\x16\n" +
-	"\x06method\x18\x01 \x01(\tR\x06method\x12*\n" +
-	"\x0erequest_target\x18\x02 \x01(\tB\x03\x80\x01\x01R\rrequestTarget\"\x91\x01\n" +
-	"\x15VerifiedSourceRequest\x127\n" +
-	"\x15subject_session_token\x18\x01 \x01(\tB\x03\x80\x01\x01R\x13subjectSessionToken\x12?\n" +
-	"\acontext\x18\x02 \x01(\v2%.motiveiq.iam.v1.SourceRequestContextR\acontext\"\x9b\b\n" +
-	"\x14SourceRequestContext\x12E\n" +
-	"\bcontract\x18\x01 \x01(\v2).motiveiq.iam.v1.RequestContractReferenceR\bcontract\x12:\n" +
-	"\arequest\x18\x02 \x01(\v2 .motiveiq.iam.v1.RequestIdentityR\arequest\x12\x19\n" +
-	"\bproof_id\x18\x03 \x01(\tR\aproofId\x12#\n" +
-	"\rproof_version\x18\x04 \x01(\rR\fproofVersion\x12;\n" +
-	"\asubject\x18\x05 \x01(\v2!.motiveiq.iam.v1.SessionReferenceR\asubject\x125\n" +
-	"\x14subject_token_sha256\x18\x06 \x01(\fB\x03\x80\x01\x01R\x12subjectTokenSha256\x120\n" +
-	"\x14service_principal_id\x18\a \x01(\tR\x12servicePrincipalId\x12\x16\n" +
-	"\x06action\x18\b \x01(\tR\x06action\x12V\n" +
-	"\x11resource_selector\x18\t \x01(\v2'.motiveiq.iam.v1.SourceResourceSelectorH\x00R\x10resourceSelector\x12S\n" +
-	"\x10derived_resource\x18\x0f \x01(\v2&.motiveiq.iam.v1.DerivedSourceResourceH\x00R\x0fderivedResource\x12k\n" +
-	"\x12request_attributes\x18\n" +
-	" \x03(\v2<.motiveiq.iam.v1.SourceRequestContext.RequestAttributesEntryR\x11requestAttributes\x129\n" +
-	"\n" +
-	"proof_time\x18\v \x01(\v2\x1a.google.protobuf.TimestampR\tproofTime\x12?\n" +
-	"\rverified_time\x18\f \x01(\v2\x1a.google.protobuf.TimestampR\fverifiedTime\x12;\n" +
-	"\vexpire_time\x18\r \x01(\v2\x1a.google.protobuf.TimestampR\n" +
-	"expireTime\x12]\n" +
-	"\x14payload_verification\x18\x0e \x01(\x0e2*.motiveiq.iam.v1.SourcePayloadVerificationR\x13payloadVerification\x1aD\n" +
-	"\x16RequestAttributesEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\n" +
-	"\n" +
-	"\bresource\"\x81\x03\n" +
-	"\x0fRequestIdentity\x12\x16\n" +
-	"\x06origin\x18\x01 \x01(\tR\x06origin\x12*\n" +
-	"\x0erequest_sha256\x18\x02 \x01(\fB\x03\x80\x01\x01R\rrequestSha256\x12b\n" +
-	"\x0fsigned_metadata\x18\x03 \x03(\v24.motiveiq.iam.v1.RequestIdentity.SignedMetadataEntryB\x03\x80\x01\x01R\x0esignedMetadata\x12:\n" +
-	"\x04grpc\x18\x04 \x01(\v2$.motiveiq.iam.v1.GRPCRequestIdentityH\x00R\x04grpc\x12:\n" +
-	"\x04http\x18\x05 \x01(\v2$.motiveiq.iam.v1.HTTPRequestIdentityH\x00R\x04http\x1aA\n" +
-	"\x13SignedMetadataEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\v\n" +
-	"\ttransport\"6\n" +
-	"\x13GRPCRequestIdentity\x12\x1f\n" +
-	"\vfull_method\x18\x01 \x01(\tR\n" +
-	"fullMethod\"\x82\x01\n" +
-	"\x13HTTPRequestIdentity\x12\x16\n" +
-	"\x06method\x18\x01 \x01(\tR\x06method\x12*\n" +
-	"\x0erequest_target\x18\x02 \x01(\tB\x03\x80\x01\x01R\rrequestTarget\x12'\n" +
-	"\x0fproof_operation\x18\x03 \x01(\tR\x0eproofOperation\"\xe1\x01\n" +
+	"\x05value\x18\x02 \x01(\v2$.motiveiq.iam.v1.RequestStringSourceR\x05value:\x028\x01\"\xe1\x01\n" +
 	"\x0eRequestMatcher\x12\x18\n" +
 	"\aorigins\x18\x01 \x03(\tR\aorigins\x129\n" +
 	"\x04grpc\x18\x02 \x01(\v2#.motiveiq.iam.v1.GRPCRequestMatcherH\x00R\x04grpc\x129\n" +
@@ -3862,27 +2539,7 @@ const file_platform_iam_api_v1_delegation_proto_rawDesc = "" +
 	"\ttransport\"5\n" +
 	"\x12GRPCRequestMatcher\x12\x1f\n" +
 	"\vfull_method\x18\x01 \x01(\tR\n" +
-	"fullMethod\"\xc1\x02\n" +
-	"\x10SessionReference\x12\x1d\n" +
-	"\n" +
-	"session_id\x18\x01 \x01(\tR\tsessionId\x12\x17\n" +
-	"\arole_id\x18\x02 \x01(\tR\x06roleId\x120\n" +
-	"\x14proof_key_thumbprint\x18\x03 \x01(\tR\x12proofKeyThumbprint\x12;\n" +
-	"\vexpire_time\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
-	"expireTime\x12\x1f\n" +
-	"\vsession_urn\x18\x05 \x01(\tR\n" +
-	"sessionUrn\x12\x19\n" +
-	"\brole_urn\x18\x06 \x01(\tR\aroleUrn\x12!\n" +
-	"\fsession_name\x18\a \x01(\tR\vsessionName\x12'\n" +
-	"\x0fsource_identity\x18\b \x01(\tR\x0esourceIdentity\"\xd5\x01\n" +
-	"\x17SourceCatalogAssertions\x12!\n" +
-	"\fresource_urn\x18\x01 \x01(\tR\vresourceUrn\x12X\n" +
-	"\n" +
-	"attributes\x18\x02 \x03(\v28.motiveiq.iam.v1.SourceCatalogAssertions.AttributesEntryR\n" +
-	"attributes\x1a=\n" +
-	"\x0fAttributesEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xa9\x03\n" +
+	"fullMethod\"\xa9\x03\n" +
 	"\n" +
 	"Delegation\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
@@ -3900,11 +2557,7 @@ const file_platform_iam_api_v1_delegation_proto_rawDesc = "" +
 	"\n" +
 	"management\x18\n" +
 	" \x01(\v2#.motiveiq.iam.v1.ConfigurationOwnerR\n" +
-	"management\"S\n" +
-	"\x13DelegationReference\x12\x10\n" +
-	"\x03urn\x18\x01 \x01(\tR\x03urn\x12\x0e\n" +
-	"\x02id\x18\x02 \x01(\tR\x02id\x12\x1a\n" +
-	"\brevision\x18\x03 \x01(\x03R\brevision\"\xff\x05\n" +
+	"management\"\xff\x05\n" +
 	"\x0eDelegationSpec\x12;\n" +
 	"\x1aactor_service_principal_id\x18\x01 \x01(\tR\x17actorServicePrincipalId\x12R\n" +
 	"\x0fsource_contract\x18\x02 \x01(\v2).motiveiq.iam.v1.RequestContractReferenceR\x0esourceContract\x12=\n" +
@@ -3918,35 +2571,7 @@ const file_platform_iam_api_v1_delegation_proto_rawDesc = "" +
 	" \x01(\rR\x12maxLifetimeSeconds\x1aK\n" +
 	"\x1dRequiredTargetAttributesEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01J\x04\b\x05\x10\x06\"\xb3\x02\n" +
-	"\x10DelegationTarget\x12:\n" +
-	"\arequest\x18\x01 \x01(\v2 .motiveiq.iam.v1.RequestIdentityR\arequest\x12\x16\n" +
-	"\x06action\x18\x02 \x01(\tR\x06action\x12!\n" +
-	"\fresource_urn\x18\x03 \x01(\tR\vresourceUrn\x12Q\n" +
-	"\n" +
-	"attributes\x18\x04 \x03(\v21.motiveiq.iam.v1.DelegationTarget.AttributesEntryR\n" +
-	"attributes\x1aU\n" +
-	"\x0fAttributesEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12,\n" +
-	"\x05value\x18\x02 \x01(\v2\x16.google.protobuf.ValueR\x05value:\x028\x01\"\xa2\x06\n" +
-	"\x0fDelegationScope\x12D\n" +
-	"\n" +
-	"delegation\x18\x01 \x01(\v2$.motiveiq.iam.v1.DelegationReferenceR\n" +
-	"delegation\x12=\n" +
-	"\x06source\x18\x02 \x01(\v2%.motiveiq.iam.v1.SourceRequestContextR\x06source\x12.\n" +
-	"\x13source_resource_urn\x18\x03 \x01(\tR\x11sourceResourceUrn\x12g\n" +
-	"\x1asource_resource_provenance\x18\x04 \x01(\x0e2).motiveiq.iam.v1.SourceResourceProvenanceR\x18sourceResourceProvenance\x12W\n" +
-	"\x12catalog_assertions\x18\x05 \x01(\v2(.motiveiq.iam.v1.SourceCatalogAssertionsR\x11catalogAssertions\x127\n" +
-	"\x05actor\x18\x06 \x01(\v2!.motiveiq.iam.v1.SessionReferenceR\x05actor\x12;\n" +
-	"\x1aactor_service_principal_id\x18\a \x01(\tR\x17actorServicePrincipalId\x12=\n" +
-	"\x1btarget_service_principal_id\x18\b \x01(\tR\x18targetServicePrincipalId\x129\n" +
-	"\x06target\x18\t \x01(\v2!.motiveiq.iam.v1.DelegationTargetR\x06target\x12;\n" +
-	"\vexpire_time\x18\n" +
-	" \x01(\v2\x1a.google.protobuf.TimestampR\n" +
-	"expireTime\x120\n" +
-	"\x14proof_key_thumbprint\x18\v \x01(\tR\x12proofKeyThumbprint\x129\n" +
-	"\n" +
-	"issue_time\x18\f \x01(\v2\x1a.google.protobuf.TimestampR\tissueTime\"\xcb\x01\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01J\x04\b\x05\x10\x06\"\xcb\x01\n" +
 	"\x1cCreateRequestContractRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x128\n" +
 	"\x04spec\x18\x02 \x01(\v2$.motiveiq.iam.v1.RequestContractSpecR\x04spec\x12\x18\n" +
@@ -4015,11 +2640,7 @@ const file_platform_iam_api_v1_delegation_proto_rawDesc = "" +
 	")SOURCE_RESOURCE_SELECTOR_KIND_UNSPECIFIED\x10\x00\x12%\n" +
 	"!SOURCE_RESOURCE_SELECTOR_KIND_URN\x10\x01\x12&\n" +
 	"\"SOURCE_RESOURCE_SELECTOR_KIND_NAME\x10\x02\x12-\n" +
-	")SOURCE_RESOURCE_SELECTOR_KIND_CREATE_NAME\x10\x03*\xab\x01\n" +
-	"\x19SourcePayloadVerification\x12+\n" +
-	"'SOURCE_PAYLOAD_VERIFICATION_UNSPECIFIED\x10\x00\x12-\n" +
-	")SOURCE_PAYLOAD_VERIFICATION_BODY_VERIFIED\x10\x01\x122\n" +
-	".SOURCE_PAYLOAD_VERIFICATION_SIGNED_DIGEST_ONLY\x10\x02*\x85\x02\n" +
+	")SOURCE_RESOURCE_SELECTOR_KIND_CREATE_NAME\x10\x03*\x85\x02\n" +
 	"\x18SourceResourceProvenance\x12*\n" +
 	"&SOURCE_RESOURCE_PROVENANCE_UNSPECIFIED\x10\x00\x12*\n" +
 	"&SOURCE_RESOURCE_PROVENANCE_REQUEST_URN\x10\x01\x12/\n" +
@@ -4039,158 +2660,102 @@ func file_platform_iam_api_v1_delegation_proto_rawDescGZIP() []byte {
 	return file_platform_iam_api_v1_delegation_proto_rawDescData
 }
 
-var file_platform_iam_api_v1_delegation_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
-var file_platform_iam_api_v1_delegation_proto_msgTypes = make([]protoimpl.MessageInfo, 56)
+var file_platform_iam_api_v1_delegation_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
+var file_platform_iam_api_v1_delegation_proto_msgTypes = make([]protoimpl.MessageInfo, 35)
 var file_platform_iam_api_v1_delegation_proto_goTypes = []any{
 	(HTTPPathDecoding)(0),                  // 0: motiveiq.iam.v1.HTTPPathDecoding
 	(SourceResourceSelectorKind)(0),        // 1: motiveiq.iam.v1.SourceResourceSelectorKind
-	(SourcePayloadVerification)(0),         // 2: motiveiq.iam.v1.SourcePayloadVerification
-	(SourceResourceProvenance)(0),          // 3: motiveiq.iam.v1.SourceResourceProvenance
-	(*ConfigurationWrite)(nil),             // 4: motiveiq.iam.v1.ConfigurationWrite
-	(*ConfigurationOwner)(nil),             // 5: motiveiq.iam.v1.ConfigurationOwner
-	(*RequestContract)(nil),                // 6: motiveiq.iam.v1.RequestContract
-	(*RequestContractReference)(nil),       // 7: motiveiq.iam.v1.RequestContractReference
-	(*RequestContractSpec)(nil),            // 8: motiveiq.iam.v1.RequestContractSpec
-	(*GRPCRequestContractSpec)(nil),        // 9: motiveiq.iam.v1.GRPCRequestContractSpec
-	(*HTTPRequestMatcher)(nil),             // 10: motiveiq.iam.v1.HTTPRequestMatcher
-	(*HTTPProofOperation)(nil),             // 11: motiveiq.iam.v1.HTTPProofOperation
-	(*RequestStringSource)(nil),            // 12: motiveiq.iam.v1.RequestStringSource
-	(*HTTPPathParameterSource)(nil),        // 13: motiveiq.iam.v1.HTTPPathParameterSource
-	(*GRPCStringFieldPath)(nil),            // 14: motiveiq.iam.v1.GRPCStringFieldPath
-	(*ResourceSelectorMapping)(nil),        // 15: motiveiq.iam.v1.ResourceSelectorMapping
-	(*ResourceSelectorMappings)(nil),       // 16: motiveiq.iam.v1.ResourceSelectorMappings
-	(*SourceResourceBinding)(nil),          // 17: motiveiq.iam.v1.SourceResourceBinding
-	(*ResourceConstructorReference)(nil),   // 18: motiveiq.iam.v1.ResourceConstructorReference
-	(*ResourceDerivation)(nil),             // 19: motiveiq.iam.v1.ResourceDerivation
-	(*SourceResourceSelector)(nil),         // 20: motiveiq.iam.v1.SourceResourceSelector
-	(*DerivedSourceResource)(nil),          // 21: motiveiq.iam.v1.DerivedSourceResource
-	(*SourceRequestEvidence)(nil),          // 22: motiveiq.iam.v1.SourceRequestEvidence
-	(*GRPCRequestEvidence)(nil),            // 23: motiveiq.iam.v1.GRPCRequestEvidence
-	(*HTTPRequestEvidence)(nil),            // 24: motiveiq.iam.v1.HTTPRequestEvidence
-	(*VerifiedSourceRequest)(nil),          // 25: motiveiq.iam.v1.VerifiedSourceRequest
-	(*SourceRequestContext)(nil),           // 26: motiveiq.iam.v1.SourceRequestContext
-	(*RequestIdentity)(nil),                // 27: motiveiq.iam.v1.RequestIdentity
-	(*GRPCRequestIdentity)(nil),            // 28: motiveiq.iam.v1.GRPCRequestIdentity
-	(*HTTPRequestIdentity)(nil),            // 29: motiveiq.iam.v1.HTTPRequestIdentity
-	(*RequestMatcher)(nil),                 // 30: motiveiq.iam.v1.RequestMatcher
-	(*GRPCRequestMatcher)(nil),             // 31: motiveiq.iam.v1.GRPCRequestMatcher
-	(*SessionReference)(nil),               // 32: motiveiq.iam.v1.SessionReference
-	(*SourceCatalogAssertions)(nil),        // 33: motiveiq.iam.v1.SourceCatalogAssertions
-	(*Delegation)(nil),                     // 34: motiveiq.iam.v1.Delegation
-	(*DelegationReference)(nil),            // 35: motiveiq.iam.v1.DelegationReference
-	(*DelegationSpec)(nil),                 // 36: motiveiq.iam.v1.DelegationSpec
-	(*DelegationTarget)(nil),               // 37: motiveiq.iam.v1.DelegationTarget
-	(*DelegationScope)(nil),                // 38: motiveiq.iam.v1.DelegationScope
-	(*CreateRequestContractRequest)(nil),   // 39: motiveiq.iam.v1.CreateRequestContractRequest
-	(*GetRequestContractRequest)(nil),      // 40: motiveiq.iam.v1.GetRequestContractRequest
-	(*ListRequestContractsRequest)(nil),    // 41: motiveiq.iam.v1.ListRequestContractsRequest
-	(*ListRequestContractsResponse)(nil),   // 42: motiveiq.iam.v1.ListRequestContractsResponse
-	(*UpdateRequestContractRequest)(nil),   // 43: motiveiq.iam.v1.UpdateRequestContractRequest
-	(*DeleteRequestContractRequest)(nil),   // 44: motiveiq.iam.v1.DeleteRequestContractRequest
-	(*CreateDelegationRequest)(nil),        // 45: motiveiq.iam.v1.CreateDelegationRequest
-	(*GetDelegationRequest)(nil),           // 46: motiveiq.iam.v1.GetDelegationRequest
-	(*ListDelegationsRequest)(nil),         // 47: motiveiq.iam.v1.ListDelegationsRequest
-	(*ListDelegationsResponse)(nil),        // 48: motiveiq.iam.v1.ListDelegationsResponse
-	(*UpdateDelegationRequest)(nil),        // 49: motiveiq.iam.v1.UpdateDelegationRequest
-	(*DeleteDelegationRequest)(nil),        // 50: motiveiq.iam.v1.DeleteDelegationRequest
-	nil,                                    // 51: motiveiq.iam.v1.RequestContractSpec.RequestAttributesEntry
-	nil,                                    // 52: motiveiq.iam.v1.ResourceDerivation.InputsEntry
-	nil,                                    // 53: motiveiq.iam.v1.DerivedSourceResource.InputsEntry
-	nil,                                    // 54: motiveiq.iam.v1.SourceRequestEvidence.SignedMetadataEntry
-	nil,                                    // 55: motiveiq.iam.v1.SourceRequestContext.RequestAttributesEntry
-	nil,                                    // 56: motiveiq.iam.v1.RequestIdentity.SignedMetadataEntry
-	nil,                                    // 57: motiveiq.iam.v1.SourceCatalogAssertions.AttributesEntry
-	nil,                                    // 58: motiveiq.iam.v1.DelegationSpec.RequiredTargetAttributesEntry
-	nil,                                    // 59: motiveiq.iam.v1.DelegationTarget.AttributesEntry
-	(*timestamppb.Timestamp)(nil),          // 60: google.protobuf.Timestamp
-	(*descriptorpb.FileDescriptorSet)(nil), // 61: google.protobuf.FileDescriptorSet
-	(*structpb.Value)(nil),                 // 62: google.protobuf.Value
+	(SourceResourceProvenance)(0),          // 2: motiveiq.iam.v1.SourceResourceProvenance
+	(*ConfigurationWrite)(nil),             // 3: motiveiq.iam.v1.ConfigurationWrite
+	(*ConfigurationOwner)(nil),             // 4: motiveiq.iam.v1.ConfigurationOwner
+	(*RequestContract)(nil),                // 5: motiveiq.iam.v1.RequestContract
+	(*RequestContractReference)(nil),       // 6: motiveiq.iam.v1.RequestContractReference
+	(*RequestContractSpec)(nil),            // 7: motiveiq.iam.v1.RequestContractSpec
+	(*GRPCRequestContractSpec)(nil),        // 8: motiveiq.iam.v1.GRPCRequestContractSpec
+	(*HTTPRequestMatcher)(nil),             // 9: motiveiq.iam.v1.HTTPRequestMatcher
+	(*HTTPProofOperation)(nil),             // 10: motiveiq.iam.v1.HTTPProofOperation
+	(*RequestStringSource)(nil),            // 11: motiveiq.iam.v1.RequestStringSource
+	(*HTTPPathParameterSource)(nil),        // 12: motiveiq.iam.v1.HTTPPathParameterSource
+	(*GRPCStringFieldPath)(nil),            // 13: motiveiq.iam.v1.GRPCStringFieldPath
+	(*ResourceSelectorMapping)(nil),        // 14: motiveiq.iam.v1.ResourceSelectorMapping
+	(*ResourceSelectorMappings)(nil),       // 15: motiveiq.iam.v1.ResourceSelectorMappings
+	(*SourceResourceBinding)(nil),          // 16: motiveiq.iam.v1.SourceResourceBinding
+	(*ResourceConstructorReference)(nil),   // 17: motiveiq.iam.v1.ResourceConstructorReference
+	(*ResourceDerivation)(nil),             // 18: motiveiq.iam.v1.ResourceDerivation
+	(*RequestMatcher)(nil),                 // 19: motiveiq.iam.v1.RequestMatcher
+	(*GRPCRequestMatcher)(nil),             // 20: motiveiq.iam.v1.GRPCRequestMatcher
+	(*Delegation)(nil),                     // 21: motiveiq.iam.v1.Delegation
+	(*DelegationSpec)(nil),                 // 22: motiveiq.iam.v1.DelegationSpec
+	(*CreateRequestContractRequest)(nil),   // 23: motiveiq.iam.v1.CreateRequestContractRequest
+	(*GetRequestContractRequest)(nil),      // 24: motiveiq.iam.v1.GetRequestContractRequest
+	(*ListRequestContractsRequest)(nil),    // 25: motiveiq.iam.v1.ListRequestContractsRequest
+	(*ListRequestContractsResponse)(nil),   // 26: motiveiq.iam.v1.ListRequestContractsResponse
+	(*UpdateRequestContractRequest)(nil),   // 27: motiveiq.iam.v1.UpdateRequestContractRequest
+	(*DeleteRequestContractRequest)(nil),   // 28: motiveiq.iam.v1.DeleteRequestContractRequest
+	(*CreateDelegationRequest)(nil),        // 29: motiveiq.iam.v1.CreateDelegationRequest
+	(*GetDelegationRequest)(nil),           // 30: motiveiq.iam.v1.GetDelegationRequest
+	(*ListDelegationsRequest)(nil),         // 31: motiveiq.iam.v1.ListDelegationsRequest
+	(*ListDelegationsResponse)(nil),        // 32: motiveiq.iam.v1.ListDelegationsResponse
+	(*UpdateDelegationRequest)(nil),        // 33: motiveiq.iam.v1.UpdateDelegationRequest
+	(*DeleteDelegationRequest)(nil),        // 34: motiveiq.iam.v1.DeleteDelegationRequest
+	nil,                                    // 35: motiveiq.iam.v1.RequestContractSpec.RequestAttributesEntry
+	nil,                                    // 36: motiveiq.iam.v1.ResourceDerivation.InputsEntry
+	nil,                                    // 37: motiveiq.iam.v1.DelegationSpec.RequiredTargetAttributesEntry
+	(*timestamppb.Timestamp)(nil),          // 38: google.protobuf.Timestamp
+	(*descriptorpb.FileDescriptorSet)(nil), // 39: google.protobuf.FileDescriptorSet
 }
 var file_platform_iam_api_v1_delegation_proto_depIdxs = []int32{
-	8,  // 0: motiveiq.iam.v1.RequestContract.spec:type_name -> motiveiq.iam.v1.RequestContractSpec
-	60, // 1: motiveiq.iam.v1.RequestContract.create_time:type_name -> google.protobuf.Timestamp
-	60, // 2: motiveiq.iam.v1.RequestContract.update_time:type_name -> google.protobuf.Timestamp
-	60, // 3: motiveiq.iam.v1.RequestContract.retire_time:type_name -> google.protobuf.Timestamp
-	5,  // 4: motiveiq.iam.v1.RequestContract.management:type_name -> motiveiq.iam.v1.ConfigurationOwner
-	17, // 5: motiveiq.iam.v1.RequestContractSpec.resource:type_name -> motiveiq.iam.v1.SourceResourceBinding
-	51, // 6: motiveiq.iam.v1.RequestContractSpec.request_attributes:type_name -> motiveiq.iam.v1.RequestContractSpec.RequestAttributesEntry
-	9,  // 7: motiveiq.iam.v1.RequestContractSpec.grpc:type_name -> motiveiq.iam.v1.GRPCRequestContractSpec
-	10, // 8: motiveiq.iam.v1.RequestContractSpec.http:type_name -> motiveiq.iam.v1.HTTPRequestMatcher
-	61, // 9: motiveiq.iam.v1.GRPCRequestContractSpec.schema:type_name -> google.protobuf.FileDescriptorSet
-	11, // 10: motiveiq.iam.v1.HTTPRequestMatcher.proof_operation:type_name -> motiveiq.iam.v1.HTTPProofOperation
-	14, // 11: motiveiq.iam.v1.RequestStringSource.grpc_body_field:type_name -> motiveiq.iam.v1.GRPCStringFieldPath
-	13, // 12: motiveiq.iam.v1.RequestStringSource.http_path_parameter:type_name -> motiveiq.iam.v1.HTTPPathParameterSource
+	7,  // 0: motiveiq.iam.v1.RequestContract.spec:type_name -> motiveiq.iam.v1.RequestContractSpec
+	38, // 1: motiveiq.iam.v1.RequestContract.create_time:type_name -> google.protobuf.Timestamp
+	38, // 2: motiveiq.iam.v1.RequestContract.update_time:type_name -> google.protobuf.Timestamp
+	38, // 3: motiveiq.iam.v1.RequestContract.retire_time:type_name -> google.protobuf.Timestamp
+	4,  // 4: motiveiq.iam.v1.RequestContract.management:type_name -> motiveiq.iam.v1.ConfigurationOwner
+	16, // 5: motiveiq.iam.v1.RequestContractSpec.resource:type_name -> motiveiq.iam.v1.SourceResourceBinding
+	35, // 6: motiveiq.iam.v1.RequestContractSpec.request_attributes:type_name -> motiveiq.iam.v1.RequestContractSpec.RequestAttributesEntry
+	8,  // 7: motiveiq.iam.v1.RequestContractSpec.grpc:type_name -> motiveiq.iam.v1.GRPCRequestContractSpec
+	9,  // 8: motiveiq.iam.v1.RequestContractSpec.http:type_name -> motiveiq.iam.v1.HTTPRequestMatcher
+	39, // 9: motiveiq.iam.v1.GRPCRequestContractSpec.schema:type_name -> google.protobuf.FileDescriptorSet
+	10, // 10: motiveiq.iam.v1.HTTPRequestMatcher.proof_operation:type_name -> motiveiq.iam.v1.HTTPProofOperation
+	13, // 11: motiveiq.iam.v1.RequestStringSource.grpc_body_field:type_name -> motiveiq.iam.v1.GRPCStringFieldPath
+	12, // 12: motiveiq.iam.v1.RequestStringSource.http_path_parameter:type_name -> motiveiq.iam.v1.HTTPPathParameterSource
 	0,  // 13: motiveiq.iam.v1.HTTPPathParameterSource.decoding:type_name -> motiveiq.iam.v1.HTTPPathDecoding
 	1,  // 14: motiveiq.iam.v1.ResourceSelectorMapping.kind:type_name -> motiveiq.iam.v1.SourceResourceSelectorKind
-	12, // 15: motiveiq.iam.v1.ResourceSelectorMapping.source:type_name -> motiveiq.iam.v1.RequestStringSource
-	15, // 16: motiveiq.iam.v1.ResourceSelectorMappings.alternatives:type_name -> motiveiq.iam.v1.ResourceSelectorMapping
-	16, // 17: motiveiq.iam.v1.SourceResourceBinding.selectors:type_name -> motiveiq.iam.v1.ResourceSelectorMappings
-	19, // 18: motiveiq.iam.v1.SourceResourceBinding.derived_urn:type_name -> motiveiq.iam.v1.ResourceDerivation
-	18, // 19: motiveiq.iam.v1.ResourceDerivation.constructor:type_name -> motiveiq.iam.v1.ResourceConstructorReference
-	52, // 20: motiveiq.iam.v1.ResourceDerivation.inputs:type_name -> motiveiq.iam.v1.ResourceDerivation.InputsEntry
-	1,  // 21: motiveiq.iam.v1.SourceResourceSelector.kind:type_name -> motiveiq.iam.v1.SourceResourceSelectorKind
-	18, // 22: motiveiq.iam.v1.DerivedSourceResource.constructor:type_name -> motiveiq.iam.v1.ResourceConstructorReference
-	53, // 23: motiveiq.iam.v1.DerivedSourceResource.inputs:type_name -> motiveiq.iam.v1.DerivedSourceResource.InputsEntry
-	23, // 24: motiveiq.iam.v1.SourceRequestEvidence.grpc:type_name -> motiveiq.iam.v1.GRPCRequestEvidence
-	24, // 25: motiveiq.iam.v1.SourceRequestEvidence.http:type_name -> motiveiq.iam.v1.HTTPRequestEvidence
-	54, // 26: motiveiq.iam.v1.SourceRequestEvidence.signed_metadata:type_name -> motiveiq.iam.v1.SourceRequestEvidence.SignedMetadataEntry
-	26, // 27: motiveiq.iam.v1.VerifiedSourceRequest.context:type_name -> motiveiq.iam.v1.SourceRequestContext
-	7,  // 28: motiveiq.iam.v1.SourceRequestContext.contract:type_name -> motiveiq.iam.v1.RequestContractReference
-	27, // 29: motiveiq.iam.v1.SourceRequestContext.request:type_name -> motiveiq.iam.v1.RequestIdentity
-	32, // 30: motiveiq.iam.v1.SourceRequestContext.subject:type_name -> motiveiq.iam.v1.SessionReference
-	20, // 31: motiveiq.iam.v1.SourceRequestContext.resource_selector:type_name -> motiveiq.iam.v1.SourceResourceSelector
-	21, // 32: motiveiq.iam.v1.SourceRequestContext.derived_resource:type_name -> motiveiq.iam.v1.DerivedSourceResource
-	55, // 33: motiveiq.iam.v1.SourceRequestContext.request_attributes:type_name -> motiveiq.iam.v1.SourceRequestContext.RequestAttributesEntry
-	60, // 34: motiveiq.iam.v1.SourceRequestContext.proof_time:type_name -> google.protobuf.Timestamp
-	60, // 35: motiveiq.iam.v1.SourceRequestContext.verified_time:type_name -> google.protobuf.Timestamp
-	60, // 36: motiveiq.iam.v1.SourceRequestContext.expire_time:type_name -> google.protobuf.Timestamp
-	2,  // 37: motiveiq.iam.v1.SourceRequestContext.payload_verification:type_name -> motiveiq.iam.v1.SourcePayloadVerification
-	56, // 38: motiveiq.iam.v1.RequestIdentity.signed_metadata:type_name -> motiveiq.iam.v1.RequestIdentity.SignedMetadataEntry
-	28, // 39: motiveiq.iam.v1.RequestIdentity.grpc:type_name -> motiveiq.iam.v1.GRPCRequestIdentity
-	29, // 40: motiveiq.iam.v1.RequestIdentity.http:type_name -> motiveiq.iam.v1.HTTPRequestIdentity
-	31, // 41: motiveiq.iam.v1.RequestMatcher.grpc:type_name -> motiveiq.iam.v1.GRPCRequestMatcher
-	10, // 42: motiveiq.iam.v1.RequestMatcher.http:type_name -> motiveiq.iam.v1.HTTPRequestMatcher
-	60, // 43: motiveiq.iam.v1.SessionReference.expire_time:type_name -> google.protobuf.Timestamp
-	57, // 44: motiveiq.iam.v1.SourceCatalogAssertions.attributes:type_name -> motiveiq.iam.v1.SourceCatalogAssertions.AttributesEntry
-	36, // 45: motiveiq.iam.v1.Delegation.spec:type_name -> motiveiq.iam.v1.DelegationSpec
-	60, // 46: motiveiq.iam.v1.Delegation.create_time:type_name -> google.protobuf.Timestamp
-	60, // 47: motiveiq.iam.v1.Delegation.update_time:type_name -> google.protobuf.Timestamp
-	60, // 48: motiveiq.iam.v1.Delegation.retire_time:type_name -> google.protobuf.Timestamp
-	5,  // 49: motiveiq.iam.v1.Delegation.management:type_name -> motiveiq.iam.v1.ConfigurationOwner
-	7,  // 50: motiveiq.iam.v1.DelegationSpec.source_contract:type_name -> motiveiq.iam.v1.RequestContractReference
-	30, // 51: motiveiq.iam.v1.DelegationSpec.target_request:type_name -> motiveiq.iam.v1.RequestMatcher
-	3,  // 52: motiveiq.iam.v1.DelegationSpec.allowed_source_provenance:type_name -> motiveiq.iam.v1.SourceResourceProvenance
-	58, // 53: motiveiq.iam.v1.DelegationSpec.required_target_attributes:type_name -> motiveiq.iam.v1.DelegationSpec.RequiredTargetAttributesEntry
-	27, // 54: motiveiq.iam.v1.DelegationTarget.request:type_name -> motiveiq.iam.v1.RequestIdentity
-	59, // 55: motiveiq.iam.v1.DelegationTarget.attributes:type_name -> motiveiq.iam.v1.DelegationTarget.AttributesEntry
-	35, // 56: motiveiq.iam.v1.DelegationScope.delegation:type_name -> motiveiq.iam.v1.DelegationReference
-	26, // 57: motiveiq.iam.v1.DelegationScope.source:type_name -> motiveiq.iam.v1.SourceRequestContext
-	3,  // 58: motiveiq.iam.v1.DelegationScope.source_resource_provenance:type_name -> motiveiq.iam.v1.SourceResourceProvenance
-	33, // 59: motiveiq.iam.v1.DelegationScope.catalog_assertions:type_name -> motiveiq.iam.v1.SourceCatalogAssertions
-	32, // 60: motiveiq.iam.v1.DelegationScope.actor:type_name -> motiveiq.iam.v1.SessionReference
-	37, // 61: motiveiq.iam.v1.DelegationScope.target:type_name -> motiveiq.iam.v1.DelegationTarget
-	60, // 62: motiveiq.iam.v1.DelegationScope.expire_time:type_name -> google.protobuf.Timestamp
-	60, // 63: motiveiq.iam.v1.DelegationScope.issue_time:type_name -> google.protobuf.Timestamp
-	8,  // 64: motiveiq.iam.v1.CreateRequestContractRequest.spec:type_name -> motiveiq.iam.v1.RequestContractSpec
-	4,  // 65: motiveiq.iam.v1.CreateRequestContractRequest.management:type_name -> motiveiq.iam.v1.ConfigurationWrite
-	6,  // 66: motiveiq.iam.v1.ListRequestContractsResponse.contracts:type_name -> motiveiq.iam.v1.RequestContract
-	8,  // 67: motiveiq.iam.v1.UpdateRequestContractRequest.spec:type_name -> motiveiq.iam.v1.RequestContractSpec
-	4,  // 68: motiveiq.iam.v1.UpdateRequestContractRequest.management:type_name -> motiveiq.iam.v1.ConfigurationWrite
-	4,  // 69: motiveiq.iam.v1.DeleteRequestContractRequest.management:type_name -> motiveiq.iam.v1.ConfigurationWrite
-	36, // 70: motiveiq.iam.v1.CreateDelegationRequest.spec:type_name -> motiveiq.iam.v1.DelegationSpec
-	4,  // 71: motiveiq.iam.v1.CreateDelegationRequest.management:type_name -> motiveiq.iam.v1.ConfigurationWrite
-	34, // 72: motiveiq.iam.v1.ListDelegationsResponse.delegations:type_name -> motiveiq.iam.v1.Delegation
-	36, // 73: motiveiq.iam.v1.UpdateDelegationRequest.spec:type_name -> motiveiq.iam.v1.DelegationSpec
-	4,  // 74: motiveiq.iam.v1.UpdateDelegationRequest.management:type_name -> motiveiq.iam.v1.ConfigurationWrite
-	4,  // 75: motiveiq.iam.v1.DeleteDelegationRequest.management:type_name -> motiveiq.iam.v1.ConfigurationWrite
-	12, // 76: motiveiq.iam.v1.RequestContractSpec.RequestAttributesEntry.value:type_name -> motiveiq.iam.v1.RequestStringSource
-	12, // 77: motiveiq.iam.v1.ResourceDerivation.InputsEntry.value:type_name -> motiveiq.iam.v1.RequestStringSource
-	62, // 78: motiveiq.iam.v1.DelegationTarget.AttributesEntry.value:type_name -> google.protobuf.Value
-	79, // [79:79] is the sub-list for method output_type
-	79, // [79:79] is the sub-list for method input_type
-	79, // [79:79] is the sub-list for extension type_name
-	79, // [79:79] is the sub-list for extension extendee
-	0,  // [0:79] is the sub-list for field type_name
+	11, // 15: motiveiq.iam.v1.ResourceSelectorMapping.source:type_name -> motiveiq.iam.v1.RequestStringSource
+	14, // 16: motiveiq.iam.v1.ResourceSelectorMappings.alternatives:type_name -> motiveiq.iam.v1.ResourceSelectorMapping
+	15, // 17: motiveiq.iam.v1.SourceResourceBinding.selectors:type_name -> motiveiq.iam.v1.ResourceSelectorMappings
+	18, // 18: motiveiq.iam.v1.SourceResourceBinding.derived_urn:type_name -> motiveiq.iam.v1.ResourceDerivation
+	17, // 19: motiveiq.iam.v1.ResourceDerivation.constructor:type_name -> motiveiq.iam.v1.ResourceConstructorReference
+	36, // 20: motiveiq.iam.v1.ResourceDerivation.inputs:type_name -> motiveiq.iam.v1.ResourceDerivation.InputsEntry
+	20, // 21: motiveiq.iam.v1.RequestMatcher.grpc:type_name -> motiveiq.iam.v1.GRPCRequestMatcher
+	9,  // 22: motiveiq.iam.v1.RequestMatcher.http:type_name -> motiveiq.iam.v1.HTTPRequestMatcher
+	22, // 23: motiveiq.iam.v1.Delegation.spec:type_name -> motiveiq.iam.v1.DelegationSpec
+	38, // 24: motiveiq.iam.v1.Delegation.create_time:type_name -> google.protobuf.Timestamp
+	38, // 25: motiveiq.iam.v1.Delegation.update_time:type_name -> google.protobuf.Timestamp
+	38, // 26: motiveiq.iam.v1.Delegation.retire_time:type_name -> google.protobuf.Timestamp
+	4,  // 27: motiveiq.iam.v1.Delegation.management:type_name -> motiveiq.iam.v1.ConfigurationOwner
+	6,  // 28: motiveiq.iam.v1.DelegationSpec.source_contract:type_name -> motiveiq.iam.v1.RequestContractReference
+	19, // 29: motiveiq.iam.v1.DelegationSpec.target_request:type_name -> motiveiq.iam.v1.RequestMatcher
+	2,  // 30: motiveiq.iam.v1.DelegationSpec.allowed_source_provenance:type_name -> motiveiq.iam.v1.SourceResourceProvenance
+	37, // 31: motiveiq.iam.v1.DelegationSpec.required_target_attributes:type_name -> motiveiq.iam.v1.DelegationSpec.RequiredTargetAttributesEntry
+	7,  // 32: motiveiq.iam.v1.CreateRequestContractRequest.spec:type_name -> motiveiq.iam.v1.RequestContractSpec
+	3,  // 33: motiveiq.iam.v1.CreateRequestContractRequest.management:type_name -> motiveiq.iam.v1.ConfigurationWrite
+	5,  // 34: motiveiq.iam.v1.ListRequestContractsResponse.contracts:type_name -> motiveiq.iam.v1.RequestContract
+	7,  // 35: motiveiq.iam.v1.UpdateRequestContractRequest.spec:type_name -> motiveiq.iam.v1.RequestContractSpec
+	3,  // 36: motiveiq.iam.v1.UpdateRequestContractRequest.management:type_name -> motiveiq.iam.v1.ConfigurationWrite
+	3,  // 37: motiveiq.iam.v1.DeleteRequestContractRequest.management:type_name -> motiveiq.iam.v1.ConfigurationWrite
+	22, // 38: motiveiq.iam.v1.CreateDelegationRequest.spec:type_name -> motiveiq.iam.v1.DelegationSpec
+	3,  // 39: motiveiq.iam.v1.CreateDelegationRequest.management:type_name -> motiveiq.iam.v1.ConfigurationWrite
+	21, // 40: motiveiq.iam.v1.ListDelegationsResponse.delegations:type_name -> motiveiq.iam.v1.Delegation
+	22, // 41: motiveiq.iam.v1.UpdateDelegationRequest.spec:type_name -> motiveiq.iam.v1.DelegationSpec
+	3,  // 42: motiveiq.iam.v1.UpdateDelegationRequest.management:type_name -> motiveiq.iam.v1.ConfigurationWrite
+	3,  // 43: motiveiq.iam.v1.DeleteDelegationRequest.management:type_name -> motiveiq.iam.v1.ConfigurationWrite
+	11, // 44: motiveiq.iam.v1.RequestContractSpec.RequestAttributesEntry.value:type_name -> motiveiq.iam.v1.RequestStringSource
+	11, // 45: motiveiq.iam.v1.ResourceDerivation.InputsEntry.value:type_name -> motiveiq.iam.v1.RequestStringSource
+	46, // [46:46] is the sub-list for method output_type
+	46, // [46:46] is the sub-list for method input_type
+	46, // [46:46] is the sub-list for extension type_name
+	46, // [46:46] is the sub-list for extension extendee
+	0,  // [0:46] is the sub-list for field type_name
 }
 
 func init() { file_platform_iam_api_v1_delegation_proto_init() }
@@ -4217,20 +2782,7 @@ func file_platform_iam_api_v1_delegation_proto_init() {
 		(*SourceResourceBinding_Selectors)(nil),
 		(*SourceResourceBinding_DerivedUrn)(nil),
 	}
-	file_platform_iam_api_v1_delegation_proto_msgTypes[17].OneofWrappers = []any{}
-	file_platform_iam_api_v1_delegation_proto_msgTypes[18].OneofWrappers = []any{
-		(*SourceRequestEvidence_Grpc)(nil),
-		(*SourceRequestEvidence_Http)(nil),
-	}
-	file_platform_iam_api_v1_delegation_proto_msgTypes[22].OneofWrappers = []any{
-		(*SourceRequestContext_ResourceSelector)(nil),
-		(*SourceRequestContext_DerivedResource)(nil),
-	}
-	file_platform_iam_api_v1_delegation_proto_msgTypes[23].OneofWrappers = []any{
-		(*RequestIdentity_Grpc)(nil),
-		(*RequestIdentity_Http)(nil),
-	}
-	file_platform_iam_api_v1_delegation_proto_msgTypes[26].OneofWrappers = []any{
+	file_platform_iam_api_v1_delegation_proto_msgTypes[16].OneofWrappers = []any{
 		(*RequestMatcher_Grpc)(nil),
 		(*RequestMatcher_Http)(nil),
 	}
@@ -4239,8 +2791,8 @@ func file_platform_iam_api_v1_delegation_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_platform_iam_api_v1_delegation_proto_rawDesc), len(file_platform_iam_api_v1_delegation_proto_rawDesc)),
-			NumEnums:      4,
-			NumMessages:   56,
+			NumEnums:      3,
+			NumMessages:   35,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

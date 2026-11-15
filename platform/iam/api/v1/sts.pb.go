@@ -310,155 +310,11 @@ func (x *GetCallerIdentityResponse) GetExpireTime() *timestamppb.Timestamp {
 	return nil
 }
 
-type IssueDelegationTokenRequest struct {
-	state              protoimpl.MessageState   `protogen:"open.v1"`
-	Delegation         *DelegationReference     `protobuf:"bytes,1,opt,name=delegation,proto3" json:"delegation,omitempty"`
-	Source             *SourceRequestEvidence   `protobuf:"bytes,2,opt,name=source,proto3" json:"source,omitempty"`
-	CatalogAssertions  *SourceCatalogAssertions `protobuf:"bytes,3,opt,name=catalog_assertions,json=catalogAssertions,proto3" json:"catalog_assertions,omitempty"`
-	Target             *DelegationTarget        `protobuf:"bytes,4,opt,name=target,proto3" json:"target,omitempty"`
-	ExpireNotAfter     *timestamppb.Timestamp   `protobuf:"bytes,5,opt,name=expire_not_after,json=expireNotAfter,proto3" json:"expire_not_after,omitempty"`
-	ProofKeyThumbprint string                   `protobuf:"bytes,6,opt,name=proof_key_thumbprint,json=proofKeyThumbprint,proto3" json:"proof_key_thumbprint,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
-}
-
-func (x *IssueDelegationTokenRequest) Reset() {
-	*x = IssueDelegationTokenRequest{}
-	mi := &file_platform_iam_api_v1_sts_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *IssueDelegationTokenRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*IssueDelegationTokenRequest) ProtoMessage() {}
-
-func (x *IssueDelegationTokenRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_platform_iam_api_v1_sts_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use IssueDelegationTokenRequest.ProtoReflect.Descriptor instead.
-func (*IssueDelegationTokenRequest) Descriptor() ([]byte, []int) {
-	return file_platform_iam_api_v1_sts_proto_rawDescGZIP(), []int{4}
-}
-
-func (x *IssueDelegationTokenRequest) GetDelegation() *DelegationReference {
-	if x != nil {
-		return x.Delegation
-	}
-	return nil
-}
-
-func (x *IssueDelegationTokenRequest) GetSource() *SourceRequestEvidence {
-	if x != nil {
-		return x.Source
-	}
-	return nil
-}
-
-func (x *IssueDelegationTokenRequest) GetCatalogAssertions() *SourceCatalogAssertions {
-	if x != nil {
-		return x.CatalogAssertions
-	}
-	return nil
-}
-
-func (x *IssueDelegationTokenRequest) GetTarget() *DelegationTarget {
-	if x != nil {
-		return x.Target
-	}
-	return nil
-}
-
-func (x *IssueDelegationTokenRequest) GetExpireNotAfter() *timestamppb.Timestamp {
-	if x != nil {
-		return x.ExpireNotAfter
-	}
-	return nil
-}
-
-func (x *IssueDelegationTokenRequest) GetProofKeyThumbprint() string {
-	if x != nil {
-		return x.ProofKeyThumbprint
-	}
-	return ""
-}
-
-type IssueDelegationTokenResponse struct {
-	state           protoimpl.MessageState `protogen:"open.v1"`
-	DelegationToken string                 `protobuf:"bytes,1,opt,name=delegation_token,json=delegationToken,proto3" json:"delegation_token,omitempty"`
-	DelegationId    string                 `protobuf:"bytes,2,opt,name=delegation_id,json=delegationId,proto3" json:"delegation_id,omitempty"`
-	ExpireTime      *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=expire_time,json=expireTime,proto3" json:"expire_time,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
-}
-
-func (x *IssueDelegationTokenResponse) Reset() {
-	*x = IssueDelegationTokenResponse{}
-	mi := &file_platform_iam_api_v1_sts_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *IssueDelegationTokenResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*IssueDelegationTokenResponse) ProtoMessage() {}
-
-func (x *IssueDelegationTokenResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_platform_iam_api_v1_sts_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use IssueDelegationTokenResponse.ProtoReflect.Descriptor instead.
-func (*IssueDelegationTokenResponse) Descriptor() ([]byte, []int) {
-	return file_platform_iam_api_v1_sts_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *IssueDelegationTokenResponse) GetDelegationToken() string {
-	if x != nil {
-		return x.DelegationToken
-	}
-	return ""
-}
-
-func (x *IssueDelegationTokenResponse) GetDelegationId() string {
-	if x != nil {
-		return x.DelegationId
-	}
-	return ""
-}
-
-func (x *IssueDelegationTokenResponse) GetExpireTime() *timestamppb.Timestamp {
-	if x != nil {
-		return x.ExpireTime
-	}
-	return nil
-}
-
 var File_platform_iam_api_v1_sts_proto protoreflect.FileDescriptor
 
 const file_platform_iam_api_v1_sts_proto_rawDesc = "" +
 	"\n" +
-	"\x1dplatform/iam/api/v1/sts.proto\x12\x0fmotiveiq.iam.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a(platform/iam/api/v1/authentication.proto\x1a$platform/iam/api/v1/delegation.proto\"\xc3\x02\n" +
+	"\x1dplatform/iam/api/v1/sts.proto\x12\x0fmotiveiq.iam.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a(platform/iam/api/v1/authentication.proto\"\xc3\x02\n" +
 	" AssumeRoleWithWebIdentityRequest\x12\x19\n" +
 	"\brole_urn\x18\x01 \x01(\tR\aroleUrn\x121\n" +
 	"\x12web_identity_token\x18\x02 \x01(\tB\x03\x80\x01\x01R\x10webIdentityToken\x12!\n" +
@@ -486,25 +342,10 @@ const file_platform_iam_api_v1_sts_proto_rawDesc = "" +
 	"\brole_urn\x18\x03 \x01(\tR\aroleUrn\x12!\n" +
 	"\fsession_name\x18\x04 \x01(\tR\vsessionName\x12;\n" +
 	"\vexpire_time\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
-	"expireTime\"\xaf\x03\n" +
-	"\x1bIssueDelegationTokenRequest\x12D\n" +
-	"\n" +
-	"delegation\x18\x01 \x01(\v2$.motiveiq.iam.v1.DelegationReferenceR\n" +
-	"delegation\x12>\n" +
-	"\x06source\x18\x02 \x01(\v2&.motiveiq.iam.v1.SourceRequestEvidenceR\x06source\x12W\n" +
-	"\x12catalog_assertions\x18\x03 \x01(\v2(.motiveiq.iam.v1.SourceCatalogAssertionsR\x11catalogAssertions\x129\n" +
-	"\x06target\x18\x04 \x01(\v2!.motiveiq.iam.v1.DelegationTargetR\x06target\x12D\n" +
-	"\x10expire_not_after\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\x0eexpireNotAfter\x120\n" +
-	"\x14proof_key_thumbprint\x18\x06 \x01(\tR\x12proofKeyThumbprint\"\xb0\x01\n" +
-	"\x1cIssueDelegationTokenResponse\x12.\n" +
-	"\x10delegation_token\x18\x01 \x01(\tB\x03\x80\x01\x01R\x0fdelegationToken\x12#\n" +
-	"\rdelegation_id\x18\x02 \x01(\tR\fdelegationId\x12;\n" +
-	"\vexpire_time\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
-	"expireTime2\xeb\x02\n" +
+	"expireTime2\xf6\x01\n" +
 	"\x03STS\x12\x82\x01\n" +
 	"\x19AssumeRoleWithWebIdentity\x121.motiveiq.iam.v1.AssumeRoleWithWebIdentityRequest\x1a2.motiveiq.iam.v1.AssumeRoleWithWebIdentityResponse\x12j\n" +
-	"\x11GetCallerIdentity\x12).motiveiq.iam.v1.GetCallerIdentityRequest\x1a*.motiveiq.iam.v1.GetCallerIdentityResponse\x12s\n" +
-	"\x14IssueDelegationToken\x12,.motiveiq.iam.v1.IssueDelegationTokenRequest\x1a-.motiveiq.iam.v1.IssueDelegationTokenResponseB+Z)go.motiveiq.dev/platform/iam/api/v1;iamv1b\x06proto3"
+	"\x11GetCallerIdentity\x12).motiveiq.iam.v1.GetCallerIdentityRequest\x1a*.motiveiq.iam.v1.GetCallerIdentityResponseB+Z)go.motiveiq.dev/platform/iam/api/v1;iamv1b\x06proto3"
 
 var (
 	file_platform_iam_api_v1_sts_proto_rawDescOnce sync.Once
@@ -518,43 +359,29 @@ func file_platform_iam_api_v1_sts_proto_rawDescGZIP() []byte {
 	return file_platform_iam_api_v1_sts_proto_rawDescData
 }
 
-var file_platform_iam_api_v1_sts_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_platform_iam_api_v1_sts_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_platform_iam_api_v1_sts_proto_goTypes = []any{
 	(*AssumeRoleWithWebIdentityRequest)(nil),  // 0: motiveiq.iam.v1.AssumeRoleWithWebIdentityRequest
 	(*AssumeRoleWithWebIdentityResponse)(nil), // 1: motiveiq.iam.v1.AssumeRoleWithWebIdentityResponse
 	(*GetCallerIdentityRequest)(nil),          // 2: motiveiq.iam.v1.GetCallerIdentityRequest
 	(*GetCallerIdentityResponse)(nil),         // 3: motiveiq.iam.v1.GetCallerIdentityResponse
-	(*IssueDelegationTokenRequest)(nil),       // 4: motiveiq.iam.v1.IssueDelegationTokenRequest
-	(*IssueDelegationTokenResponse)(nil),      // 5: motiveiq.iam.v1.IssueDelegationTokenResponse
-	(SessionTokenType)(0),                     // 6: motiveiq.iam.v1.SessionTokenType
-	(*timestamppb.Timestamp)(nil),             // 7: google.protobuf.Timestamp
-	(*DelegationReference)(nil),               // 8: motiveiq.iam.v1.DelegationReference
-	(*SourceRequestEvidence)(nil),             // 9: motiveiq.iam.v1.SourceRequestEvidence
-	(*SourceCatalogAssertions)(nil),           // 10: motiveiq.iam.v1.SourceCatalogAssertions
-	(*DelegationTarget)(nil),                  // 11: motiveiq.iam.v1.DelegationTarget
+	(SessionTokenType)(0),                     // 4: motiveiq.iam.v1.SessionTokenType
+	(*timestamppb.Timestamp)(nil),             // 5: google.protobuf.Timestamp
 }
 var file_platform_iam_api_v1_sts_proto_depIdxs = []int32{
-	6,  // 0: motiveiq.iam.v1.AssumeRoleWithWebIdentityRequest.requested_token_type:type_name -> motiveiq.iam.v1.SessionTokenType
-	7,  // 1: motiveiq.iam.v1.AssumeRoleWithWebIdentityResponse.expire_time:type_name -> google.protobuf.Timestamp
-	6,  // 2: motiveiq.iam.v1.AssumeRoleWithWebIdentityResponse.session_token_type:type_name -> motiveiq.iam.v1.SessionTokenType
-	7,  // 3: motiveiq.iam.v1.GetCallerIdentityResponse.expire_time:type_name -> google.protobuf.Timestamp
-	8,  // 4: motiveiq.iam.v1.IssueDelegationTokenRequest.delegation:type_name -> motiveiq.iam.v1.DelegationReference
-	9,  // 5: motiveiq.iam.v1.IssueDelegationTokenRequest.source:type_name -> motiveiq.iam.v1.SourceRequestEvidence
-	10, // 6: motiveiq.iam.v1.IssueDelegationTokenRequest.catalog_assertions:type_name -> motiveiq.iam.v1.SourceCatalogAssertions
-	11, // 7: motiveiq.iam.v1.IssueDelegationTokenRequest.target:type_name -> motiveiq.iam.v1.DelegationTarget
-	7,  // 8: motiveiq.iam.v1.IssueDelegationTokenRequest.expire_not_after:type_name -> google.protobuf.Timestamp
-	7,  // 9: motiveiq.iam.v1.IssueDelegationTokenResponse.expire_time:type_name -> google.protobuf.Timestamp
-	0,  // 10: motiveiq.iam.v1.STS.AssumeRoleWithWebIdentity:input_type -> motiveiq.iam.v1.AssumeRoleWithWebIdentityRequest
-	2,  // 11: motiveiq.iam.v1.STS.GetCallerIdentity:input_type -> motiveiq.iam.v1.GetCallerIdentityRequest
-	4,  // 12: motiveiq.iam.v1.STS.IssueDelegationToken:input_type -> motiveiq.iam.v1.IssueDelegationTokenRequest
-	1,  // 13: motiveiq.iam.v1.STS.AssumeRoleWithWebIdentity:output_type -> motiveiq.iam.v1.AssumeRoleWithWebIdentityResponse
-	3,  // 14: motiveiq.iam.v1.STS.GetCallerIdentity:output_type -> motiveiq.iam.v1.GetCallerIdentityResponse
-	5,  // 15: motiveiq.iam.v1.STS.IssueDelegationToken:output_type -> motiveiq.iam.v1.IssueDelegationTokenResponse
-	13, // [13:16] is the sub-list for method output_type
-	10, // [10:13] is the sub-list for method input_type
-	10, // [10:10] is the sub-list for extension type_name
-	10, // [10:10] is the sub-list for extension extendee
-	0,  // [0:10] is the sub-list for field type_name
+	4, // 0: motiveiq.iam.v1.AssumeRoleWithWebIdentityRequest.requested_token_type:type_name -> motiveiq.iam.v1.SessionTokenType
+	5, // 1: motiveiq.iam.v1.AssumeRoleWithWebIdentityResponse.expire_time:type_name -> google.protobuf.Timestamp
+	4, // 2: motiveiq.iam.v1.AssumeRoleWithWebIdentityResponse.session_token_type:type_name -> motiveiq.iam.v1.SessionTokenType
+	5, // 3: motiveiq.iam.v1.GetCallerIdentityResponse.expire_time:type_name -> google.protobuf.Timestamp
+	0, // 4: motiveiq.iam.v1.STS.AssumeRoleWithWebIdentity:input_type -> motiveiq.iam.v1.AssumeRoleWithWebIdentityRequest
+	2, // 5: motiveiq.iam.v1.STS.GetCallerIdentity:input_type -> motiveiq.iam.v1.GetCallerIdentityRequest
+	1, // 6: motiveiq.iam.v1.STS.AssumeRoleWithWebIdentity:output_type -> motiveiq.iam.v1.AssumeRoleWithWebIdentityResponse
+	3, // 7: motiveiq.iam.v1.STS.GetCallerIdentity:output_type -> motiveiq.iam.v1.GetCallerIdentityResponse
+	6, // [6:8] is the sub-list for method output_type
+	4, // [4:6] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_platform_iam_api_v1_sts_proto_init() }
@@ -563,14 +390,13 @@ func file_platform_iam_api_v1_sts_proto_init() {
 		return
 	}
 	file_platform_iam_api_v1_authentication_proto_init()
-	file_platform_iam_api_v1_delegation_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_platform_iam_api_v1_sts_proto_rawDesc), len(file_platform_iam_api_v1_sts_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   6,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
