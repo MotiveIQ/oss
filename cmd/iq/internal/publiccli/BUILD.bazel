@@ -13,6 +13,7 @@ go_library(
         "kms_control.go",
         "kms_input.go",
         "kms_output.go",
+        "login.go",
         "s3.go",
         "s3_client.go",
         "s3_paths.go",
@@ -25,6 +26,7 @@ go_library(
     importpath = "go.motiveiq.dev/cmd/iq/internal/publiccli",
     visibility = ["//cmd/iq:__subpackages__"],
     deps = [
+        "//cmd/iq/internal/install",
         "//platform/iam/api/v1:api",
         "//platform/iam/sdk",
         "//platform/iam/sdk/config",
@@ -57,6 +59,7 @@ go_test(
         "iam_test.go",
         "kms_client_test.go",
         "kms_test.go",
+        "login_test.go",
         "s3_client_test.go",
         "s3_test.go",
         "secretsmanager_client_test.go",

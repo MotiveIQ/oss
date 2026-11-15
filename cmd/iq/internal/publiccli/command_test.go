@@ -26,7 +26,7 @@ func TestAPICommandsOutsideWorkspace(t *testing.T) {
 		names = append(names, subcommand.Name())
 	}
 	slices.Sort(names)
-	want := []string{"iam", "kms", "s3", "secretsmanager", "sts"}
+	want := []string{"iam", "install", "kms", "login", "s3", "secretsmanager", "sts"}
 	if !slices.Equal(names, want) {
 		t.Fatalf("API commands = %v, want %v", names, want)
 	}
@@ -35,7 +35,7 @@ func TestAPICommandsOutsideWorkspace(t *testing.T) {
 			t.Fatalf("%s --help exited %d: %s", name, code, command.Stderr)
 		}
 	}
-	for _, name := range []string{"login", "whoami", "build", "run", "deploy", "setup", "install", "terraform", "blob"} {
+	for _, name := range []string{"whoami", "build", "run", "deploy", "setup", "terraform", "blob"} {
 		if code := command.Run(context.Background(), []string{name}); code == 0 {
 			t.Fatalf("internal command %s is available in the API CLI", name)
 		}

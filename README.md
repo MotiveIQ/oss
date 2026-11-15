@@ -1,145 +1,52 @@
 # MotiveIQ APIs and CLI
 
-Client packages for MotiveIQ IAM/STS, S3, KMS, and Secrets Manager. This repository
-is synchronized from MotiveIQ's monorepo by Copybara. Submit source changes in the
-monorepo; direct changes here stop automatic synchronization.
+Go clients and the `iq` CLI for MotiveIQ IAM/STS, S3, KMS, and Secrets Manager.
+This repository is synchronized from MotiveIQ's monorepo by Copybara; submit
+source changes there, because direct changes here stop synchronization.
 
-## Install with Go
+## Install
 
-The public Go module is `go.motiveiq.dev`. Its discovery metadata maps those
-import paths to this repository. Use Go 1.27.1 or newer with the standard Go
-proxy and checksum settings; no GitHub credentials, `GOPRIVATE`, or local
-`replace` directive are required.
-
-Add the SDK to an existing Go module:
-
-```sh
-go get go.motiveiq.dev/platform/iam/sdk@latest
-```
-
-Install the API CLI without cloning the repository:
-
-```sh
-go install go.motiveiq.dev/cmd/iq@latest
-```
-
-Import SDK and API packages using the `go.motiveiq.dev` module prefix. The GitHub
-repository URL is the source location, not the Go module path. Tags and commit
-versions refer to this repository's exported history.
-
-## Build and test from source
-
-Generated protobuf Go clients are included, so a clone supports ordinary Go
-builds and tests:
+Install [Bazelisk](https://github.com/bazelbuild/bazelisk), then bootstrap from
+this checkout using the same command as the monorepo:
 
 ```sh
 git clone https://github.com/MotiveIQ/oss.git
 cd oss
-go test ./...
-go install ./cmd/iq
-go build -o iq-oidc ./cmd/iq/oidc
+bazel run //cmd/iq -- install iq
+export PATH="$HOME/.local/bin:$PATH"
 ```
 
-Alternatively, install [Bazelisk](https://github.com/bazelbuild/bazelisk) and run
-these commands from the clone:
+This installs `iq` and its `iq-oidc` browser helper in `~/.local/bin`. Add that
+directory to your shell's `PATH` permanently. Bazel downloads the pinned public
+toolchains and dependencies; no Go installation, monorepo access, private
+registry, or API credentials are needed. Linux and macOS are supported.
+Run the same command from the updated checkout to upgrade.
 
-```sh
-bazel build //cmd/iq //cmd/iq/oidc:iq-oidc
-bazel test //...
-bazel run //cmd/iq -- --help
-```
+The OSS package leaves your configuration to you. The monorepo's package uses
+the same install/login interfaces and additionally supplies MotiveIQ's developer
+configuration, preserving an existing configuration. Neither CLI chooses a
+human role implicitly.
 
-Bazel downloads pinned public toolchains and dependencies. Both build paths
-require no monorepo checkout, private registry, remote execution service, or API
-credentials. The first build needs internet access. Linux and macOS are supported.
+## Configure browser login
 
-## Use
+First, arrange the two sides of federation:
 
-Configure an external OIDC token source and an IAM role in
-`~/.config/iq/config.toml` (or `IQ_CONFIG_FILE`):
+- At your OIDC issuer, register a public/native client using authorization code
+  with PKCE S256 and the redirect URI `http://127.0.0.1:48195/callback`.
+- Have a MotiveIQ administrator register that issuer and client audience, give
+  the desired subjects permission to assume a role through its trust policy,
+  and grant the role its API permissions. Obtain the role URN from them.
+
+Create `~/.config/iq/config.toml` with your issuer, client ID, and role:
 
 ```toml
 [profiles.default]
 role_urn = "urn:motiveiq:iam:role/YOUR_ROLE"
-web_identity_source = "external"
+web_identity_source = "browser-login"
 
-[web_identity_sources.external]
-type = "file"
-[web_identity_sources.external.config]
-path = "/absolute/path/to/oidc-token"
-```
-
-```sh
-iq --help
-iq sts get-caller-identity
-iq --profile default s3 ls
-```
-
-Your administrator supplies the role and its trust relationship. Repository
-access does not grant API permissions. API commands include IAM, STS, S3, KMS,
-and Secrets Manager. This distribution has no company-specific `login` command;
-`whoami` has been removed in favor of `sts get-caller-identity`.
-
-Profiles separate role selection from external-token acquisition. Optional
-`sts_endpoint` defaults to `api.motiveiq.net:443`. `--role` overrides only the
-selected role. A named `--profile` (or `IQ_PROFILE`) takes precedence over
-environment workload identity. Otherwise `IQ_WEB_IDENTITY_TOKEN_FILE` and
-`IQ_ROLE_URN` select workload identity; absent those, the `default` profile
-is selected. Partial environment configuration is an error. Failed sources never
-fall back to another identity. `XDG_CONFIG_HOME` changes the config base directory.
-
-A `process` source uses a command array in its config table:
-
-```toml
-[web_identity_sources.external]
+[web_identity_sources.browser-login]
 type = "process"
-[web_identity_sources.external.config]
-command = ["/absolute/path/to/helper", "token"]
-```
-
-Commands can use an absolute executable path or a name on `PATH`. Relative
-executable paths and implicit current-directory lookup are rejected. The
-noninteractive helper runs without a shell and returns one JSON object:
-
-```json
-{"version":1,"token":"EXTERNAL_OIDC_TOKEN","expires_at":"2030-01-01T00:00:00Z"}
-```
-
-`expires_at` is optional RFC 3339 metadata and must be in the future if present.
-The helper owns external-token refresh. It is invoked on STS exchanges and cache
-lookups in new CLI processes. Output is limited to 1 MiB; execution respects
-cancellation and a 30-second maximum (the SDK exchange may impose a shorter
-deadline). Helper stdout/stderr are never included in failure messages. Perform
-interactive authentication separately through your provider. An optional
-`login_command` can be invoked explicitly by an application; token retrieval
-never runs it.
-
-The SDK owns role assumption, session/proof-key caching, refresh, and request
-signing. Helpers only supply external tokens; they do not handle IAM proof keys.
-Use `platform/iam/sdk/config.Load` for shared profile resolution, or `Resolver` to
-register additional web-identity providers. Without an explicit profile,
-`IQ_ROLE_URN` and `IQ_WEB_IDENTITY_TOKEN_FILE` select the workload identity
-before the default local profile. Webhook-configured workloads need no TOML
-file or interactive login. The SDK rereads the projected token on refresh.
-Legacy `MOTIVEIQ_*` workload aliases remain supported during migration, with
-`IQ_*` taking precedence. No human role is selected implicitly.
-The monorepo installer and its developer configuration file are not included.
-
-The Go SDK is `go.motiveiq.dev/platform/iam/sdk`. API schemas and
-generated clients live under `platform/{iam,s3,kms,secretsmanager}/api/v1`.
-Protobuf service identities and wire formats match MotiveIQ's deployed services.
-Server implementations and the private policy-decision API are not included.
-
-
-## Browser OIDC helper
-
-The standalone `iq-oidc` executable uses discovery and the native authorization
-code flow with PKCE S256. Register a public client at your issuer and configure:
-
-```toml
-[web_identity_sources.external]
-type = "process"
-[web_identity_sources.external.config]
+[web_identity_sources.browser-login.config]
 command = ["iq-oidc", "token", "browser"]
 login_command = ["iq-oidc", "login", "browser"]
 
@@ -149,25 +56,124 @@ type = "oidc"
 issuer = "https://issuer.example/"
 client_id = "YOUR_REGISTERED_CLIENT"
 scopes = ["openid", "offline_access"]
-callback_port = 0
+callback_port = 48195
 ```
 
-Run `iq-oidc login browser` explicitly, then use the normal `iq` API commands.
-Discovery must match the issuer exactly. The helper verifies the ID token and
-returns it for IAM federation; the IAM administrator must trust that issuer and
-client audience. It never selects a role or handles IAM proof keys. The OIDC
-library is `coreos/go-oidc`, with `golang.org/x/oauth2` for exchanges and PKCE.
+```sh
+iq login
+iq sts get-caller-identity
+iq s3 ls
+```
 
-The token cache lives under `$XDG_CACHE_HOME/iq/oidc/` (default
-`~/.cache/iq/oidc/`), with private permissions, per-source binding, locked refresh,
-and atomic replacement. Optional absolute `token_file` selects another cache
-file in a private directory. Refresh tokens are optional; refresh responses may
-omit ID tokens, in which case expiration eventually requires explicit login.
-Token retrieval never opens a browser. Use `iq-oidc access-token browser` only
-when explicitly integrating an OAuth access-token consumer.
+`iq login --profile NAME` explicitly authenticates the selected profile.
+Subsequent CLI and SDK calls retrieve tokens without opening a browser. The
+helper returns a verified **ID token** for IAM federation; the SDK assumes the
+role, refreshes IAM sessions, and signs requests. Repository access grants no
+API permissions. The CLI's IAM commands inspect configuration; authorized
+administrators can provision providers, roles, and policies through the Go API.
 
-Provider extensions belong in `authorization_params`; reserved flow parameters
-cannot be overridden. Optional `access_token_export_file` writes a process
-locator for legacy OAuth consumers, without copying refresh credentials. Relative
-paths are rooted in `XDG_CONFIG_HOME`; this option is unnecessary for IAM.
-No MotiveIQ issuer, client registration, or role is built into this helper.
+Use the issuer URL, not its discovery-document URL; discovery must match the
+issuer exactly. The issuer must advertise HTTPS authorization, token, and JWKS
+endpoints and support public clients and PKCE S256. The ID token must have the
+client ID as its sole audience. Match `callback_port` to your registered redirect;
+`0` chooses a random port for providers that permit variable loopback ports.
+`offline_access` requests refresh tokens and consent; omit it if unsupported.
+Refresh tokens are optional, and missing refreshed ID tokens eventually require
+another explicit login.
+
+## Use the Go SDK
+
+Use Go 1.27.1 or newer with standard proxy and checksum settings. The public
+module is `go.motiveiq.dev`; no GitHub credentials, `GOPRIVATE`, or `replace`
+directive are required:
+
+```sh
+go get go.motiveiq.dev/platform/iam/sdk@latest
+```
+
+The SDK shares the CLI's profiles and token sources. For example, after login:
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "log"
+
+    iamv1 "go.motiveiq.dev/platform/iam/api/v1"
+    sdkconfig "go.motiveiq.dev/platform/iam/sdk/config"
+)
+
+func main() {
+    ctx := context.Background()
+    cfg, err := sdkconfig.Load(ctx, "")
+    if err != nil { log.Fatal(err) }
+    defer cfg.Close()
+    identity, err := iamv1.NewSTSFromConfig(cfg).GetCallerIdentity(ctx, &iamv1.GetCallerIdentityRequest{})
+    if err != nil { log.Fatal(err) }
+    fmt.Println(identity.GetRoleUrn())
+}
+```
+
+For unattended workloads, provide a rotating raw OIDC token file instead:
+
+```sh
+export IQ_ROLE_URN="urn:motiveiq:iam:role/YOUR_WORKLOAD_ROLE"
+export IQ_WEB_IDENTITY_TOKEN_FILE="/absolute/path/to/oidc-token"
+```
+
+The same `sdkconfig.Load` call works without TOML or browser login. The SDK
+rereads the file on session refresh; your issuer/workload platform supplies and
+rotates it. Applications can also supply a `WebIdentityTokenProvider` or register
+additional sources with `sdkconfig.Resolver`. Helpers acquire external tokens;
+the SDK owns IAM sessions, proof keys, refresh, and request signing.
+
+## Configuration reference
+
+- `IQ_CONFIG_FILE` overrides the file location; otherwise `XDG_CONFIG_HOME`
+  selects the config base directory (default `~/.config`).
+- `--profile` / `IQ_PROFILE` selects a profile before workload environment
+  identity. Without an explicit profile, `IQ_ROLE_URN` and
+  `IQ_WEB_IDENTITY_TOKEN_FILE` take precedence over the `default` profile.
+  Partial configuration is an error; failed sources never fall back to another
+  identity. Legacy `MOTIVEIQ_*` workload aliases remain supported.
+- `--role` overrides the role for an API command. Profile `sts_endpoint`
+  defaults to `api.motiveiq.net:443`.
+- A `file` source uses `type = "file"` and `config.path` pointing to an absolute
+  raw-token path. A `process` source uses `config.command`, an argument array
+  with an absolute executable or a name on `PATH`, and optional
+  `config.login_command`. Relative executable paths are rejected.
+- Token processes run without a shell or interactive input and return
+  `{"version":1,"token":"OIDC_TOKEN","expires_at":"2030-01-01T00:00:00Z"}`.
+  Expiration is optional RFC 3339 metadata. Helpers own token refresh; output
+  is limited to 1 MiB and execution to 30 seconds or the caller's shorter
+  deadline. Token retrieval never invokes `login_command`.
+- OIDC caches use private permissions under `$XDG_CACHE_HOME/iq/oidc/`
+  (default `~/.cache/iq/oidc/`). An absolute `token_file` overrides the cache
+  location. `authorization_params` supplies provider-specific parameters;
+  reserved flow parameters cannot be overridden.
+- `iq-oidc access-token SOURCE` serves explicit OAuth access-token consumers.
+  Optional `access_token_export_file` writes a process locator for them, with
+  relative paths rooted in `XDG_CONFIG_HOME`. Neither is needed for IAM.
+
+## Build and test
+
+```sh
+bazel test //...
+```
+
+Generated protobuf clients are included, so ordinary Go builds also work:
+
+```sh
+go test ./...
+go install ./cmd/iq
+go build -o iq-oidc ./cmd/iq/oidc
+```
+
+For a Go-only installation of the API CLI, use
+`go install go.motiveiq.dev/cmd/iq@latest`. It does not install the separate
+browser helper; use the Bazel bootstrap above to install both together.
+
+API schemas and clients are under `platform/{iam,s3,kms,secretsmanager}/api/v1`.
+Server implementations and the private policy-decision API are not included.

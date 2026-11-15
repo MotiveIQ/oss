@@ -1,0 +1,21 @@
+load("@rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "install",
+    srcs = [
+        "command.go",
+        "install.go",
+        "packages.go",
+        "workspace.go",
+    ],
+    importpath = "go.motiveiq.dev/cmd/iq/internal/install",
+    visibility = ["//cmd/iq:__subpackages__"],
+    deps = ["@com_github_spf13_cobra//:cobra"],
+)
+
+go_test(
+    name = "install_test",
+    srcs = ["install_test.go"],
+    embed = [":install"],
+    deps = ["@com_github_spf13_cobra//:cobra"],
+)

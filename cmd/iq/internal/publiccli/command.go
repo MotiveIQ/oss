@@ -1,4 +1,4 @@
-// Package publiccli implements repository-independent MotiveIQ API commands.
+// Package publiccli implements MotiveIQ API, profile login, and installation commands.
 package publiccli
 
 import (
@@ -10,6 +10,7 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"go.motiveiq.dev/cmd/iq/internal/install"
 	iamv1 "go.motiveiq.dev/platform/iam/api/v1"
 	motiveiq "go.motiveiq.dev/platform/iam/sdk"
 	sdkconfig "go.motiveiq.dev/platform/iam/sdk/config"
@@ -38,8 +39,8 @@ type STSClient interface {
 	GetCallerIdentity(context.Context, *iamv1.GetCallerIdentityRequest) (*iamv1.GetCallerIdentityResponse, error)
 }
 
-// Command owns API command dependencies. It never discovers a workspace or
-// loads build, deployment, or cluster inventory configuration.
+// Command owns the shared CLI. Only explicit installation discovers a Bazel
+// workspace; API operations and login work independently of a checkout.
 type Command struct {
 	Stdin                       io.Reader
 	Stdout, Stderr              io.Writer
@@ -50,6 +51,7 @@ type Command struct {
 	NewS3FromConfig             func(*motiveiq.Config, string) (S3Client, error)
 	NewKMSFromConfig            func(*motiveiq.Config, string) (KMSClient, error)
 	NewSecretsManagerFromConfig func(*motiveiq.Config, string) (SecretsManagerClient, error)
+	Login                       func(context.Context, io.Writer) error
 	Profile                     string
 	ResolveIdentity             func(string) (sdkconfig.Identity, error)
 }
@@ -80,9 +82,13 @@ func (c *Command) Run(ctx context.Context, args []string) int {
 // Commands returns fresh commands for composition into an existing CLI.
 func (c *Command) Commands() []*cobra.Command {
 	c.applyDefaults()
+	installer := &install.Command{
+		Stdin: c.Stdin, Stdout: c.Stdout, Stderr: c.Stderr, Env: c.Env,
+	}
 	return []*cobra.Command{
 		c.s3Command(), c.kmsCommand(),
 		c.secretsManagerCommand(), c.iamCommand(), c.stsCommand(),
+		c.loginCommand(), installer.CobraCommand(),
 	}
 }
 
@@ -130,6 +136,9 @@ func (c *Command) applyDefaults() {
 	}
 	if c.NewSecretsManagerFromConfig == nil {
 		c.NewSecretsManagerFromConfig = newSecretsManagerFromConfig
+	}
+	if c.Login == nil {
+		c.Login = c.login
 	}
 	if c.LoadSDKConfig == nil {
 		c.LoadSDKConfig = c.loadSDKConfig

@@ -1,4 +1,5 @@
 load("@rules_go//go:def.bzl", "go_binary", "go_library")
+load("//build/iq:package.bzl", "iq_pkg")
 
 go_library(
     name = "iq_lib",
@@ -12,4 +13,12 @@ go_binary(
     name = "iq",
     embed = [":iq_lib"],
     visibility = ["//visibility:public"],
+)
+
+iq_pkg(
+    name = "package",
+    binary = ":iq",
+    description = "MotiveIQ API CLI and browser OIDC helper.",
+    package = "iq",
+    runtime_files = {"//cmd/iq/oidc:iq-oidc": "bin/iq-oidc"},
 )
