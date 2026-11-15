@@ -27,7 +27,7 @@ import (
 )
 
 type proofConfigTestServer struct {
-	iamv1.UnimplementedControlPlaneServer
+	iamv1.UnimplementedIAMServer
 	iamv1.UnimplementedSTSServer
 
 	issuanceMetadata  metadata.MD
@@ -74,7 +74,7 @@ func TestIQSharedConfigSignsV3ForIAMAndSTS(t *testing.T) {
 	listener := bufconn.Listen(1024 * 1024)
 	server := grpc.NewServer()
 	service := &proofConfigTestServer{}
-	iamv1.RegisterControlPlaneServer(server, service)
+	iamv1.RegisterIAMServer(server, service)
 	iamv1.RegisterSTSServer(server, service)
 	go func() { _ = server.Serve(listener) }()
 	t.Cleanup(func() {
@@ -119,7 +119,7 @@ func TestIQSharedConfigSignsV3ForIAMAndSTS(t *testing.T) {
 		t.Fatal("web identity provider was called before the first operation")
 	}
 
-	iam := iamv1.NewControlPlaneFromConfig(config)
+	iam := iamv1.NewFromConfig(config)
 	if _, err := iam.ListRoles(context.Background(), &iamv1.ListRolesRequest{}); err != nil {
 		t.Fatalf("ListRoles: %v", err)
 	}
@@ -130,7 +130,7 @@ func TestIQSharedConfigSignsV3ForIAMAndSTS(t *testing.T) {
 	if got := service.issuanceMetadata.Get("authorization"); len(got) != 0 {
 		t.Fatalf("issuance authorization metadata = %v, want none", got)
 	}
-	assertProofMetadata(t, service.iamMetadata, "DPoP session-token", iamv1.ControlPlane_ListRoles_FullMethodName, iamv1.ControlPlaneServiceOrigin)
+	assertProofMetadata(t, service.iamMetadata, "DPoP session-token", iamv1.IAM_ListRoles_FullMethodName, iamv1.ServiceOrigin)
 
 	sts := iamv1.NewSTSFromConfig(config)
 	if _, err := sts.GetCallerIdentity(context.Background(), &iamv1.GetCallerIdentityRequest{}); err != nil {

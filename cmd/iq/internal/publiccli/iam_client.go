@@ -19,7 +19,7 @@ const (
 )
 
 type iamClient struct {
-	client *iamv1.ControlPlane
+	client *iamv1.IAM
 }
 
 type stsClient struct {
@@ -30,7 +30,7 @@ func newIAMFromConfig(config *motiveiq.Config) (IAMClient, error) {
 	if config == nil {
 		return nil, errors.New("nil MotiveIQ config")
 	}
-	return &iamClient{client: iamv1.NewControlPlaneFromConfig(config)}, nil
+	return &iamClient{client: iamv1.NewFromConfig(config)}, nil
 }
 
 func newSTSFromConfig(config *motiveiq.Config) (STSClient, error) {
@@ -112,7 +112,7 @@ func (c *Command) loadSDKConfigWithOptions(ctx context.Context, roleURN string, 
 	base := []motiveiq.Option{
 		motiveiq.WithSessionCache(sessioncache.NewFile(cacheDirectory)),
 		motiveiq.WithSTSProofOrigin(iamv1.STSServiceOrigin),
-		motiveiq.WithServiceEndpoint(iamv1.ControlPlaneServiceKey, address),
+		motiveiq.WithServiceEndpoint(iamv1.ServiceKey, address),
 		motiveiq.WithServiceEndpoint(iamv1.STSServiceKey, address),
 	}
 	return sdkconfig.LoadIdentity(ctx, identity, append(base, options...)...)
