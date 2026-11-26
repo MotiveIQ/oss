@@ -41,7 +41,7 @@ Create `~/.config/iq/config.toml` with your issuer, client ID, and role:
 
 ```toml
 [profiles.default]
-role_urn = "urn:motiveiq:iam:role/YOUR_ROLE"
+role_urn = "urn:iq:iam:role/YOUR_ROLE"
 web_identity_source = "browser-login"
 
 [web_identity_sources.browser-login]
@@ -119,7 +119,7 @@ func main() {
 For unattended workloads, provide a rotating raw OIDC token file instead:
 
 ```sh
-export IQ_ROLE_URN="urn:motiveiq:iam:role/YOUR_WORKLOAD_ROLE"
+export IQ_ROLE_URN="urn:iq:iam:role/YOUR_WORKLOAD_ROLE"
 export IQ_WEB_IDENTITY_TOKEN_FILE="/absolute/path/to/oidc-token"
 ```
 

@@ -32,28 +32,28 @@ func (f *fakeIAMClient) GetRole(_ context.Context, request *iamv1.GetRoleRequest
 	if err := f.record("GetRole", request); err != nil {
 		return nil, err
 	}
-	return &iamv1.Role{Name: request.GetName(), Urn: "urn:motiveiq:iam:role/" + request.GetName()}, nil
+	return &iamv1.Role{Name: request.GetName(), Urn: "urn:iq:iam:role/" + request.GetName()}, nil
 }
 
 func (f *fakeIAMClient) ListRoles(_ context.Context, request *iamv1.ListRolesRequest) (*iamv1.ListRolesResponse, error) {
 	if err := f.record("ListRoles", request); err != nil {
 		return nil, err
 	}
-	return &iamv1.ListRolesResponse{Roles: []*iamv1.Role{{Name: "human", Urn: "urn:motiveiq:iam:role/human"}}}, nil
+	return &iamv1.ListRolesResponse{Roles: []*iamv1.Role{{Name: "human", Urn: "urn:iq:iam:role/human"}}}, nil
 }
 
 func (f *fakeIAMClient) GetPolicy(_ context.Context, request *iamv1.GetPolicyRequest) (*iamv1.Policy, error) {
 	if err := f.record("GetPolicy", request); err != nil {
 		return nil, err
 	}
-	return &iamv1.Policy{Name: request.GetName(), Urn: "urn:motiveiq:iam:policy/" + request.GetName()}, nil
+	return &iamv1.Policy{Name: request.GetName(), Urn: "urn:iq:iam:policy/" + request.GetName()}, nil
 }
 
 func (f *fakeIAMClient) ListPolicies(_ context.Context, request *iamv1.ListPoliciesRequest) (*iamv1.ListPoliciesResponse, error) {
 	if err := f.record("ListPolicies", request); err != nil {
 		return nil, err
 	}
-	return &iamv1.ListPoliciesResponse{Policies: []*iamv1.Policy{{Name: "human-cli", Urn: "urn:motiveiq:iam:policy/human-cli"}}}, nil
+	return &iamv1.ListPoliciesResponse{Policies: []*iamv1.Policy{{Name: "human-cli", Urn: "urn:iq:iam:policy/human-cli"}}}, nil
 }
 
 // testIssuerCABundle is a wide, multi-line value of the kind that used to
@@ -66,7 +66,7 @@ func (f *fakeIAMClient) GetOIDCProvider(_ context.Context, request *iamv1.GetOID
 	}
 	return &iamv1.OIDCProvider{
 		Name:           request.GetName(),
-		Urn:            "urn:motiveiq:iam:oidc-provider/" + request.GetName(),
+		Urn:            "urn:iq:iam:oidc-provider/" + request.GetName(),
 		Issuer:         "https://auth.platform.motiveiq.net",
 		IssuerCaBundle: testIssuerCABundle,
 	}, nil
@@ -119,8 +119,8 @@ func (f *fakeSTSClient) GetCallerIdentity(_ context.Context, _ *iamv1.GetCallerI
 	}
 	return &iamv1.GetCallerIdentityResponse{
 		SessionId:   "session_123",
-		SessionUrn:  "urn:motiveiq:sts:assumed-role/human/fabian",
-		RoleUrn:     "urn:motiveiq:iam:role/human",
+		SessionUrn:  "urn:iq:sts:assumed-role/human/fabian",
+		RoleUrn:     "urn:iq:iam:role/human",
 		SessionName: "fabian",
 		ExpireTime:  timestamppb.New(time.Unix(1767225600, 0)),
 	}, nil
@@ -197,7 +197,7 @@ func testJWT(t *testing.T, payload map[string]any) string {
 	return "eyJhbGciOiJub25lIn0." + base64.RawURLEncoding.EncodeToString(body) + ".signature"
 }
 
-const testRoleURN = "urn:motiveiq:iam:role/test"
+const testRoleURN = "urn:iq:iam:role/test"
 
 func useTestIdentity(c *Command, provider func(context.Context) (string, error)) {
 	c.ResolveIdentity = func(role string) (sdkconfig.Identity, error) {

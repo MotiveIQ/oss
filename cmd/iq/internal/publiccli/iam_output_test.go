@@ -92,7 +92,7 @@ func TestIAMOutputFormatValidation(t *testing.T) {
 }
 
 func TestIAMTableTruncatesWideValues(t *testing.T) {
-	wide := strings.Repeat("urn:motiveiq:iam:role/", 20)
+	wide := strings.Repeat("urn:iq:iam:role/", 20)
 	tests := []struct {
 		name  string
 		field string
@@ -126,7 +126,7 @@ func TestIAMTableTruncatesWideValues(t *testing.T) {
 
 func TestIAMTablePreservesWideIdentifiers(t *testing.T) {
 	name := strings.Repeat("n", 255)
-	urn := "urn:motiveiq:iam:role/" + strings.Repeat("u", 300)
+	urn := "urn:iq:iam:role/" + strings.Repeat("u", 300)
 	role := &iamv1.Role{Name: name, Urn: urn}
 
 	t.Run("object", func(t *testing.T) {
@@ -220,18 +220,18 @@ func TestIAMTableFitsTitleWiderThanColumns(t *testing.T) {
 func TestIAMTableFrame(t *testing.T) {
 	builder := &strings.Builder{}
 	writeIAMTable(builder, "iam:ListRoles", iamListView([]string{"name", "urn"}, [][]string{
-		{"human", "urn:motiveiq:iam:role/human"},
-		{"prod-temporal--ui", "urn:motiveiq:iam:role/prod-temporal--ui"},
+		{"human", "urn:iq:iam:role/human"},
+		{"prod-temporal--ui", "urn:iq:iam:role/prod-temporal--ui"},
 	}))
 	want := strings.Join([]string{
-		"---------------------------------------------------------------",
-		"|                        iam:ListRoles                        |",
-		"---------------------------------------------------------------",
-		"| name              | urn                                     |",
-		"+-------------------+-----------------------------------------+",
-		"| human             | urn:motiveiq:iam:role/human             |",
-		"| prod-temporal--ui | urn:motiveiq:iam:role/prod-temporal--ui |",
-		"+-------------------+-----------------------------------------+",
+		"---------------------------------------------------------",
+		"|                     iam:ListRoles                     |",
+		"---------------------------------------------------------",
+		"| name              | urn                               |",
+		"+-------------------+-----------------------------------+",
+		"| human             | urn:iq:iam:role/human             |",
+		"| prod-temporal--ui | urn:iq:iam:role/prod-temporal--ui |",
+		"+-------------------+-----------------------------------+",
 		"",
 	}, "\n")
 	if builder.String() != want {

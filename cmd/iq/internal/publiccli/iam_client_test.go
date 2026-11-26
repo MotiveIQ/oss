@@ -52,7 +52,7 @@ func (s *proofConfigTestServer) AssumeRoleWithWebIdentity(ctx context.Context, r
 	return &iamv1.AssumeRoleWithWebIdentityResponse{
 		SessionToken:       "session-token",
 		SessionId:          "session_1",
-		SessionUrn:         "urn:motiveiq:sts:assumed-role/human/test",
+		SessionUrn:         "urn:iq:sts:assumed-role/human/test",
 		RoleUrn:            request.GetRoleUrn(),
 		ExpireTime:         timestamppb.New(time.Now().Add(15 * time.Minute)),
 		SessionTokenType:   iamv1.SessionTokenType_SESSION_TOKEN_TYPE_PROOF_OF_POSSESSION,
@@ -352,7 +352,7 @@ func TestConfiguredSourcesEstablishNormalIAMSession(t *testing.T) {
 				case IAMSessionCacheDirEnv:
 					return filepath.Join(directory, "sessions")
 				case sdkconfig.RoleURNEnv:
-					return "urn:motiveiq:iam:role/wrong"
+					return "urn:iq:iam:role/wrong"
 				case sdkconfig.WebIdentityTokenFileEnv:
 					return "/wrong-token"
 				}

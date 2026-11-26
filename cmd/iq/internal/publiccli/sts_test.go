@@ -42,7 +42,7 @@ func TestSTSGetCallerIdentityOutputFormats(t *testing.T) {
 		if decoded.GetSessionId() != "session_123" || decoded.GetSessionName() != "fabian" {
 			t.Fatalf("decoded %v", decoded)
 		}
-		if decoded.GetSessionUrn() != "urn:motiveiq:sts:assumed-role/human/fabian" || decoded.GetRoleUrn() != "urn:motiveiq:iam:role/human" {
+		if decoded.GetSessionUrn() != "urn:iq:sts:assumed-role/human/fabian" || decoded.GetRoleUrn() != "urn:iq:iam:role/human" {
 			t.Fatalf("decoded %v", decoded)
 		}
 		if decoded.GetExpireTime().AsTime() != time.Unix(1767225600, 0).UTC() {
@@ -54,7 +54,7 @@ func TestSTSGetCallerIdentityOutputFormats(t *testing.T) {
 		if len(rows) != 1 {
 			t.Fatalf("text rows %v, want the identity on one line", rows)
 		}
-		want := []string{"session_123", "urn:motiveiq:sts:assumed-role/human/fabian", "urn:motiveiq:iam:role/human", "fabian", "2026-01-01T00:00:00+00:00"}
+		want := []string{"session_123", "urn:iq:sts:assumed-role/human/fabian", "urn:iq:iam:role/human", "fabian", "2026-01-01T00:00:00+00:00"}
 		if strings.Join(rows[0], "\t") != strings.Join(want, "\t") {
 			t.Fatalf("row %v, want %v", rows[0], want)
 		}
@@ -75,7 +75,7 @@ func TestSTSGetCallerIdentityOutputFormats(t *testing.T) {
 				t.Fatalf("row %d is %v, want field %q", i, rows[i], field)
 			}
 		}
-		if rows[1][1] != "urn:motiveiq:sts:assumed-role/human/fabian" || rows[4][1] != "2026-01-01T00:00:00+00:00" {
+		if rows[1][1] != "urn:iq:sts:assumed-role/human/fabian" || rows[4][1] != "2026-01-01T00:00:00+00:00" {
 			t.Fatalf("rows %v", rows)
 		}
 	})

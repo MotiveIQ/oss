@@ -39,7 +39,7 @@ message ConfigurationOwner {
 message RequestContract {
   string id = 1;
   string name = 2;
-  string urn = 3; // urn:motiveiq:iam:request-contract/<name>
+  string urn = 3; // urn:iq:iam:request-contract/<name>
   int64 revision = 4;
   bool enabled = 5;
   RequestContractSpec spec = 6;
@@ -259,7 +259,7 @@ enum SourceResourceProvenance {
 message Delegation {
   string id = 1;
   string name = 2;
-  string urn = 3; // urn:motiveiq:iam:delegation/<name>
+  string urn = 3; // urn:iq:iam:delegation/<name>
   int64 revision = 4;
   bool enabled = 5;
   DelegationSpec spec = 6;

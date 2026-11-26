@@ -7,7 +7,7 @@
 //	urn:iq:<service>:<resource-type>/<resource-path>
 //
 // Service and resource-type are lowercase. Resource paths are case-sensitive.
-// APIs reject non-canonical URNs; they never normalize them.
+// Parse accepts the previous namespace as an alias and requires canonical path encoding.
 package urn
 
 import (
@@ -57,7 +57,7 @@ type URN struct {
 // String returns the canonical textual representation.
 func (u URN) String() string { return u.raw }
 
-// Parse validates a concrete URN in canonical form. It rejects oversized
+// Parse resolves the namespace of a concrete URN. It rejects oversized
 // input (MaxBytes), wildcards, non-canonical forms, query strings,
 // fragments, and trailing slashes.
 func Parse(s string) (URN, error) {

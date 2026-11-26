@@ -28,3 +28,13 @@ func Legacy(value string) string {
 // Current gives the platform representation used for issuance, storage and
 // policy compilation.
 func Current(value string) string { return Canonical(value) }
+
+// IsAttribute identifies service conditions whose documented value is a
+// platform resource identity. Free-form tags, object keys and subjects are opaque.
+func IsAttribute(key string) bool {
+	switch key {
+	case "secretsmanager:KmsKeyUrn", "kms:EncryptionContext:SecretURN", "kms:RequestAlias", "kms:ReEncryptSourceKey", "kms:ReEncryptDestinationKey":
+		return true
+	}
+	return false
+}

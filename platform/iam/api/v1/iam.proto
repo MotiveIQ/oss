@@ -102,7 +102,7 @@ message OIDCProvider {
   // one, so it is internal-only (DESIGN.md decision 30).
   reserved 1;
   // urn is the server-derived, read-only canonical global id
-  // (urn:motiveiq:iam:oidc-provider/<name>) for audit and logs; name is its
+  // (urn:iq:iam:oidc-provider/<name>) for audit and logs; name is its
   // single-segment identity at the API (DESIGN.md decision 27).
   string urn = 2;
   string issuer = 3;
@@ -152,7 +152,7 @@ message Role {
   // as an explicit binding precondition, never as a replacement for name.
   reserved 1;
   // urn is the server-derived, read-only canonical global id
-  // (urn:motiveiq:iam:role/<name>) for audit and logs; name is its
+  // (urn:iq:iam:role/<name>) for audit and logs; name is its
   // single-segment identity at the API (DESIGN.md decision 27).
   string urn = 2;
   int64 max_session_duration_seconds = 3;
@@ -227,7 +227,7 @@ message Policy {
   // one, so it is internal-only (DESIGN.md decision 30).
   reserved 1;
   // urn is the server-derived, read-only canonical global id
-  // (urn:motiveiq:iam:policy/<name>) for audit and logs; name is its
+  // (urn:iq:iam:policy/<name>) for audit and logs; name is its
   // single-segment identity at the API (DESIGN.md decision 27).
   string urn = 2;
   PolicyVersion default_version = 3;
@@ -274,7 +274,7 @@ message DeletePolicyResponse {}
 
 message ResourcePolicy {
   // The concrete canonical URN this policy is attached to — a cross-service
-  // reference (e.g. urn:motiveiq:temporal:namespace/motiveiq/orders), never
+  // reference (e.g. urn:iq:temporal:namespace/motiveiq/orders), never
   // a pattern and never an IAM name.
   string resource_urn = 1;
   // The current revision's document (v1 resource statements).

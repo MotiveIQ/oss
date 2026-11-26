@@ -30,7 +30,7 @@ func TestIAMVerbRPCMapping(t *testing.T) {
 		{[]string{"iam", "list-oidc-providers"}, "ListOIDCProviders", &iamv1.ListOIDCProvidersRequest{}},
 		{[]string{"iam", "get-oidc-provider", "--name", "hydra"}, "GetOIDCProvider", &iamv1.GetOIDCProviderRequest{Name: "hydra"}},
 		{[]string{"iam", "list-resource-policies"}, "ListResourcePolicies", &iamv1.ListResourcePoliciesRequest{}},
-		{[]string{"iam", "get-resource-policy", "--resource-urn", "urn:motiveiq:temporal:namespace/motiveiq/orders"}, "GetResourcePolicy", &iamv1.GetResourcePolicyRequest{ResourceUrn: "urn:motiveiq:temporal:namespace/motiveiq/orders"}},
+		{[]string{"iam", "get-resource-policy", "--resource-urn", "urn:iq:temporal:namespace/motiveiq/orders"}, "GetResourcePolicy", &iamv1.GetResourcePolicyRequest{ResourceUrn: "urn:iq:temporal:namespace/motiveiq/orders"}},
 		{[]string{"iam", "list-service-definitions"}, "ListServiceDefinitions", &iamv1.ListServiceDefinitionsRequest{}},
 		{[]string{"iam", "get-service-definition", "--name", "temporal"}, "GetServiceDefinition", &iamv1.GetServiceDefinitionRequest{Name: "temporal"}},
 	}
@@ -81,11 +81,11 @@ func TestIAMEndpointEnvOverride(t *testing.T) {
 
 func TestIAMRoleOverride(t *testing.T) {
 	fixture := newIAMTestFixture(t)
-	code := fixture.command.Run(context.Background(), []string{"iam", "list-roles", "--role", "urn:motiveiq:iam:role/admin"})
+	code := fixture.command.Run(context.Background(), []string{"iam", "list-roles", "--role", "urn:iq:iam:role/admin"})
 	if code != 0 {
 		t.Fatalf("exit code %d, stderr: %s", code, fixture.stderr())
 	}
-	if len(fixture.loadedRoles) != 1 || fixture.loadedRoles[0] != "urn:motiveiq:iam:role/admin" {
+	if len(fixture.loadedRoles) != 1 || fixture.loadedRoles[0] != "urn:iq:iam:role/admin" {
 		t.Fatalf("loaded roles: %v", fixture.loadedRoles)
 	}
 }
@@ -155,7 +155,7 @@ func TestIAMListRolesOutputFormats(t *testing.T) {
 		if err := protojson.Unmarshal([]byte(stdout), decoded); err != nil {
 			t.Fatalf("stdout is not protojson: %v\n%s", err, stdout)
 		}
-		if len(decoded.GetRoles()) != 1 || decoded.GetRoles()[0].GetName() != "human" || decoded.GetRoles()[0].GetUrn() != "urn:motiveiq:iam:role/human" {
+		if len(decoded.GetRoles()) != 1 || decoded.GetRoles()[0].GetName() != "human" || decoded.GetRoles()[0].GetUrn() != "urn:iq:iam:role/human" {
 			t.Fatalf("decoded %v", decoded)
 		}
 	})
@@ -164,7 +164,7 @@ func TestIAMListRolesOutputFormats(t *testing.T) {
 		if len(rows) != 1 {
 			t.Fatalf("text rows %v, want one per role", rows)
 		}
-		if len(rows[0]) != 2 || rows[0][0] != "human" || rows[0][1] != "urn:motiveiq:iam:role/human" {
+		if len(rows[0]) != 2 || rows[0][0] != "human" || rows[0][1] != "urn:iq:iam:role/human" {
 			t.Fatalf("row %v, want name and urn separated by a tab", rows[0])
 		}
 	})
@@ -176,7 +176,7 @@ func TestIAMListRolesOutputFormats(t *testing.T) {
 		if strings.Join(headers, ",") != "name,urn" {
 			t.Fatalf("headers %v", headers)
 		}
-		if len(rows) != 1 || rows[0][0] != "human" || rows[0][1] != "urn:motiveiq:iam:role/human" {
+		if len(rows) != 1 || rows[0][0] != "human" || rows[0][1] != "urn:iq:iam:role/human" {
 			t.Fatalf("rows %v, want one row per role", rows)
 		}
 	})
@@ -191,7 +191,7 @@ func TestIAMGetRoleOutputFormats(t *testing.T) {
 		if err := protojson.Unmarshal([]byte(stdout), decoded); err != nil {
 			t.Fatalf("stdout is not protojson: %v\n%s", err, stdout)
 		}
-		if decoded.GetName() != "human" || decoded.GetUrn() != "urn:motiveiq:iam:role/human" {
+		if decoded.GetName() != "human" || decoded.GetUrn() != "urn:iq:iam:role/human" {
 			t.Fatalf("decoded %v", decoded)
 		}
 	})
@@ -203,7 +203,7 @@ func TestIAMGetRoleOutputFormats(t *testing.T) {
 		if len(rows[0]) != len(fields) {
 			t.Fatalf("row %v has %d values, want %d (%v)", rows[0], len(rows[0]), len(fields), fields)
 		}
-		if rows[0][0] != "human" || rows[0][1] != "urn:motiveiq:iam:role/human" {
+		if rows[0][0] != "human" || rows[0][1] != "urn:iq:iam:role/human" {
 			t.Fatalf("row %v", rows[0])
 		}
 	})
@@ -223,7 +223,7 @@ func TestIAMGetRoleOutputFormats(t *testing.T) {
 				t.Fatalf("row %d is %v, want field %q", i, rows[i], field)
 			}
 		}
-		if rows[0][1] != "human" || rows[1][1] != "urn:motiveiq:iam:role/human" {
+		if rows[0][1] != "human" || rows[1][1] != "urn:iq:iam:role/human" {
 			t.Fatalf("rows %v", rows)
 		}
 	})

@@ -342,7 +342,7 @@ func TestSDKInvokesOIDCHelperAsExternalTokenProcess(t *testing.T) {
 		t.Fatal(err)
 	}
 	t.Setenv("SSL_CERT_FILE", certPath)
-	config := sdkconfig.FileConfig{Profiles: map[string]sdkconfig.Profile{"default": {RoleURN: "urn:motiveiq:iam:role/example", WebIdentitySource: "process"}}, WebIdentitySources: map[string]sdkconfig.Source{
+	config := sdkconfig.FileConfig{Profiles: map[string]sdkconfig.Profile{"default": {RoleURN: "urn:iq:iam:role/example", WebIdentitySource: "process"}}, WebIdentitySources: map[string]sdkconfig.Source{
 		"process": {Type: "process", Config: sdkconfig.SourceConfig{"command": []string{helper, "-test.run=^TestOIDCProcessHelper$", "--", "oidc-helper", "token", "test"}}},
 		"test":    {Type: "oidc", Config: sdkconfig.SourceConfig{"issuer": s.config.Issuer, "client_id": "test-client", "scopes": s.config.Scopes, "token_file": s.path}},
 	}}

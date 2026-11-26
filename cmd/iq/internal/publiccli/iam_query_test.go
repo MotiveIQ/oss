@@ -58,7 +58,7 @@ func TestIAMOutputEnvironmentAndFlagPlacement(t *testing.T) {
 		if code := fixture.command.Run(context.Background(), args); code != 0 {
 			t.Fatalf("%v: exit %d: %s", args, code, fixture.stderr())
 		}
-		if fixture.stdout() != "human\turn:motiveiq:iam:role/human\n" {
+		if fixture.stdout() != "human\turn:iq:iam:role/human\n" {
 			t.Fatalf("%v: unexpected text %q", args, fixture.stdout())
 		}
 	}
@@ -77,8 +77,8 @@ func TestIAMQueries(t *testing.T) {
 		query, format, want string
 	}{
 		{"roles[].name", "text", "human\n"},
-		{"roles[].[urn,name]", "text", "urn:motiveiq:iam:role/human\thuman\n"},
-		{"roles[?name == 'human'].{Name:name,URN:urn}", "json", "[\n    {\n        \"Name\": \"human\",\n        \"URN\": \"urn:motiveiq:iam:role/human\"\n    }\n]\n"},
+		{"roles[].[urn,name]", "text", "urn:iq:iam:role/human\thuman\n"},
+		{"roles[?name == 'human'].{Name:name,URN:urn}", "json", "[\n    {\n        \"Name\": \"human\",\n        \"URN\": \"urn:iq:iam:role/human\"\n    }\n]\n"},
 		{"roles[?name == 'missing']", "json", "[]\n"},
 		{"roles[?name == 'missing']", "text", ""},
 		{"roles[?name == 'missing']", "table", ""},
@@ -107,7 +107,7 @@ func TestIAMQueryUsesCompleteResponse(t *testing.T) {
 func TestIAMQueryTableProjection(t *testing.T) {
 	out := runIAMOutput(t, []string{"iam", "list-roles", "--query", "roles[].{URN:urn,Name:name}", "--output", "table"})
 	title, headers, rows := parseIAMTable(t, out)
-	if title != "iam:ListRoles" || !reflect.DeepEqual(headers, []string{"Name", "URN"}) || !reflect.DeepEqual(rows, [][]string{{"human", "urn:motiveiq:iam:role/human"}}) {
+	if title != "iam:ListRoles" || !reflect.DeepEqual(headers, []string{"Name", "URN"}) || !reflect.DeepEqual(rows, [][]string{{"human", "urn:iq:iam:role/human"}}) {
 		t.Fatalf("unexpected table:\n%s", out)
 	}
 }
@@ -118,7 +118,7 @@ func TestIAMQueryTableShapes(t *testing.T) {
 		headers []string
 		rows    [][]string
 	}{
-		{"roles[].[urn,name]", []string{"1", "2"}, [][]string{{"urn:motiveiq:iam:role/human", "human"}}},
+		{"roles[].[urn,name]", []string{"1", "2"}, [][]string{{"urn:iq:iam:role/human", "human"}}},
 		{"roles[].name", []string{"value"}, [][]string{{"human"}}},
 		{"roles[0].missing", []string{"value"}, [][]string{{"None"}}},
 		{"roles[0].{Name:name,Policies:attachedPolicyUrns}", []string{"field", "value"}, [][]string{{"Name", "human"}, {"Policies", "[]"}}},
@@ -133,10 +133,10 @@ func TestIAMQueryTableShapes(t *testing.T) {
 
 func TestIdentityCommandsShareOutputOptions(t *testing.T) {
 	fixture := newIAMTestFixture(t)
-	if code := fixture.command.Run(context.Background(), []string{"sts", "--role", "urn:motiveiq:iam:role/admin", "--query", "roleUrn", "-o", "text", "get-caller-identity"}); code != 0 {
+	if code := fixture.command.Run(context.Background(), []string{"sts", "--role", "urn:iq:iam:role/admin", "--query", "roleUrn", "-o", "text", "get-caller-identity"}); code != 0 {
 		t.Fatalf("STS: %s", fixture.stderr())
 	}
-	if !reflect.DeepEqual(fixture.loadedRoles, []string{"urn:motiveiq:iam:role/admin"}) || fixture.stdout() != "urn:motiveiq:iam:role/human\n" {
+	if !reflect.DeepEqual(fixture.loadedRoles, []string{"urn:iq:iam:role/admin"}) || fixture.stdout() != "urn:iq:iam:role/human\n" {
 		t.Fatalf("STS loaded roles %v; output %q", fixture.loadedRoles, fixture.stdout())
 	}
 

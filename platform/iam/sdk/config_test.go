@@ -24,7 +24,7 @@ func clearEnv(t *testing.T) {
 }
 
 func TestLoadDefaultConfigFromEnvironment(t *testing.T) {
-	t.Setenv(EnvRoleURN, testRoleURN)
+	t.Setenv(EnvRoleURN, strings.Replace(testRoleURN, "urn:iq:", "urn:motiveiq:", 1))
 	t.Setenv(EnvWebIdentityTokenFile, "/var/run/secrets/motiveiq/token")
 	t.Setenv(EnvSTSEndpoint, "iam.iam-system.svc:8443")
 	t.Setenv(EnvSTSProofOrigin, "https://sts.staging.example")

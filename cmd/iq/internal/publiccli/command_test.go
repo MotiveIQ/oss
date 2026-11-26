@@ -49,7 +49,7 @@ func TestProfileFlagResolvesBeforeServiceCall(t *testing.T) {
 			if fixture.command.Profile != "production" || role != "" {
 				t.Fatalf("profile=%q role=%q", fixture.command.Profile, role)
 			}
-			return testSDKConfig(ctx, "urn:motiveiq:iam:role/production")
+			return testSDKConfig(ctx, "urn:iq:iam:role/production")
 		}
 		if code := fixture.command.Run(context.Background(), args); code != 0 {
 			t.Fatalf("profile command failed: %s", fixture.stderr())
