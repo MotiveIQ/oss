@@ -116,7 +116,7 @@ func parse(s string, allowAccount bool) (URN, error) {
 				if err := ValidateService(path); err != nil {
 					return URN{}, fmt.Errorf("urn: service definition in %q: %w", s, err)
 				}
-			} else if len(account) != 12 || strings.Trim(account, "0123456789ABCDEFGHJKMNPQRSTVWXYZ") != "" {
+			} else if !ValidAccountID(account) {
 				return URN{}, fmt.Errorf("urn: invalid account ID in %q", s)
 			}
 			qualified = true
@@ -132,6 +132,11 @@ func parse(s string, allowAccount bool) (URN, error) {
 		}
 	}
 	return URN{qualified: qualified, AccountID: accountID, Service: service, ResourceType: rtype, Path: path, raw: s}, nil
+}
+
+// ValidAccountID reports whether id is a canonical account identifier.
+func ValidAccountID(id string) bool {
+	return len(id) == 12 && strings.Trim(id, "0123456789ABCDEFGHJKMNPQRSTVWXYZ") == ""
 }
 
 // IAM constructs the canonical URN of an IAM-managed object of resourceType
@@ -173,7 +178,10 @@ func ParseIAM(resourceType, s string) (URN, error) {
 // object's name back to callers at the API edge without re-parsing; s is
 // assumed canonical (every stored IAM URN is, having been built by IAM).
 func IAMName(s, resourceType string) string {
-	return strings.TrimPrefix(s, prefix+ServiceIAM+":"+resourceType+"/")
+	if u, err := ParseReference(s); err == nil && u.Service == ServiceIAM && u.ResourceType == resourceType {
+		return u.Path
+	}
+	return s
 }
 
 // ValidateService validates a URN service segment (a lowercase label), the
