@@ -30,8 +30,8 @@ const MaxBytes = 8 * 1024
 
 // ServiceIAM is the URN service the IAM control plane owns. Roles, policies,
 // and OIDC providers are the only MotiveIQ objects the control plane
-// constructs from a caller-supplied name rather than accepting a whole URN
-// (DESIGN.md decision 27); IAM and IAMName are that name↔URN bijection.
+// constructs from a caller-supplied name. IAM and IAMName convert between
+// the name and URN.
 const ServiceIAM = "iam"
 
 // ServiceSTS is the URN service STS-minted objects live under: assumed-role
@@ -94,7 +94,7 @@ func Parse(s string) (URN, error) {
 // IAM constructs the canonical URN of an IAM-managed object of resourceType
 // (role, policy, oidc-provider) named name:
 // urn:iq:iam:<resourceType>/<name>. The control plane calls it to derive
-// the server-owned URN from a caller-supplied name (DESIGN.md decision 27):
+// the server-owned URN from a caller-supplied name:
 // the service and type are fixed by the endpoint, so only the name segment is
 // caller input. resourceType must be a lowercase label; name must be a single
 // path segment (ValidateName). The result equals Parse of the same string —

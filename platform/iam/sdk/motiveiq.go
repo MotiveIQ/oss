@@ -213,8 +213,7 @@ func WithLogger(logger *slog.Logger) Option {
 	return func(c *Config) { c.logger = logger }
 }
 
-// WithClock overrides the SDK's time source. Tests drive credential-refresh
-// state machines with a fake clock; production code never needs this.
+// WithClock overrides the SDK's time source.
 func WithClock(now func() time.Time) Option {
 	return func(c *Config) { c.now = now }
 }
