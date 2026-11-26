@@ -166,6 +166,7 @@ message Role {
   google.protobuf.Timestamp update_time = 8;
   string name = 9; // single-segment identity; urn is derived from it
   string role_id = 10; // immutable; pin this when binding a service principal
+  string account_id = 11; // Owner of this role and its attached managed policies.
 }
 
 message CreateRoleRequest {

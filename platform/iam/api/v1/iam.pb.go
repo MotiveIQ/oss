@@ -428,6 +428,7 @@ type Role struct {
 	UpdateTime                *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=update_time,json=updateTime,proto3" json:"update_time,omitempty"`
 	Name                      string                 `protobuf:"bytes,9,opt,name=name,proto3" json:"name,omitempty"`
 	RoleId                    string                 `protobuf:"bytes,10,opt,name=role_id,json=roleId,proto3" json:"role_id,omitempty"`
+	AccountId                 string                 `protobuf:"bytes,11,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
 	unknownFields             protoimpl.UnknownFields
 	sizeCache                 protoimpl.SizeCache
 }
@@ -514,6 +515,13 @@ func (x *Role) GetName() string {
 func (x *Role) GetRoleId() string {
 	if x != nil {
 		return x.RoleId
+	}
+	return ""
+}
+
+func (x *Role) GetAccountId() string {
+	if x != nil {
+		return x.AccountId
 	}
 	return ""
 }
@@ -3078,7 +3086,7 @@ const file_platform_iam_api_v1_iam_proto_rawDesc = "" +
 	"\tproviders\x18\x01 \x03(\v2\x1d.motiveiq.iam.v1.OIDCProviderR\tproviders\"/\n" +
 	"\x19DeleteOIDCProviderRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\"\x1c\n" +
-	"\x1aDeleteOIDCProviderResponse\"\xfd\x02\n" +
+	"\x1aDeleteOIDCProviderResponse\"\x9c\x03\n" +
 	"\x04Role\x12\x10\n" +
 	"\x03urn\x18\x02 \x01(\tR\x03urn\x12?\n" +
 	"\x1cmax_session_duration_seconds\x18\x03 \x01(\x03R\x19maxSessionDurationSeconds\x12=\n" +
@@ -3090,7 +3098,9 @@ const file_platform_iam_api_v1_iam_proto_rawDesc = "" +
 	"updateTime\x12\x12\n" +
 	"\x04name\x18\t \x01(\tR\x04name\x12\x17\n" +
 	"\arole_id\x18\n" +
-	" \x01(\tR\x06roleIdJ\x04\b\x01\x10\x02J\x04\b\x06\x10\a\"\xa7\x01\n" +
+	" \x01(\tR\x06roleId\x12\x1d\n" +
+	"\n" +
+	"account_id\x18\v \x01(\tR\taccountIdJ\x04\b\x01\x10\x02J\x04\b\x06\x10\a\"\xa7\x01\n" +
 	"\x11CreateRoleRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12?\n" +
 	"\x1cmax_session_duration_seconds\x18\x02 \x01(\x03R\x19maxSessionDurationSeconds\x12=\n" +
