@@ -22,6 +22,11 @@ option go_package = "go.motiveiq.dev/platform/iam/api/v1;iamv1";
 // IAM origin, exact method, and deterministic protobuf body. IAM derives the
 // semantic action/resource from the RPC and authorizes it through the PDP.
 service IAM {
+  rpc CreateAccount(CreateAccountRequest) returns (CreateAccountResponse);
+  rpc ListProvisionedAccounts(ListProvisionedAccountsRequest) returns (ListProvisionedAccountsResponse);
+  rpc UpdateAccount(UpdateAccountRequest) returns (ProvisionedAccount);
+  rpc SuspendAccount(ChangeAccountStateRequest) returns (ProvisionedAccount);
+  rpc ResumeAccount(ChangeAccountStateRequest) returns (ProvisionedAccount);
   rpc CreateOIDCProvider(CreateOIDCProviderRequest) returns (OIDCProvider);
   rpc GetOIDCProvider(GetOIDCProviderRequest) returns (OIDCProvider);
   rpc ListOIDCProviders(ListOIDCProvidersRequest) returns (ListOIDCProvidersResponse);
@@ -425,3 +430,61 @@ message DeleteServicePrincipalBindingRequest {
 }
 message ListServicePrincipalBindingsRequest {}
 message ListServicePrincipalBindingsResponse { repeated ServicePrincipalBinding bindings = 1; }
+
+message InitialAccountResource {
+  oneof resource {
+    CreateOIDCProviderRequest oidc_provider = 1;
+    CreatePolicyRequest policy = 2;
+    InitialAccountRole role = 3;
+  }
+}
+
+message InitialAccountRole {
+  string name = 1;
+  int64 max_session_duration_seconds = 2;
+  // Each statement principal is oidc-provider/<local name>.
+  string assume_role_policy_document = 3;
+  repeated string attached_policy_names = 4;
+}
+
+message CreateAccountRequest {
+  string display_name = 1;
+  repeated InitialAccountResource initial_resources = 2;
+  string idempotency_key = 3;
+}
+
+message CreateAccountResponse {
+  string account_id = 1;
+  repeated string initial_resource_urns = 2;
+}
+
+message ProvisionedAccount {
+  string account_id = 1;
+  string display_name = 2;
+  string state = 3;
+  int64 revision = 4;
+  string idempotency_key = 5;
+}
+
+message ListProvisionedAccountsRequest {
+  int32 page_size = 1;
+  string page_token = 2;
+  // Exact lookup within the authenticated provisioning account, including after a lost create response.
+  string idempotency_key = 3;
+}
+
+message ListProvisionedAccountsResponse {
+  repeated ProvisionedAccount accounts = 1;
+  string next_page_token = 2;
+}
+
+message UpdateAccountRequest {
+  string account_id = 1;
+  string display_name = 2;
+  int64 expected_revision = 3;
+}
+
+message ChangeAccountStateRequest {
+  string account_id = 1;
+  int64 expected_revision = 2;
+}

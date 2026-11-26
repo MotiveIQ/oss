@@ -157,6 +157,18 @@ func IAM(resourceType, name string) (URN, error) {
 	return Parse(prefix + ServiceIAM + ":" + resourceType + "/" + name)
 }
 
+// InAccount binds a validated IAM object name to its owning account. Empty
+// retains the stored spelling of installation objects.
+func (u URN) InAccount(account string) (URN, error) {
+	if account == "" {
+		return u, nil
+	}
+	if u.Service != ServiceIAM || u.qualified || !ValidAccountID(account) {
+		return URN{}, fmt.Errorf("invalid account-local IAM reference")
+	}
+	return ParseReference(prefix + ServiceIAM + ":" + account + ":" + u.ResourceType + "/" + u.Path)
+}
+
 // ParseIAM parses s as a canonical URN and additionally asserts the iam
 // service and the given resourceType, so a role URN can never name a policy
 // and vice versa. It validates a URN *reference* to an IAM object — used where

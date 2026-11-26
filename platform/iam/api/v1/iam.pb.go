@@ -3054,6 +3054,584 @@ func (x *ListServicePrincipalBindingsResponse) GetBindings() []*ServicePrincipal
 	return nil
 }
 
+type InitialAccountResource struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Resource:
+	//
+	//	*InitialAccountResource_OidcProvider
+	//	*InitialAccountResource_Policy
+	//	*InitialAccountResource_Role
+	Resource      isInitialAccountResource_Resource `protobuf_oneof:"resource"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *InitialAccountResource) Reset() {
+	*x = InitialAccountResource{}
+	mi := &file_platform_iam_api_v1_iam_proto_msgTypes[56]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *InitialAccountResource) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*InitialAccountResource) ProtoMessage() {}
+
+func (x *InitialAccountResource) ProtoReflect() protoreflect.Message {
+	mi := &file_platform_iam_api_v1_iam_proto_msgTypes[56]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use InitialAccountResource.ProtoReflect.Descriptor instead.
+func (*InitialAccountResource) Descriptor() ([]byte, []int) {
+	return file_platform_iam_api_v1_iam_proto_rawDescGZIP(), []int{56}
+}
+
+func (x *InitialAccountResource) GetResource() isInitialAccountResource_Resource {
+	if x != nil {
+		return x.Resource
+	}
+	return nil
+}
+
+func (x *InitialAccountResource) GetOidcProvider() *CreateOIDCProviderRequest {
+	if x != nil {
+		if x, ok := x.Resource.(*InitialAccountResource_OidcProvider); ok {
+			return x.OidcProvider
+		}
+	}
+	return nil
+}
+
+func (x *InitialAccountResource) GetPolicy() *CreatePolicyRequest {
+	if x != nil {
+		if x, ok := x.Resource.(*InitialAccountResource_Policy); ok {
+			return x.Policy
+		}
+	}
+	return nil
+}
+
+func (x *InitialAccountResource) GetRole() *InitialAccountRole {
+	if x != nil {
+		if x, ok := x.Resource.(*InitialAccountResource_Role); ok {
+			return x.Role
+		}
+	}
+	return nil
+}
+
+type isInitialAccountResource_Resource interface {
+	isInitialAccountResource_Resource()
+}
+
+type InitialAccountResource_OidcProvider struct {
+	OidcProvider *CreateOIDCProviderRequest `protobuf:"bytes,1,opt,name=oidc_provider,json=oidcProvider,proto3,oneof"`
+}
+
+type InitialAccountResource_Policy struct {
+	Policy *CreatePolicyRequest `protobuf:"bytes,2,opt,name=policy,proto3,oneof"`
+}
+
+type InitialAccountResource_Role struct {
+	Role *InitialAccountRole `protobuf:"bytes,3,opt,name=role,proto3,oneof"`
+}
+
+func (*InitialAccountResource_OidcProvider) isInitialAccountResource_Resource() {}
+
+func (*InitialAccountResource_Policy) isInitialAccountResource_Resource() {}
+
+func (*InitialAccountResource_Role) isInitialAccountResource_Resource() {}
+
+type InitialAccountRole struct {
+	state                     protoimpl.MessageState `protogen:"open.v1"`
+	Name                      string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	MaxSessionDurationSeconds int64                  `protobuf:"varint,2,opt,name=max_session_duration_seconds,json=maxSessionDurationSeconds,proto3" json:"max_session_duration_seconds,omitempty"`
+	AssumeRolePolicyDocument  string                 `protobuf:"bytes,3,opt,name=assume_role_policy_document,json=assumeRolePolicyDocument,proto3" json:"assume_role_policy_document,omitempty"`
+	AttachedPolicyNames       []string               `protobuf:"bytes,4,rep,name=attached_policy_names,json=attachedPolicyNames,proto3" json:"attached_policy_names,omitempty"`
+	unknownFields             protoimpl.UnknownFields
+	sizeCache                 protoimpl.SizeCache
+}
+
+func (x *InitialAccountRole) Reset() {
+	*x = InitialAccountRole{}
+	mi := &file_platform_iam_api_v1_iam_proto_msgTypes[57]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *InitialAccountRole) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*InitialAccountRole) ProtoMessage() {}
+
+func (x *InitialAccountRole) ProtoReflect() protoreflect.Message {
+	mi := &file_platform_iam_api_v1_iam_proto_msgTypes[57]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use InitialAccountRole.ProtoReflect.Descriptor instead.
+func (*InitialAccountRole) Descriptor() ([]byte, []int) {
+	return file_platform_iam_api_v1_iam_proto_rawDescGZIP(), []int{57}
+}
+
+func (x *InitialAccountRole) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *InitialAccountRole) GetMaxSessionDurationSeconds() int64 {
+	if x != nil {
+		return x.MaxSessionDurationSeconds
+	}
+	return 0
+}
+
+func (x *InitialAccountRole) GetAssumeRolePolicyDocument() string {
+	if x != nil {
+		return x.AssumeRolePolicyDocument
+	}
+	return ""
+}
+
+func (x *InitialAccountRole) GetAttachedPolicyNames() []string {
+	if x != nil {
+		return x.AttachedPolicyNames
+	}
+	return nil
+}
+
+type CreateAccountRequest struct {
+	state            protoimpl.MessageState    `protogen:"open.v1"`
+	DisplayName      string                    `protobuf:"bytes,1,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
+	InitialResources []*InitialAccountResource `protobuf:"bytes,2,rep,name=initial_resources,json=initialResources,proto3" json:"initial_resources,omitempty"`
+	IdempotencyKey   string                    `protobuf:"bytes,3,opt,name=idempotency_key,json=idempotencyKey,proto3" json:"idempotency_key,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *CreateAccountRequest) Reset() {
+	*x = CreateAccountRequest{}
+	mi := &file_platform_iam_api_v1_iam_proto_msgTypes[58]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateAccountRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateAccountRequest) ProtoMessage() {}
+
+func (x *CreateAccountRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_platform_iam_api_v1_iam_proto_msgTypes[58]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateAccountRequest.ProtoReflect.Descriptor instead.
+func (*CreateAccountRequest) Descriptor() ([]byte, []int) {
+	return file_platform_iam_api_v1_iam_proto_rawDescGZIP(), []int{58}
+}
+
+func (x *CreateAccountRequest) GetDisplayName() string {
+	if x != nil {
+		return x.DisplayName
+	}
+	return ""
+}
+
+func (x *CreateAccountRequest) GetInitialResources() []*InitialAccountResource {
+	if x != nil {
+		return x.InitialResources
+	}
+	return nil
+}
+
+func (x *CreateAccountRequest) GetIdempotencyKey() string {
+	if x != nil {
+		return x.IdempotencyKey
+	}
+	return ""
+}
+
+type CreateAccountResponse struct {
+	state               protoimpl.MessageState `protogen:"open.v1"`
+	AccountId           string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
+	InitialResourceUrns []string               `protobuf:"bytes,2,rep,name=initial_resource_urns,json=initialResourceUrns,proto3" json:"initial_resource_urns,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
+}
+
+func (x *CreateAccountResponse) Reset() {
+	*x = CreateAccountResponse{}
+	mi := &file_platform_iam_api_v1_iam_proto_msgTypes[59]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateAccountResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateAccountResponse) ProtoMessage() {}
+
+func (x *CreateAccountResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_platform_iam_api_v1_iam_proto_msgTypes[59]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateAccountResponse.ProtoReflect.Descriptor instead.
+func (*CreateAccountResponse) Descriptor() ([]byte, []int) {
+	return file_platform_iam_api_v1_iam_proto_rawDescGZIP(), []int{59}
+}
+
+func (x *CreateAccountResponse) GetAccountId() string {
+	if x != nil {
+		return x.AccountId
+	}
+	return ""
+}
+
+func (x *CreateAccountResponse) GetInitialResourceUrns() []string {
+	if x != nil {
+		return x.InitialResourceUrns
+	}
+	return nil
+}
+
+type ProvisionedAccount struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	AccountId      string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
+	DisplayName    string                 `protobuf:"bytes,2,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
+	State          string                 `protobuf:"bytes,3,opt,name=state,proto3" json:"state,omitempty"`
+	Revision       int64                  `protobuf:"varint,4,opt,name=revision,proto3" json:"revision,omitempty"`
+	IdempotencyKey string                 `protobuf:"bytes,5,opt,name=idempotency_key,json=idempotencyKey,proto3" json:"idempotency_key,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *ProvisionedAccount) Reset() {
+	*x = ProvisionedAccount{}
+	mi := &file_platform_iam_api_v1_iam_proto_msgTypes[60]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ProvisionedAccount) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ProvisionedAccount) ProtoMessage() {}
+
+func (x *ProvisionedAccount) ProtoReflect() protoreflect.Message {
+	mi := &file_platform_iam_api_v1_iam_proto_msgTypes[60]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ProvisionedAccount.ProtoReflect.Descriptor instead.
+func (*ProvisionedAccount) Descriptor() ([]byte, []int) {
+	return file_platform_iam_api_v1_iam_proto_rawDescGZIP(), []int{60}
+}
+
+func (x *ProvisionedAccount) GetAccountId() string {
+	if x != nil {
+		return x.AccountId
+	}
+	return ""
+}
+
+func (x *ProvisionedAccount) GetDisplayName() string {
+	if x != nil {
+		return x.DisplayName
+	}
+	return ""
+}
+
+func (x *ProvisionedAccount) GetState() string {
+	if x != nil {
+		return x.State
+	}
+	return ""
+}
+
+func (x *ProvisionedAccount) GetRevision() int64 {
+	if x != nil {
+		return x.Revision
+	}
+	return 0
+}
+
+func (x *ProvisionedAccount) GetIdempotencyKey() string {
+	if x != nil {
+		return x.IdempotencyKey
+	}
+	return ""
+}
+
+type ListProvisionedAccountsRequest struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	PageSize       int32                  `protobuf:"varint,1,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken      string                 `protobuf:"bytes,2,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	IdempotencyKey string                 `protobuf:"bytes,3,opt,name=idempotency_key,json=idempotencyKey,proto3" json:"idempotency_key,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *ListProvisionedAccountsRequest) Reset() {
+	*x = ListProvisionedAccountsRequest{}
+	mi := &file_platform_iam_api_v1_iam_proto_msgTypes[61]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListProvisionedAccountsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListProvisionedAccountsRequest) ProtoMessage() {}
+
+func (x *ListProvisionedAccountsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_platform_iam_api_v1_iam_proto_msgTypes[61]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListProvisionedAccountsRequest.ProtoReflect.Descriptor instead.
+func (*ListProvisionedAccountsRequest) Descriptor() ([]byte, []int) {
+	return file_platform_iam_api_v1_iam_proto_rawDescGZIP(), []int{61}
+}
+
+func (x *ListProvisionedAccountsRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListProvisionedAccountsRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
+func (x *ListProvisionedAccountsRequest) GetIdempotencyKey() string {
+	if x != nil {
+		return x.IdempotencyKey
+	}
+	return ""
+}
+
+type ListProvisionedAccountsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Accounts      []*ProvisionedAccount  `protobuf:"bytes,1,rep,name=accounts,proto3" json:"accounts,omitempty"`
+	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListProvisionedAccountsResponse) Reset() {
+	*x = ListProvisionedAccountsResponse{}
+	mi := &file_platform_iam_api_v1_iam_proto_msgTypes[62]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListProvisionedAccountsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListProvisionedAccountsResponse) ProtoMessage() {}
+
+func (x *ListProvisionedAccountsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_platform_iam_api_v1_iam_proto_msgTypes[62]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListProvisionedAccountsResponse.ProtoReflect.Descriptor instead.
+func (*ListProvisionedAccountsResponse) Descriptor() ([]byte, []int) {
+	return file_platform_iam_api_v1_iam_proto_rawDescGZIP(), []int{62}
+}
+
+func (x *ListProvisionedAccountsResponse) GetAccounts() []*ProvisionedAccount {
+	if x != nil {
+		return x.Accounts
+	}
+	return nil
+}
+
+func (x *ListProvisionedAccountsResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
+	}
+	return ""
+}
+
+type UpdateAccountRequest struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	AccountId        string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
+	DisplayName      string                 `protobuf:"bytes,2,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
+	ExpectedRevision int64                  `protobuf:"varint,3,opt,name=expected_revision,json=expectedRevision,proto3" json:"expected_revision,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *UpdateAccountRequest) Reset() {
+	*x = UpdateAccountRequest{}
+	mi := &file_platform_iam_api_v1_iam_proto_msgTypes[63]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateAccountRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateAccountRequest) ProtoMessage() {}
+
+func (x *UpdateAccountRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_platform_iam_api_v1_iam_proto_msgTypes[63]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateAccountRequest.ProtoReflect.Descriptor instead.
+func (*UpdateAccountRequest) Descriptor() ([]byte, []int) {
+	return file_platform_iam_api_v1_iam_proto_rawDescGZIP(), []int{63}
+}
+
+func (x *UpdateAccountRequest) GetAccountId() string {
+	if x != nil {
+		return x.AccountId
+	}
+	return ""
+}
+
+func (x *UpdateAccountRequest) GetDisplayName() string {
+	if x != nil {
+		return x.DisplayName
+	}
+	return ""
+}
+
+func (x *UpdateAccountRequest) GetExpectedRevision() int64 {
+	if x != nil {
+		return x.ExpectedRevision
+	}
+	return 0
+}
+
+type ChangeAccountStateRequest struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	AccountId        string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
+	ExpectedRevision int64                  `protobuf:"varint,2,opt,name=expected_revision,json=expectedRevision,proto3" json:"expected_revision,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *ChangeAccountStateRequest) Reset() {
+	*x = ChangeAccountStateRequest{}
+	mi := &file_platform_iam_api_v1_iam_proto_msgTypes[64]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ChangeAccountStateRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ChangeAccountStateRequest) ProtoMessage() {}
+
+func (x *ChangeAccountStateRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_platform_iam_api_v1_iam_proto_msgTypes[64]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ChangeAccountStateRequest.ProtoReflect.Descriptor instead.
+func (*ChangeAccountStateRequest) Descriptor() ([]byte, []int) {
+	return file_platform_iam_api_v1_iam_proto_rawDescGZIP(), []int{64}
+}
+
+func (x *ChangeAccountStateRequest) GetAccountId() string {
+	if x != nil {
+		return x.AccountId
+	}
+	return ""
+}
+
+func (x *ChangeAccountStateRequest) GetExpectedRevision() int64 {
+	if x != nil {
+		return x.ExpectedRevision
+	}
+	return 0
+}
+
 var File_platform_iam_api_v1_iam_proto protoreflect.FileDescriptor
 
 const file_platform_iam_api_v1_iam_proto_rawDesc = "" +
@@ -3279,8 +3857,56 @@ const file_platform_iam_api_v1_iam_proto_rawDesc = "" +
 	"management\"%\n" +
 	"#ListServicePrincipalBindingsRequest\"l\n" +
 	"$ListServicePrincipalBindingsResponse\x12D\n" +
-	"\bbindings\x18\x01 \x03(\v2(.motiveiq.iam.v1.ServicePrincipalBindingR\bbindings2\x8d\"\n" +
-	"\x03IAM\x12_\n" +
+	"\bbindings\x18\x01 \x03(\v2(.motiveiq.iam.v1.ServicePrincipalBindingR\bbindings\"\xf2\x01\n" +
+	"\x16InitialAccountResource\x12Q\n" +
+	"\roidc_provider\x18\x01 \x01(\v2*.motiveiq.iam.v1.CreateOIDCProviderRequestH\x00R\foidcProvider\x12>\n" +
+	"\x06policy\x18\x02 \x01(\v2$.motiveiq.iam.v1.CreatePolicyRequestH\x00R\x06policy\x129\n" +
+	"\x04role\x18\x03 \x01(\v2#.motiveiq.iam.v1.InitialAccountRoleH\x00R\x04roleB\n" +
+	"\n" +
+	"\bresource\"\xdc\x01\n" +
+	"\x12InitialAccountRole\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12?\n" +
+	"\x1cmax_session_duration_seconds\x18\x02 \x01(\x03R\x19maxSessionDurationSeconds\x12=\n" +
+	"\x1bassume_role_policy_document\x18\x03 \x01(\tR\x18assumeRolePolicyDocument\x122\n" +
+	"\x15attached_policy_names\x18\x04 \x03(\tR\x13attachedPolicyNames\"\xb8\x01\n" +
+	"\x14CreateAccountRequest\x12!\n" +
+	"\fdisplay_name\x18\x01 \x01(\tR\vdisplayName\x12T\n" +
+	"\x11initial_resources\x18\x02 \x03(\v2'.motiveiq.iam.v1.InitialAccountResourceR\x10initialResources\x12'\n" +
+	"\x0fidempotency_key\x18\x03 \x01(\tR\x0eidempotencyKey\"j\n" +
+	"\x15CreateAccountResponse\x12\x1d\n" +
+	"\n" +
+	"account_id\x18\x01 \x01(\tR\taccountId\x122\n" +
+	"\x15initial_resource_urns\x18\x02 \x03(\tR\x13initialResourceUrns\"\xb1\x01\n" +
+	"\x12ProvisionedAccount\x12\x1d\n" +
+	"\n" +
+	"account_id\x18\x01 \x01(\tR\taccountId\x12!\n" +
+	"\fdisplay_name\x18\x02 \x01(\tR\vdisplayName\x12\x14\n" +
+	"\x05state\x18\x03 \x01(\tR\x05state\x12\x1a\n" +
+	"\brevision\x18\x04 \x01(\x03R\brevision\x12'\n" +
+	"\x0fidempotency_key\x18\x05 \x01(\tR\x0eidempotencyKey\"\x85\x01\n" +
+	"\x1eListProvisionedAccountsRequest\x12\x1b\n" +
+	"\tpage_size\x18\x01 \x01(\x05R\bpageSize\x12\x1d\n" +
+	"\n" +
+	"page_token\x18\x02 \x01(\tR\tpageToken\x12'\n" +
+	"\x0fidempotency_key\x18\x03 \x01(\tR\x0eidempotencyKey\"\x8a\x01\n" +
+	"\x1fListProvisionedAccountsResponse\x12?\n" +
+	"\baccounts\x18\x01 \x03(\v2#.motiveiq.iam.v1.ProvisionedAccountR\baccounts\x12&\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\x85\x01\n" +
+	"\x14UpdateAccountRequest\x12\x1d\n" +
+	"\n" +
+	"account_id\x18\x01 \x01(\tR\taccountId\x12!\n" +
+	"\fdisplay_name\x18\x02 \x01(\tR\vdisplayName\x12+\n" +
+	"\x11expected_revision\x18\x03 \x01(\x03R\x10expectedRevision\"g\n" +
+	"\x19ChangeAccountStateRequest\x12\x1d\n" +
+	"\n" +
+	"account_id\x18\x01 \x01(\tR\taccountId\x12+\n" +
+	"\x11expected_revision\x18\x02 \x01(\x03R\x10expectedRevision2\x8d&\n" +
+	"\x03IAM\x12^\n" +
+	"\rCreateAccount\x12%.motiveiq.iam.v1.CreateAccountRequest\x1a&.motiveiq.iam.v1.CreateAccountResponse\x12|\n" +
+	"\x17ListProvisionedAccounts\x12/.motiveiq.iam.v1.ListProvisionedAccountsRequest\x1a0.motiveiq.iam.v1.ListProvisionedAccountsResponse\x12[\n" +
+	"\rUpdateAccount\x12%.motiveiq.iam.v1.UpdateAccountRequest\x1a#.motiveiq.iam.v1.ProvisionedAccount\x12a\n" +
+	"\x0eSuspendAccount\x12*.motiveiq.iam.v1.ChangeAccountStateRequest\x1a#.motiveiq.iam.v1.ProvisionedAccount\x12`\n" +
+	"\rResumeAccount\x12*.motiveiq.iam.v1.ChangeAccountStateRequest\x1a#.motiveiq.iam.v1.ProvisionedAccount\x12_\n" +
 	"\x12CreateOIDCProvider\x12*.motiveiq.iam.v1.CreateOIDCProviderRequest\x1a\x1d.motiveiq.iam.v1.OIDCProvider\x12Y\n" +
 	"\x0fGetOIDCProvider\x12'.motiveiq.iam.v1.GetOIDCProviderRequest\x1a\x1d.motiveiq.iam.v1.OIDCProvider\x12j\n" +
 	"\x11ListOIDCProviders\x12).motiveiq.iam.v1.ListOIDCProvidersRequest\x1a*.motiveiq.iam.v1.ListOIDCProvidersResponse\x12m\n" +
@@ -3340,7 +3966,7 @@ func file_platform_iam_api_v1_iam_proto_rawDescGZIP() []byte {
 	return file_platform_iam_api_v1_iam_proto_rawDescData
 }
 
-var file_platform_iam_api_v1_iam_proto_msgTypes = make([]protoimpl.MessageInfo, 56)
+var file_platform_iam_api_v1_iam_proto_msgTypes = make([]protoimpl.MessageInfo, 65)
 var file_platform_iam_api_v1_iam_proto_goTypes = []any{
 	(*OIDCProvider)(nil),                         // 0: motiveiq.iam.v1.OIDCProvider
 	(*CreateOIDCProviderRequest)(nil),            // 1: motiveiq.iam.v1.CreateOIDCProviderRequest
@@ -3398,149 +4024,173 @@ var file_platform_iam_api_v1_iam_proto_goTypes = []any{
 	(*DeleteServicePrincipalBindingRequest)(nil), // 53: motiveiq.iam.v1.DeleteServicePrincipalBindingRequest
 	(*ListServicePrincipalBindingsRequest)(nil),  // 54: motiveiq.iam.v1.ListServicePrincipalBindingsRequest
 	(*ListServicePrincipalBindingsResponse)(nil), // 55: motiveiq.iam.v1.ListServicePrincipalBindingsResponse
-	(*timestamppb.Timestamp)(nil),                // 56: google.protobuf.Timestamp
-	(*ConfigurationOwner)(nil),                   // 57: motiveiq.iam.v1.ConfigurationOwner
-	(*ConfigurationWrite)(nil),                   // 58: motiveiq.iam.v1.ConfigurationWrite
-	(*CreateRequestContractRequest)(nil),         // 59: motiveiq.iam.v1.CreateRequestContractRequest
-	(*GetRequestContractRequest)(nil),            // 60: motiveiq.iam.v1.GetRequestContractRequest
-	(*ListRequestContractsRequest)(nil),          // 61: motiveiq.iam.v1.ListRequestContractsRequest
-	(*UpdateRequestContractRequest)(nil),         // 62: motiveiq.iam.v1.UpdateRequestContractRequest
-	(*DeleteRequestContractRequest)(nil),         // 63: motiveiq.iam.v1.DeleteRequestContractRequest
-	(*CreateDelegationRequest)(nil),              // 64: motiveiq.iam.v1.CreateDelegationRequest
-	(*GetDelegationRequest)(nil),                 // 65: motiveiq.iam.v1.GetDelegationRequest
-	(*ListDelegationsRequest)(nil),               // 66: motiveiq.iam.v1.ListDelegationsRequest
-	(*UpdateDelegationRequest)(nil),              // 67: motiveiq.iam.v1.UpdateDelegationRequest
-	(*DeleteDelegationRequest)(nil),              // 68: motiveiq.iam.v1.DeleteDelegationRequest
-	(*RequestContract)(nil),                      // 69: motiveiq.iam.v1.RequestContract
-	(*ListRequestContractsResponse)(nil),         // 70: motiveiq.iam.v1.ListRequestContractsResponse
-	(*Delegation)(nil),                           // 71: motiveiq.iam.v1.Delegation
-	(*ListDelegationsResponse)(nil),              // 72: motiveiq.iam.v1.ListDelegationsResponse
+	(*InitialAccountResource)(nil),               // 56: motiveiq.iam.v1.InitialAccountResource
+	(*InitialAccountRole)(nil),                   // 57: motiveiq.iam.v1.InitialAccountRole
+	(*CreateAccountRequest)(nil),                 // 58: motiveiq.iam.v1.CreateAccountRequest
+	(*CreateAccountResponse)(nil),                // 59: motiveiq.iam.v1.CreateAccountResponse
+	(*ProvisionedAccount)(nil),                   // 60: motiveiq.iam.v1.ProvisionedAccount
+	(*ListProvisionedAccountsRequest)(nil),       // 61: motiveiq.iam.v1.ListProvisionedAccountsRequest
+	(*ListProvisionedAccountsResponse)(nil),      // 62: motiveiq.iam.v1.ListProvisionedAccountsResponse
+	(*UpdateAccountRequest)(nil),                 // 63: motiveiq.iam.v1.UpdateAccountRequest
+	(*ChangeAccountStateRequest)(nil),            // 64: motiveiq.iam.v1.ChangeAccountStateRequest
+	(*timestamppb.Timestamp)(nil),                // 65: google.protobuf.Timestamp
+	(*ConfigurationOwner)(nil),                   // 66: motiveiq.iam.v1.ConfigurationOwner
+	(*ConfigurationWrite)(nil),                   // 67: motiveiq.iam.v1.ConfigurationWrite
+	(*CreateRequestContractRequest)(nil),         // 68: motiveiq.iam.v1.CreateRequestContractRequest
+	(*GetRequestContractRequest)(nil),            // 69: motiveiq.iam.v1.GetRequestContractRequest
+	(*ListRequestContractsRequest)(nil),          // 70: motiveiq.iam.v1.ListRequestContractsRequest
+	(*UpdateRequestContractRequest)(nil),         // 71: motiveiq.iam.v1.UpdateRequestContractRequest
+	(*DeleteRequestContractRequest)(nil),         // 72: motiveiq.iam.v1.DeleteRequestContractRequest
+	(*CreateDelegationRequest)(nil),              // 73: motiveiq.iam.v1.CreateDelegationRequest
+	(*GetDelegationRequest)(nil),                 // 74: motiveiq.iam.v1.GetDelegationRequest
+	(*ListDelegationsRequest)(nil),               // 75: motiveiq.iam.v1.ListDelegationsRequest
+	(*UpdateDelegationRequest)(nil),              // 76: motiveiq.iam.v1.UpdateDelegationRequest
+	(*DeleteDelegationRequest)(nil),              // 77: motiveiq.iam.v1.DeleteDelegationRequest
+	(*RequestContract)(nil),                      // 78: motiveiq.iam.v1.RequestContract
+	(*ListRequestContractsResponse)(nil),         // 79: motiveiq.iam.v1.ListRequestContractsResponse
+	(*Delegation)(nil),                           // 80: motiveiq.iam.v1.Delegation
+	(*ListDelegationsResponse)(nil),              // 81: motiveiq.iam.v1.ListDelegationsResponse
 }
 var file_platform_iam_api_v1_iam_proto_depIdxs = []int32{
-	56, // 0: motiveiq.iam.v1.OIDCProvider.create_time:type_name -> google.protobuf.Timestamp
-	56, // 1: motiveiq.iam.v1.OIDCProvider.update_time:type_name -> google.protobuf.Timestamp
+	65, // 0: motiveiq.iam.v1.OIDCProvider.create_time:type_name -> google.protobuf.Timestamp
+	65, // 1: motiveiq.iam.v1.OIDCProvider.update_time:type_name -> google.protobuf.Timestamp
 	0,  // 2: motiveiq.iam.v1.ListOIDCProvidersResponse.providers:type_name -> motiveiq.iam.v1.OIDCProvider
-	56, // 3: motiveiq.iam.v1.Role.create_time:type_name -> google.protobuf.Timestamp
-	56, // 4: motiveiq.iam.v1.Role.update_time:type_name -> google.protobuf.Timestamp
+	65, // 3: motiveiq.iam.v1.Role.create_time:type_name -> google.protobuf.Timestamp
+	65, // 4: motiveiq.iam.v1.Role.update_time:type_name -> google.protobuf.Timestamp
 	7,  // 5: motiveiq.iam.v1.ListRolesResponse.roles:type_name -> motiveiq.iam.v1.Role
 	21, // 6: motiveiq.iam.v1.Policy.default_version:type_name -> motiveiq.iam.v1.PolicyVersion
-	56, // 7: motiveiq.iam.v1.Policy.create_time:type_name -> google.protobuf.Timestamp
-	56, // 8: motiveiq.iam.v1.Policy.update_time:type_name -> google.protobuf.Timestamp
-	56, // 9: motiveiq.iam.v1.PolicyVersion.create_time:type_name -> google.protobuf.Timestamp
+	65, // 7: motiveiq.iam.v1.Policy.create_time:type_name -> google.protobuf.Timestamp
+	65, // 8: motiveiq.iam.v1.Policy.update_time:type_name -> google.protobuf.Timestamp
+	65, // 9: motiveiq.iam.v1.PolicyVersion.create_time:type_name -> google.protobuf.Timestamp
 	20, // 10: motiveiq.iam.v1.ListPoliciesResponse.policies:type_name -> motiveiq.iam.v1.Policy
-	56, // 11: motiveiq.iam.v1.ResourcePolicy.create_time:type_name -> google.protobuf.Timestamp
-	56, // 12: motiveiq.iam.v1.ResourcePolicy.update_time:type_name -> google.protobuf.Timestamp
+	65, // 11: motiveiq.iam.v1.ResourcePolicy.create_time:type_name -> google.protobuf.Timestamp
+	65, // 12: motiveiq.iam.v1.ResourcePolicy.update_time:type_name -> google.protobuf.Timestamp
 	29, // 13: motiveiq.iam.v1.ListResourcePoliciesResponse.resource_policies:type_name -> motiveiq.iam.v1.ResourcePolicy
 	37, // 14: motiveiq.iam.v1.ServiceDefinition.resource_types:type_name -> motiveiq.iam.v1.ServiceResourceType
-	56, // 15: motiveiq.iam.v1.ServiceDefinition.create_time:type_name -> google.protobuf.Timestamp
-	56, // 16: motiveiq.iam.v1.ServiceDefinition.update_time:type_name -> google.protobuf.Timestamp
+	65, // 15: motiveiq.iam.v1.ServiceDefinition.create_time:type_name -> google.protobuf.Timestamp
+	65, // 16: motiveiq.iam.v1.ServiceDefinition.update_time:type_name -> google.protobuf.Timestamp
 	37, // 17: motiveiq.iam.v1.PutServiceDefinitionRequest.resource_types:type_name -> motiveiq.iam.v1.ServiceResourceType
 	36, // 18: motiveiq.iam.v1.ListServiceDefinitionsResponse.service_definitions:type_name -> motiveiq.iam.v1.ServiceDefinition
-	56, // 19: motiveiq.iam.v1.ServicePrincipal.create_time:type_name -> google.protobuf.Timestamp
-	56, // 20: motiveiq.iam.v1.ServicePrincipal.update_time:type_name -> google.protobuf.Timestamp
-	56, // 21: motiveiq.iam.v1.ServicePrincipal.retire_time:type_name -> google.protobuf.Timestamp
-	57, // 22: motiveiq.iam.v1.ServicePrincipal.management:type_name -> motiveiq.iam.v1.ConfigurationOwner
-	58, // 23: motiveiq.iam.v1.CreateServicePrincipalRequest.management:type_name -> motiveiq.iam.v1.ConfigurationWrite
+	65, // 19: motiveiq.iam.v1.ServicePrincipal.create_time:type_name -> google.protobuf.Timestamp
+	65, // 20: motiveiq.iam.v1.ServicePrincipal.update_time:type_name -> google.protobuf.Timestamp
+	65, // 21: motiveiq.iam.v1.ServicePrincipal.retire_time:type_name -> google.protobuf.Timestamp
+	66, // 22: motiveiq.iam.v1.ServicePrincipal.management:type_name -> motiveiq.iam.v1.ConfigurationOwner
+	67, // 23: motiveiq.iam.v1.CreateServicePrincipalRequest.management:type_name -> motiveiq.iam.v1.ConfigurationWrite
 	44, // 24: motiveiq.iam.v1.ListServicePrincipalsResponse.service_principals:type_name -> motiveiq.iam.v1.ServicePrincipal
-	58, // 25: motiveiq.iam.v1.UpdateServicePrincipalRequest.management:type_name -> motiveiq.iam.v1.ConfigurationWrite
-	58, // 26: motiveiq.iam.v1.DeleteServicePrincipalRequest.management:type_name -> motiveiq.iam.v1.ConfigurationWrite
-	56, // 27: motiveiq.iam.v1.ServicePrincipalBinding.create_time:type_name -> google.protobuf.Timestamp
-	56, // 28: motiveiq.iam.v1.ServicePrincipalBinding.update_time:type_name -> google.protobuf.Timestamp
-	57, // 29: motiveiq.iam.v1.ServicePrincipalBinding.management:type_name -> motiveiq.iam.v1.ConfigurationOwner
-	58, // 30: motiveiq.iam.v1.PutServicePrincipalBindingRequest.management:type_name -> motiveiq.iam.v1.ConfigurationWrite
-	58, // 31: motiveiq.iam.v1.DeleteServicePrincipalBindingRequest.management:type_name -> motiveiq.iam.v1.ConfigurationWrite
+	67, // 25: motiveiq.iam.v1.UpdateServicePrincipalRequest.management:type_name -> motiveiq.iam.v1.ConfigurationWrite
+	67, // 26: motiveiq.iam.v1.DeleteServicePrincipalRequest.management:type_name -> motiveiq.iam.v1.ConfigurationWrite
+	65, // 27: motiveiq.iam.v1.ServicePrincipalBinding.create_time:type_name -> google.protobuf.Timestamp
+	65, // 28: motiveiq.iam.v1.ServicePrincipalBinding.update_time:type_name -> google.protobuf.Timestamp
+	66, // 29: motiveiq.iam.v1.ServicePrincipalBinding.management:type_name -> motiveiq.iam.v1.ConfigurationOwner
+	67, // 30: motiveiq.iam.v1.PutServicePrincipalBindingRequest.management:type_name -> motiveiq.iam.v1.ConfigurationWrite
+	67, // 31: motiveiq.iam.v1.DeleteServicePrincipalBindingRequest.management:type_name -> motiveiq.iam.v1.ConfigurationWrite
 	51, // 32: motiveiq.iam.v1.ListServicePrincipalBindingsResponse.bindings:type_name -> motiveiq.iam.v1.ServicePrincipalBinding
-	1,  // 33: motiveiq.iam.v1.IAM.CreateOIDCProvider:input_type -> motiveiq.iam.v1.CreateOIDCProviderRequest
-	2,  // 34: motiveiq.iam.v1.IAM.GetOIDCProvider:input_type -> motiveiq.iam.v1.GetOIDCProviderRequest
-	3,  // 35: motiveiq.iam.v1.IAM.ListOIDCProviders:input_type -> motiveiq.iam.v1.ListOIDCProvidersRequest
-	5,  // 36: motiveiq.iam.v1.IAM.DeleteOIDCProvider:input_type -> motiveiq.iam.v1.DeleteOIDCProviderRequest
-	8,  // 37: motiveiq.iam.v1.IAM.CreateRole:input_type -> motiveiq.iam.v1.CreateRoleRequest
-	9,  // 38: motiveiq.iam.v1.IAM.GetRole:input_type -> motiveiq.iam.v1.GetRoleRequest
-	10, // 39: motiveiq.iam.v1.IAM.ListRoles:input_type -> motiveiq.iam.v1.ListRolesRequest
-	12, // 40: motiveiq.iam.v1.IAM.UpdateRole:input_type -> motiveiq.iam.v1.UpdateRoleRequest
-	13, // 41: motiveiq.iam.v1.IAM.UpdateAssumeRolePolicy:input_type -> motiveiq.iam.v1.UpdateAssumeRolePolicyRequest
-	14, // 42: motiveiq.iam.v1.IAM.DeleteRole:input_type -> motiveiq.iam.v1.DeleteRoleRequest
-	16, // 43: motiveiq.iam.v1.IAM.AttachRolePolicy:input_type -> motiveiq.iam.v1.AttachRolePolicyRequest
-	18, // 44: motiveiq.iam.v1.IAM.DetachRolePolicy:input_type -> motiveiq.iam.v1.DetachRolePolicyRequest
-	22, // 45: motiveiq.iam.v1.IAM.CreatePolicy:input_type -> motiveiq.iam.v1.CreatePolicyRequest
-	23, // 46: motiveiq.iam.v1.IAM.GetPolicy:input_type -> motiveiq.iam.v1.GetPolicyRequest
-	24, // 47: motiveiq.iam.v1.IAM.ListPolicies:input_type -> motiveiq.iam.v1.ListPoliciesRequest
-	26, // 48: motiveiq.iam.v1.IAM.CreatePolicyVersion:input_type -> motiveiq.iam.v1.CreatePolicyVersionRequest
-	27, // 49: motiveiq.iam.v1.IAM.DeletePolicy:input_type -> motiveiq.iam.v1.DeletePolicyRequest
-	30, // 50: motiveiq.iam.v1.IAM.PutResourcePolicy:input_type -> motiveiq.iam.v1.PutResourcePolicyRequest
-	31, // 51: motiveiq.iam.v1.IAM.GetResourcePolicy:input_type -> motiveiq.iam.v1.GetResourcePolicyRequest
-	32, // 52: motiveiq.iam.v1.IAM.ListResourcePolicies:input_type -> motiveiq.iam.v1.ListResourcePoliciesRequest
-	34, // 53: motiveiq.iam.v1.IAM.DeleteResourcePolicy:input_type -> motiveiq.iam.v1.DeleteResourcePolicyRequest
-	38, // 54: motiveiq.iam.v1.IAM.PutServiceDefinition:input_type -> motiveiq.iam.v1.PutServiceDefinitionRequest
-	39, // 55: motiveiq.iam.v1.IAM.GetServiceDefinition:input_type -> motiveiq.iam.v1.GetServiceDefinitionRequest
-	40, // 56: motiveiq.iam.v1.IAM.ListServiceDefinitions:input_type -> motiveiq.iam.v1.ListServiceDefinitionsRequest
-	42, // 57: motiveiq.iam.v1.IAM.DeleteServiceDefinition:input_type -> motiveiq.iam.v1.DeleteServiceDefinitionRequest
-	45, // 58: motiveiq.iam.v1.IAM.CreateServicePrincipal:input_type -> motiveiq.iam.v1.CreateServicePrincipalRequest
-	46, // 59: motiveiq.iam.v1.IAM.GetServicePrincipal:input_type -> motiveiq.iam.v1.GetServicePrincipalRequest
-	47, // 60: motiveiq.iam.v1.IAM.ListServicePrincipals:input_type -> motiveiq.iam.v1.ListServicePrincipalsRequest
-	49, // 61: motiveiq.iam.v1.IAM.UpdateServicePrincipal:input_type -> motiveiq.iam.v1.UpdateServicePrincipalRequest
-	50, // 62: motiveiq.iam.v1.IAM.DeleteServicePrincipal:input_type -> motiveiq.iam.v1.DeleteServicePrincipalRequest
-	52, // 63: motiveiq.iam.v1.IAM.PutServicePrincipalBinding:input_type -> motiveiq.iam.v1.PutServicePrincipalBindingRequest
-	53, // 64: motiveiq.iam.v1.IAM.DeleteServicePrincipalBinding:input_type -> motiveiq.iam.v1.DeleteServicePrincipalBindingRequest
-	54, // 65: motiveiq.iam.v1.IAM.ListServicePrincipalBindings:input_type -> motiveiq.iam.v1.ListServicePrincipalBindingsRequest
-	59, // 66: motiveiq.iam.v1.IAM.CreateRequestContract:input_type -> motiveiq.iam.v1.CreateRequestContractRequest
-	60, // 67: motiveiq.iam.v1.IAM.GetRequestContract:input_type -> motiveiq.iam.v1.GetRequestContractRequest
-	61, // 68: motiveiq.iam.v1.IAM.ListRequestContracts:input_type -> motiveiq.iam.v1.ListRequestContractsRequest
-	62, // 69: motiveiq.iam.v1.IAM.UpdateRequestContract:input_type -> motiveiq.iam.v1.UpdateRequestContractRequest
-	63, // 70: motiveiq.iam.v1.IAM.DeleteRequestContract:input_type -> motiveiq.iam.v1.DeleteRequestContractRequest
-	64, // 71: motiveiq.iam.v1.IAM.CreateDelegation:input_type -> motiveiq.iam.v1.CreateDelegationRequest
-	65, // 72: motiveiq.iam.v1.IAM.GetDelegation:input_type -> motiveiq.iam.v1.GetDelegationRequest
-	66, // 73: motiveiq.iam.v1.IAM.ListDelegations:input_type -> motiveiq.iam.v1.ListDelegationsRequest
-	67, // 74: motiveiq.iam.v1.IAM.UpdateDelegation:input_type -> motiveiq.iam.v1.UpdateDelegationRequest
-	68, // 75: motiveiq.iam.v1.IAM.DeleteDelegation:input_type -> motiveiq.iam.v1.DeleteDelegationRequest
-	0,  // 76: motiveiq.iam.v1.IAM.CreateOIDCProvider:output_type -> motiveiq.iam.v1.OIDCProvider
-	0,  // 77: motiveiq.iam.v1.IAM.GetOIDCProvider:output_type -> motiveiq.iam.v1.OIDCProvider
-	4,  // 78: motiveiq.iam.v1.IAM.ListOIDCProviders:output_type -> motiveiq.iam.v1.ListOIDCProvidersResponse
-	6,  // 79: motiveiq.iam.v1.IAM.DeleteOIDCProvider:output_type -> motiveiq.iam.v1.DeleteOIDCProviderResponse
-	7,  // 80: motiveiq.iam.v1.IAM.CreateRole:output_type -> motiveiq.iam.v1.Role
-	7,  // 81: motiveiq.iam.v1.IAM.GetRole:output_type -> motiveiq.iam.v1.Role
-	11, // 82: motiveiq.iam.v1.IAM.ListRoles:output_type -> motiveiq.iam.v1.ListRolesResponse
-	7,  // 83: motiveiq.iam.v1.IAM.UpdateRole:output_type -> motiveiq.iam.v1.Role
-	7,  // 84: motiveiq.iam.v1.IAM.UpdateAssumeRolePolicy:output_type -> motiveiq.iam.v1.Role
-	15, // 85: motiveiq.iam.v1.IAM.DeleteRole:output_type -> motiveiq.iam.v1.DeleteRoleResponse
-	17, // 86: motiveiq.iam.v1.IAM.AttachRolePolicy:output_type -> motiveiq.iam.v1.AttachRolePolicyResponse
-	19, // 87: motiveiq.iam.v1.IAM.DetachRolePolicy:output_type -> motiveiq.iam.v1.DetachRolePolicyResponse
-	20, // 88: motiveiq.iam.v1.IAM.CreatePolicy:output_type -> motiveiq.iam.v1.Policy
-	20, // 89: motiveiq.iam.v1.IAM.GetPolicy:output_type -> motiveiq.iam.v1.Policy
-	25, // 90: motiveiq.iam.v1.IAM.ListPolicies:output_type -> motiveiq.iam.v1.ListPoliciesResponse
-	20, // 91: motiveiq.iam.v1.IAM.CreatePolicyVersion:output_type -> motiveiq.iam.v1.Policy
-	28, // 92: motiveiq.iam.v1.IAM.DeletePolicy:output_type -> motiveiq.iam.v1.DeletePolicyResponse
-	29, // 93: motiveiq.iam.v1.IAM.PutResourcePolicy:output_type -> motiveiq.iam.v1.ResourcePolicy
-	29, // 94: motiveiq.iam.v1.IAM.GetResourcePolicy:output_type -> motiveiq.iam.v1.ResourcePolicy
-	33, // 95: motiveiq.iam.v1.IAM.ListResourcePolicies:output_type -> motiveiq.iam.v1.ListResourcePoliciesResponse
-	35, // 96: motiveiq.iam.v1.IAM.DeleteResourcePolicy:output_type -> motiveiq.iam.v1.DeleteResourcePolicyResponse
-	36, // 97: motiveiq.iam.v1.IAM.PutServiceDefinition:output_type -> motiveiq.iam.v1.ServiceDefinition
-	36, // 98: motiveiq.iam.v1.IAM.GetServiceDefinition:output_type -> motiveiq.iam.v1.ServiceDefinition
-	41, // 99: motiveiq.iam.v1.IAM.ListServiceDefinitions:output_type -> motiveiq.iam.v1.ListServiceDefinitionsResponse
-	43, // 100: motiveiq.iam.v1.IAM.DeleteServiceDefinition:output_type -> motiveiq.iam.v1.DeleteServiceDefinitionResponse
-	44, // 101: motiveiq.iam.v1.IAM.CreateServicePrincipal:output_type -> motiveiq.iam.v1.ServicePrincipal
-	44, // 102: motiveiq.iam.v1.IAM.GetServicePrincipal:output_type -> motiveiq.iam.v1.ServicePrincipal
-	48, // 103: motiveiq.iam.v1.IAM.ListServicePrincipals:output_type -> motiveiq.iam.v1.ListServicePrincipalsResponse
-	44, // 104: motiveiq.iam.v1.IAM.UpdateServicePrincipal:output_type -> motiveiq.iam.v1.ServicePrincipal
-	44, // 105: motiveiq.iam.v1.IAM.DeleteServicePrincipal:output_type -> motiveiq.iam.v1.ServicePrincipal
-	51, // 106: motiveiq.iam.v1.IAM.PutServicePrincipalBinding:output_type -> motiveiq.iam.v1.ServicePrincipalBinding
-	51, // 107: motiveiq.iam.v1.IAM.DeleteServicePrincipalBinding:output_type -> motiveiq.iam.v1.ServicePrincipalBinding
-	55, // 108: motiveiq.iam.v1.IAM.ListServicePrincipalBindings:output_type -> motiveiq.iam.v1.ListServicePrincipalBindingsResponse
-	69, // 109: motiveiq.iam.v1.IAM.CreateRequestContract:output_type -> motiveiq.iam.v1.RequestContract
-	69, // 110: motiveiq.iam.v1.IAM.GetRequestContract:output_type -> motiveiq.iam.v1.RequestContract
-	70, // 111: motiveiq.iam.v1.IAM.ListRequestContracts:output_type -> motiveiq.iam.v1.ListRequestContractsResponse
-	69, // 112: motiveiq.iam.v1.IAM.UpdateRequestContract:output_type -> motiveiq.iam.v1.RequestContract
-	69, // 113: motiveiq.iam.v1.IAM.DeleteRequestContract:output_type -> motiveiq.iam.v1.RequestContract
-	71, // 114: motiveiq.iam.v1.IAM.CreateDelegation:output_type -> motiveiq.iam.v1.Delegation
-	71, // 115: motiveiq.iam.v1.IAM.GetDelegation:output_type -> motiveiq.iam.v1.Delegation
-	72, // 116: motiveiq.iam.v1.IAM.ListDelegations:output_type -> motiveiq.iam.v1.ListDelegationsResponse
-	71, // 117: motiveiq.iam.v1.IAM.UpdateDelegation:output_type -> motiveiq.iam.v1.Delegation
-	71, // 118: motiveiq.iam.v1.IAM.DeleteDelegation:output_type -> motiveiq.iam.v1.Delegation
-	76, // [76:119] is the sub-list for method output_type
-	33, // [33:76] is the sub-list for method input_type
-	33, // [33:33] is the sub-list for extension type_name
-	33, // [33:33] is the sub-list for extension extendee
-	0,  // [0:33] is the sub-list for field type_name
+	1,  // 33: motiveiq.iam.v1.InitialAccountResource.oidc_provider:type_name -> motiveiq.iam.v1.CreateOIDCProviderRequest
+	22, // 34: motiveiq.iam.v1.InitialAccountResource.policy:type_name -> motiveiq.iam.v1.CreatePolicyRequest
+	57, // 35: motiveiq.iam.v1.InitialAccountResource.role:type_name -> motiveiq.iam.v1.InitialAccountRole
+	56, // 36: motiveiq.iam.v1.CreateAccountRequest.initial_resources:type_name -> motiveiq.iam.v1.InitialAccountResource
+	60, // 37: motiveiq.iam.v1.ListProvisionedAccountsResponse.accounts:type_name -> motiveiq.iam.v1.ProvisionedAccount
+	58, // 38: motiveiq.iam.v1.IAM.CreateAccount:input_type -> motiveiq.iam.v1.CreateAccountRequest
+	61, // 39: motiveiq.iam.v1.IAM.ListProvisionedAccounts:input_type -> motiveiq.iam.v1.ListProvisionedAccountsRequest
+	63, // 40: motiveiq.iam.v1.IAM.UpdateAccount:input_type -> motiveiq.iam.v1.UpdateAccountRequest
+	64, // 41: motiveiq.iam.v1.IAM.SuspendAccount:input_type -> motiveiq.iam.v1.ChangeAccountStateRequest
+	64, // 42: motiveiq.iam.v1.IAM.ResumeAccount:input_type -> motiveiq.iam.v1.ChangeAccountStateRequest
+	1,  // 43: motiveiq.iam.v1.IAM.CreateOIDCProvider:input_type -> motiveiq.iam.v1.CreateOIDCProviderRequest
+	2,  // 44: motiveiq.iam.v1.IAM.GetOIDCProvider:input_type -> motiveiq.iam.v1.GetOIDCProviderRequest
+	3,  // 45: motiveiq.iam.v1.IAM.ListOIDCProviders:input_type -> motiveiq.iam.v1.ListOIDCProvidersRequest
+	5,  // 46: motiveiq.iam.v1.IAM.DeleteOIDCProvider:input_type -> motiveiq.iam.v1.DeleteOIDCProviderRequest
+	8,  // 47: motiveiq.iam.v1.IAM.CreateRole:input_type -> motiveiq.iam.v1.CreateRoleRequest
+	9,  // 48: motiveiq.iam.v1.IAM.GetRole:input_type -> motiveiq.iam.v1.GetRoleRequest
+	10, // 49: motiveiq.iam.v1.IAM.ListRoles:input_type -> motiveiq.iam.v1.ListRolesRequest
+	12, // 50: motiveiq.iam.v1.IAM.UpdateRole:input_type -> motiveiq.iam.v1.UpdateRoleRequest
+	13, // 51: motiveiq.iam.v1.IAM.UpdateAssumeRolePolicy:input_type -> motiveiq.iam.v1.UpdateAssumeRolePolicyRequest
+	14, // 52: motiveiq.iam.v1.IAM.DeleteRole:input_type -> motiveiq.iam.v1.DeleteRoleRequest
+	16, // 53: motiveiq.iam.v1.IAM.AttachRolePolicy:input_type -> motiveiq.iam.v1.AttachRolePolicyRequest
+	18, // 54: motiveiq.iam.v1.IAM.DetachRolePolicy:input_type -> motiveiq.iam.v1.DetachRolePolicyRequest
+	22, // 55: motiveiq.iam.v1.IAM.CreatePolicy:input_type -> motiveiq.iam.v1.CreatePolicyRequest
+	23, // 56: motiveiq.iam.v1.IAM.GetPolicy:input_type -> motiveiq.iam.v1.GetPolicyRequest
+	24, // 57: motiveiq.iam.v1.IAM.ListPolicies:input_type -> motiveiq.iam.v1.ListPoliciesRequest
+	26, // 58: motiveiq.iam.v1.IAM.CreatePolicyVersion:input_type -> motiveiq.iam.v1.CreatePolicyVersionRequest
+	27, // 59: motiveiq.iam.v1.IAM.DeletePolicy:input_type -> motiveiq.iam.v1.DeletePolicyRequest
+	30, // 60: motiveiq.iam.v1.IAM.PutResourcePolicy:input_type -> motiveiq.iam.v1.PutResourcePolicyRequest
+	31, // 61: motiveiq.iam.v1.IAM.GetResourcePolicy:input_type -> motiveiq.iam.v1.GetResourcePolicyRequest
+	32, // 62: motiveiq.iam.v1.IAM.ListResourcePolicies:input_type -> motiveiq.iam.v1.ListResourcePoliciesRequest
+	34, // 63: motiveiq.iam.v1.IAM.DeleteResourcePolicy:input_type -> motiveiq.iam.v1.DeleteResourcePolicyRequest
+	38, // 64: motiveiq.iam.v1.IAM.PutServiceDefinition:input_type -> motiveiq.iam.v1.PutServiceDefinitionRequest
+	39, // 65: motiveiq.iam.v1.IAM.GetServiceDefinition:input_type -> motiveiq.iam.v1.GetServiceDefinitionRequest
+	40, // 66: motiveiq.iam.v1.IAM.ListServiceDefinitions:input_type -> motiveiq.iam.v1.ListServiceDefinitionsRequest
+	42, // 67: motiveiq.iam.v1.IAM.DeleteServiceDefinition:input_type -> motiveiq.iam.v1.DeleteServiceDefinitionRequest
+	45, // 68: motiveiq.iam.v1.IAM.CreateServicePrincipal:input_type -> motiveiq.iam.v1.CreateServicePrincipalRequest
+	46, // 69: motiveiq.iam.v1.IAM.GetServicePrincipal:input_type -> motiveiq.iam.v1.GetServicePrincipalRequest
+	47, // 70: motiveiq.iam.v1.IAM.ListServicePrincipals:input_type -> motiveiq.iam.v1.ListServicePrincipalsRequest
+	49, // 71: motiveiq.iam.v1.IAM.UpdateServicePrincipal:input_type -> motiveiq.iam.v1.UpdateServicePrincipalRequest
+	50, // 72: motiveiq.iam.v1.IAM.DeleteServicePrincipal:input_type -> motiveiq.iam.v1.DeleteServicePrincipalRequest
+	52, // 73: motiveiq.iam.v1.IAM.PutServicePrincipalBinding:input_type -> motiveiq.iam.v1.PutServicePrincipalBindingRequest
+	53, // 74: motiveiq.iam.v1.IAM.DeleteServicePrincipalBinding:input_type -> motiveiq.iam.v1.DeleteServicePrincipalBindingRequest
+	54, // 75: motiveiq.iam.v1.IAM.ListServicePrincipalBindings:input_type -> motiveiq.iam.v1.ListServicePrincipalBindingsRequest
+	68, // 76: motiveiq.iam.v1.IAM.CreateRequestContract:input_type -> motiveiq.iam.v1.CreateRequestContractRequest
+	69, // 77: motiveiq.iam.v1.IAM.GetRequestContract:input_type -> motiveiq.iam.v1.GetRequestContractRequest
+	70, // 78: motiveiq.iam.v1.IAM.ListRequestContracts:input_type -> motiveiq.iam.v1.ListRequestContractsRequest
+	71, // 79: motiveiq.iam.v1.IAM.UpdateRequestContract:input_type -> motiveiq.iam.v1.UpdateRequestContractRequest
+	72, // 80: motiveiq.iam.v1.IAM.DeleteRequestContract:input_type -> motiveiq.iam.v1.DeleteRequestContractRequest
+	73, // 81: motiveiq.iam.v1.IAM.CreateDelegation:input_type -> motiveiq.iam.v1.CreateDelegationRequest
+	74, // 82: motiveiq.iam.v1.IAM.GetDelegation:input_type -> motiveiq.iam.v1.GetDelegationRequest
+	75, // 83: motiveiq.iam.v1.IAM.ListDelegations:input_type -> motiveiq.iam.v1.ListDelegationsRequest
+	76, // 84: motiveiq.iam.v1.IAM.UpdateDelegation:input_type -> motiveiq.iam.v1.UpdateDelegationRequest
+	77, // 85: motiveiq.iam.v1.IAM.DeleteDelegation:input_type -> motiveiq.iam.v1.DeleteDelegationRequest
+	59, // 86: motiveiq.iam.v1.IAM.CreateAccount:output_type -> motiveiq.iam.v1.CreateAccountResponse
+	62, // 87: motiveiq.iam.v1.IAM.ListProvisionedAccounts:output_type -> motiveiq.iam.v1.ListProvisionedAccountsResponse
+	60, // 88: motiveiq.iam.v1.IAM.UpdateAccount:output_type -> motiveiq.iam.v1.ProvisionedAccount
+	60, // 89: motiveiq.iam.v1.IAM.SuspendAccount:output_type -> motiveiq.iam.v1.ProvisionedAccount
+	60, // 90: motiveiq.iam.v1.IAM.ResumeAccount:output_type -> motiveiq.iam.v1.ProvisionedAccount
+	0,  // 91: motiveiq.iam.v1.IAM.CreateOIDCProvider:output_type -> motiveiq.iam.v1.OIDCProvider
+	0,  // 92: motiveiq.iam.v1.IAM.GetOIDCProvider:output_type -> motiveiq.iam.v1.OIDCProvider
+	4,  // 93: motiveiq.iam.v1.IAM.ListOIDCProviders:output_type -> motiveiq.iam.v1.ListOIDCProvidersResponse
+	6,  // 94: motiveiq.iam.v1.IAM.DeleteOIDCProvider:output_type -> motiveiq.iam.v1.DeleteOIDCProviderResponse
+	7,  // 95: motiveiq.iam.v1.IAM.CreateRole:output_type -> motiveiq.iam.v1.Role
+	7,  // 96: motiveiq.iam.v1.IAM.GetRole:output_type -> motiveiq.iam.v1.Role
+	11, // 97: motiveiq.iam.v1.IAM.ListRoles:output_type -> motiveiq.iam.v1.ListRolesResponse
+	7,  // 98: motiveiq.iam.v1.IAM.UpdateRole:output_type -> motiveiq.iam.v1.Role
+	7,  // 99: motiveiq.iam.v1.IAM.UpdateAssumeRolePolicy:output_type -> motiveiq.iam.v1.Role
+	15, // 100: motiveiq.iam.v1.IAM.DeleteRole:output_type -> motiveiq.iam.v1.DeleteRoleResponse
+	17, // 101: motiveiq.iam.v1.IAM.AttachRolePolicy:output_type -> motiveiq.iam.v1.AttachRolePolicyResponse
+	19, // 102: motiveiq.iam.v1.IAM.DetachRolePolicy:output_type -> motiveiq.iam.v1.DetachRolePolicyResponse
+	20, // 103: motiveiq.iam.v1.IAM.CreatePolicy:output_type -> motiveiq.iam.v1.Policy
+	20, // 104: motiveiq.iam.v1.IAM.GetPolicy:output_type -> motiveiq.iam.v1.Policy
+	25, // 105: motiveiq.iam.v1.IAM.ListPolicies:output_type -> motiveiq.iam.v1.ListPoliciesResponse
+	20, // 106: motiveiq.iam.v1.IAM.CreatePolicyVersion:output_type -> motiveiq.iam.v1.Policy
+	28, // 107: motiveiq.iam.v1.IAM.DeletePolicy:output_type -> motiveiq.iam.v1.DeletePolicyResponse
+	29, // 108: motiveiq.iam.v1.IAM.PutResourcePolicy:output_type -> motiveiq.iam.v1.ResourcePolicy
+	29, // 109: motiveiq.iam.v1.IAM.GetResourcePolicy:output_type -> motiveiq.iam.v1.ResourcePolicy
+	33, // 110: motiveiq.iam.v1.IAM.ListResourcePolicies:output_type -> motiveiq.iam.v1.ListResourcePoliciesResponse
+	35, // 111: motiveiq.iam.v1.IAM.DeleteResourcePolicy:output_type -> motiveiq.iam.v1.DeleteResourcePolicyResponse
+	36, // 112: motiveiq.iam.v1.IAM.PutServiceDefinition:output_type -> motiveiq.iam.v1.ServiceDefinition
+	36, // 113: motiveiq.iam.v1.IAM.GetServiceDefinition:output_type -> motiveiq.iam.v1.ServiceDefinition
+	41, // 114: motiveiq.iam.v1.IAM.ListServiceDefinitions:output_type -> motiveiq.iam.v1.ListServiceDefinitionsResponse
+	43, // 115: motiveiq.iam.v1.IAM.DeleteServiceDefinition:output_type -> motiveiq.iam.v1.DeleteServiceDefinitionResponse
+	44, // 116: motiveiq.iam.v1.IAM.CreateServicePrincipal:output_type -> motiveiq.iam.v1.ServicePrincipal
+	44, // 117: motiveiq.iam.v1.IAM.GetServicePrincipal:output_type -> motiveiq.iam.v1.ServicePrincipal
+	48, // 118: motiveiq.iam.v1.IAM.ListServicePrincipals:output_type -> motiveiq.iam.v1.ListServicePrincipalsResponse
+	44, // 119: motiveiq.iam.v1.IAM.UpdateServicePrincipal:output_type -> motiveiq.iam.v1.ServicePrincipal
+	44, // 120: motiveiq.iam.v1.IAM.DeleteServicePrincipal:output_type -> motiveiq.iam.v1.ServicePrincipal
+	51, // 121: motiveiq.iam.v1.IAM.PutServicePrincipalBinding:output_type -> motiveiq.iam.v1.ServicePrincipalBinding
+	51, // 122: motiveiq.iam.v1.IAM.DeleteServicePrincipalBinding:output_type -> motiveiq.iam.v1.ServicePrincipalBinding
+	55, // 123: motiveiq.iam.v1.IAM.ListServicePrincipalBindings:output_type -> motiveiq.iam.v1.ListServicePrincipalBindingsResponse
+	78, // 124: motiveiq.iam.v1.IAM.CreateRequestContract:output_type -> motiveiq.iam.v1.RequestContract
+	78, // 125: motiveiq.iam.v1.IAM.GetRequestContract:output_type -> motiveiq.iam.v1.RequestContract
+	79, // 126: motiveiq.iam.v1.IAM.ListRequestContracts:output_type -> motiveiq.iam.v1.ListRequestContractsResponse
+	78, // 127: motiveiq.iam.v1.IAM.UpdateRequestContract:output_type -> motiveiq.iam.v1.RequestContract
+	78, // 128: motiveiq.iam.v1.IAM.DeleteRequestContract:output_type -> motiveiq.iam.v1.RequestContract
+	80, // 129: motiveiq.iam.v1.IAM.CreateDelegation:output_type -> motiveiq.iam.v1.Delegation
+	80, // 130: motiveiq.iam.v1.IAM.GetDelegation:output_type -> motiveiq.iam.v1.Delegation
+	81, // 131: motiveiq.iam.v1.IAM.ListDelegations:output_type -> motiveiq.iam.v1.ListDelegationsResponse
+	80, // 132: motiveiq.iam.v1.IAM.UpdateDelegation:output_type -> motiveiq.iam.v1.Delegation
+	80, // 133: motiveiq.iam.v1.IAM.DeleteDelegation:output_type -> motiveiq.iam.v1.Delegation
+	86, // [86:134] is the sub-list for method output_type
+	38, // [38:86] is the sub-list for method input_type
+	38, // [38:38] is the sub-list for extension type_name
+	38, // [38:38] is the sub-list for extension extendee
+	0,  // [0:38] is the sub-list for field type_name
 }
 
 func init() { file_platform_iam_api_v1_iam_proto_init() }
@@ -3551,13 +4201,18 @@ func file_platform_iam_api_v1_iam_proto_init() {
 	file_platform_iam_api_v1_delegation_proto_init()
 	file_platform_iam_api_v1_iam_proto_msgTypes[12].OneofWrappers = []any{}
 	file_platform_iam_api_v1_iam_proto_msgTypes[45].OneofWrappers = []any{}
+	file_platform_iam_api_v1_iam_proto_msgTypes[56].OneofWrappers = []any{
+		(*InitialAccountResource_OidcProvider)(nil),
+		(*InitialAccountResource_Policy)(nil),
+		(*InitialAccountResource_Role)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_platform_iam_api_v1_iam_proto_rawDesc), len(file_platform_iam_api_v1_iam_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   56,
+			NumMessages:   65,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

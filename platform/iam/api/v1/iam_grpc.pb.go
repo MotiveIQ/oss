@@ -19,6 +19,11 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
+	IAM_CreateAccount_FullMethodName                 = "/motiveiq.iam.v1.IAM/CreateAccount"
+	IAM_ListProvisionedAccounts_FullMethodName       = "/motiveiq.iam.v1.IAM/ListProvisionedAccounts"
+	IAM_UpdateAccount_FullMethodName                 = "/motiveiq.iam.v1.IAM/UpdateAccount"
+	IAM_SuspendAccount_FullMethodName                = "/motiveiq.iam.v1.IAM/SuspendAccount"
+	IAM_ResumeAccount_FullMethodName                 = "/motiveiq.iam.v1.IAM/ResumeAccount"
 	IAM_CreateOIDCProvider_FullMethodName            = "/motiveiq.iam.v1.IAM/CreateOIDCProvider"
 	IAM_GetOIDCProvider_FullMethodName               = "/motiveiq.iam.v1.IAM/GetOIDCProvider"
 	IAM_ListOIDCProviders_FullMethodName             = "/motiveiq.iam.v1.IAM/ListOIDCProviders"
@@ -68,6 +73,11 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type IAMClient interface {
+	CreateAccount(ctx context.Context, in *CreateAccountRequest, opts ...grpc.CallOption) (*CreateAccountResponse, error)
+	ListProvisionedAccounts(ctx context.Context, in *ListProvisionedAccountsRequest, opts ...grpc.CallOption) (*ListProvisionedAccountsResponse, error)
+	UpdateAccount(ctx context.Context, in *UpdateAccountRequest, opts ...grpc.CallOption) (*ProvisionedAccount, error)
+	SuspendAccount(ctx context.Context, in *ChangeAccountStateRequest, opts ...grpc.CallOption) (*ProvisionedAccount, error)
+	ResumeAccount(ctx context.Context, in *ChangeAccountStateRequest, opts ...grpc.CallOption) (*ProvisionedAccount, error)
 	CreateOIDCProvider(ctx context.Context, in *CreateOIDCProviderRequest, opts ...grpc.CallOption) (*OIDCProvider, error)
 	GetOIDCProvider(ctx context.Context, in *GetOIDCProviderRequest, opts ...grpc.CallOption) (*OIDCProvider, error)
 	ListOIDCProviders(ctx context.Context, in *ListOIDCProvidersRequest, opts ...grpc.CallOption) (*ListOIDCProvidersResponse, error)
@@ -119,6 +129,56 @@ type iAMClient struct {
 
 func NewIAMClient(cc grpc.ClientConnInterface) IAMClient {
 	return &iAMClient{cc}
+}
+
+func (c *iAMClient) CreateAccount(ctx context.Context, in *CreateAccountRequest, opts ...grpc.CallOption) (*CreateAccountResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CreateAccountResponse)
+	err := c.cc.Invoke(ctx, IAM_CreateAccount_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) ListProvisionedAccounts(ctx context.Context, in *ListProvisionedAccountsRequest, opts ...grpc.CallOption) (*ListProvisionedAccountsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListProvisionedAccountsResponse)
+	err := c.cc.Invoke(ctx, IAM_ListProvisionedAccounts_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) UpdateAccount(ctx context.Context, in *UpdateAccountRequest, opts ...grpc.CallOption) (*ProvisionedAccount, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ProvisionedAccount)
+	err := c.cc.Invoke(ctx, IAM_UpdateAccount_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) SuspendAccount(ctx context.Context, in *ChangeAccountStateRequest, opts ...grpc.CallOption) (*ProvisionedAccount, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ProvisionedAccount)
+	err := c.cc.Invoke(ctx, IAM_SuspendAccount_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *iAMClient) ResumeAccount(ctx context.Context, in *ChangeAccountStateRequest, opts ...grpc.CallOption) (*ProvisionedAccount, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ProvisionedAccount)
+	err := c.cc.Invoke(ctx, IAM_ResumeAccount_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *iAMClient) CreateOIDCProvider(ctx context.Context, in *CreateOIDCProviderRequest, opts ...grpc.CallOption) (*OIDCProvider, error) {
@@ -555,6 +615,11 @@ func (c *iAMClient) DeleteDelegation(ctx context.Context, in *DeleteDelegationRe
 // All implementations should embed UnimplementedIAMServer
 // for forward compatibility.
 type IAMServer interface {
+	CreateAccount(context.Context, *CreateAccountRequest) (*CreateAccountResponse, error)
+	ListProvisionedAccounts(context.Context, *ListProvisionedAccountsRequest) (*ListProvisionedAccountsResponse, error)
+	UpdateAccount(context.Context, *UpdateAccountRequest) (*ProvisionedAccount, error)
+	SuspendAccount(context.Context, *ChangeAccountStateRequest) (*ProvisionedAccount, error)
+	ResumeAccount(context.Context, *ChangeAccountStateRequest) (*ProvisionedAccount, error)
 	CreateOIDCProvider(context.Context, *CreateOIDCProviderRequest) (*OIDCProvider, error)
 	GetOIDCProvider(context.Context, *GetOIDCProviderRequest) (*OIDCProvider, error)
 	ListOIDCProviders(context.Context, *ListOIDCProvidersRequest) (*ListOIDCProvidersResponse, error)
@@ -607,6 +672,21 @@ type IAMServer interface {
 // pointer dereference when methods are called.
 type UnimplementedIAMServer struct{}
 
+func (UnimplementedIAMServer) CreateAccount(context.Context, *CreateAccountRequest) (*CreateAccountResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateAccount not implemented")
+}
+func (UnimplementedIAMServer) ListProvisionedAccounts(context.Context, *ListProvisionedAccountsRequest) (*ListProvisionedAccountsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListProvisionedAccounts not implemented")
+}
+func (UnimplementedIAMServer) UpdateAccount(context.Context, *UpdateAccountRequest) (*ProvisionedAccount, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateAccount not implemented")
+}
+func (UnimplementedIAMServer) SuspendAccount(context.Context, *ChangeAccountStateRequest) (*ProvisionedAccount, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SuspendAccount not implemented")
+}
+func (UnimplementedIAMServer) ResumeAccount(context.Context, *ChangeAccountStateRequest) (*ProvisionedAccount, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ResumeAccount not implemented")
+}
 func (UnimplementedIAMServer) CreateOIDCProvider(context.Context, *CreateOIDCProviderRequest) (*OIDCProvider, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateOIDCProvider not implemented")
 }
@@ -754,6 +834,96 @@ func RegisterIAMServer(s grpc.ServiceRegistrar, srv IAMServer) {
 		t.testEmbeddedByValue()
 	}
 	s.RegisterService(&IAM_ServiceDesc, srv)
+}
+
+func _IAM_CreateAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateAccountRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).CreateAccount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_CreateAccount_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).CreateAccount(ctx, req.(*CreateAccountRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_ListProvisionedAccounts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListProvisionedAccountsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).ListProvisionedAccounts(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_ListProvisionedAccounts_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).ListProvisionedAccounts(ctx, req.(*ListProvisionedAccountsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_UpdateAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateAccountRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).UpdateAccount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_UpdateAccount_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).UpdateAccount(ctx, req.(*UpdateAccountRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_SuspendAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ChangeAccountStateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).SuspendAccount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_SuspendAccount_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).SuspendAccount(ctx, req.(*ChangeAccountStateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IAM_ResumeAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ChangeAccountStateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IAMServer).ResumeAccount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IAM_ResumeAccount_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IAMServer).ResumeAccount(ctx, req.(*ChangeAccountStateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _IAM_CreateOIDCProvider_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -1537,6 +1707,26 @@ var IAM_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "motiveiq.iam.v1.IAM",
 	HandlerType: (*IAMServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "CreateAccount",
+			Handler:    _IAM_CreateAccount_Handler,
+		},
+		{
+			MethodName: "ListProvisionedAccounts",
+			Handler:    _IAM_ListProvisionedAccounts_Handler,
+		},
+		{
+			MethodName: "UpdateAccount",
+			Handler:    _IAM_UpdateAccount_Handler,
+		},
+		{
+			MethodName: "SuspendAccount",
+			Handler:    _IAM_SuspendAccount_Handler,
+		},
+		{
+			MethodName: "ResumeAccount",
+			Handler:    _IAM_ResumeAccount_Handler,
+		},
 		{
 			MethodName: "CreateOIDCProvider",
 			Handler:    _IAM_CreateOIDCProvider_Handler,
