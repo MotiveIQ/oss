@@ -32,7 +32,7 @@ import (
 )
 
 // Environment variables read by LoadDefaultConfig. The admission webhook
-// (PLAN.md M6) injects RoleURN, WebIdentityTokenFile, and STSEndpoint;
+// injects RoleURN, WebIdentityTokenFile, and STSEndpoint;
 // deployment configuration supplies the rest.
 const (
 	EnvRoleURN              = "IQ_ROLE_URN"

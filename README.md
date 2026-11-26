@@ -137,7 +137,7 @@ the SDK owns IAM sessions, proof keys, refresh, and request signing.
   identity. Without an explicit profile, `IQ_ROLE_URN` and
   `IQ_WEB_IDENTITY_TOKEN_FILE` take precedence over the `default` profile.
   Partial configuration is an error; failed sources never fall back to another
-  identity. Legacy `MOTIVEIQ_*` workload aliases remain supported.
+  identity.
 - `--role` overrides the role for an API command. Profile `sts_endpoint`
   defaults to `api.motiveiq.net:443`.
 - A `file` source uses `type = "file"` and `config.path` pointing to an absolute
