@@ -1,6 +1,8 @@
 package urn
 
 import (
+	"go.motiveiq.dev/lib/resourceurn"
+
 	"fmt"
 	"math/rand"
 	"strings"
@@ -95,7 +97,7 @@ func FuzzParse(f *testing.F) {
 		}
 		// Canonical round-trip: successful parses reproduce their input
 		// exactly and re-parse to the same components.
-		if u.String() != s {
+		if u.String() != resourceurn.Current(s) {
 			t.Fatalf("Parse(%q).String() = %q", s, u.String())
 		}
 		u2, err := Parse(u.String())

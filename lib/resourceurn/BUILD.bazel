@@ -1,0 +1,8 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "resourceurn",
+    srcs = ["namespace.go"],
+    importpath = "go.motiveiq.dev/lib/resourceurn",
+    visibility = ["//visibility:public"],
+)

@@ -11,6 +11,8 @@
 package urn
 
 import (
+	"go.motiveiq.dev/lib/resourceurn"
+
 	"fmt"
 	"strings"
 )
@@ -62,6 +64,7 @@ func Parse(s string) (URN, error) {
 	if len(s) > MaxBytes {
 		return URN{}, fmt.Errorf("urn: %d bytes exceeds the %d-byte limit", len(s), MaxBytes)
 	}
+	s = resourceurn.Current(s)
 	rest, ok := strings.CutPrefix(s, prefix)
 	if !ok {
 		return URN{}, fmt.Errorf("urn: %q does not start with %q", s, prefix)
@@ -127,7 +130,7 @@ func ParseIAM(resourceType, s string) (URN, error) {
 // object's name back to callers at the API edge without re-parsing; s is
 // assumed canonical (every stored IAM URN is, having been built by IAM).
 func IAMName(s, resourceType string) string {
-	return strings.TrimPrefix(s, prefix+ServiceIAM+":"+resourceType+"/")
+	return strings.TrimPrefix(resourceurn.Current(s), prefix+ServiceIAM+":"+resourceType+"/")
 }
 
 // ValidateService validates a URN service segment (a lowercase label), the

@@ -1,6 +1,8 @@
 package publiccli
 
 import (
+	"go.motiveiq.dev/lib/resourceurn"
+
 	"context"
 	"fmt"
 	"regexp"
@@ -294,6 +296,7 @@ func validSecretName(name string) bool {
 }
 
 func secretSelector(id string) (*sm.SecretSelector, error) {
+	id = resourceurn.Current(id)
 	if strings.HasPrefix(id, secretURNPrefix) && secretUUID(strings.TrimPrefix(id, secretURNPrefix)) {
 		return &sm.SecretSelector{Selector: &sm.SecretSelector_Urn{Urn: id}}, nil
 	}

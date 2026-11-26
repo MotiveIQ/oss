@@ -10,6 +10,7 @@ go_library(
     srcs = ["urn.go"],
     importpath = "go.motiveiq.dev/platform/iam/internal/urn",
     visibility = ["//platform/iam:__subpackages__"],
+    deps = ["//lib/resourceurn"],
 )
 
 go_test(
@@ -20,6 +21,7 @@ go_test(
     ],
     embed = [":urn"],
     deps = [
+        "//lib/resourceurn",
         "@com_github_cedar_policy_cedar_go//:cedar-go",
         "@com_github_cedar_policy_cedar_go//types",
     ],

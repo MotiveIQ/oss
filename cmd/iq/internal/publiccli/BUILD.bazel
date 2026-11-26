@@ -27,6 +27,7 @@ go_library(
     visibility = ["//cmd/iq:__subpackages__"],
     deps = [
         "//cmd/iq/internal/install",
+        "//lib/resourceurn",
         "//platform/iam/api/v1:api",
         "//platform/iam/sdk",
         "//platform/iam/sdk/config",

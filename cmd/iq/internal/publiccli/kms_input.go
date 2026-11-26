@@ -1,6 +1,8 @@
 package publiccli
 
 import (
+	"go.motiveiq.dev/lib/resourceurn"
+
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
@@ -22,6 +24,7 @@ var kmsAliasPart = regexp.MustCompile(`^[A-Za-z0-9][A-Za-z0-9_.-]{0,62}$`)
 var kmsContextKey = regexp.MustCompile(`^[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$`)
 
 func kmsKey(value string, allowAlias bool) (string, error) {
+	value = resourceurn.Current(value)
 	if allowAlias && (strings.HasPrefix(value, "alias/") || strings.HasPrefix(value, kmsAliasPrefix)) {
 		return kmsAlias(value)
 	}
@@ -34,6 +37,7 @@ func kmsKey(value string, allowAlias bool) (string, error) {
 }
 
 func kmsAlias(value string) (string, error) {
+	value = resourceurn.Current(value)
 	var path string
 	switch {
 	case strings.HasPrefix(value, kmsAliasPrefix):
