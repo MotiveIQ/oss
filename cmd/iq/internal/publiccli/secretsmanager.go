@@ -1,8 +1,6 @@
 package publiccli
 
 import (
-	"go.motiveiq.dev/lib/resourceurn"
-
 	"context"
 	"fmt"
 	"regexp"
@@ -14,6 +12,7 @@ import (
 	"github.com/spf13/cobra"
 	"google.golang.org/protobuf/proto"
 
+	"go.motiveiq.dev/lib/resourceurn"
 	sm "go.motiveiq.dev/platform/secretsmanager/api/v1"
 )
 

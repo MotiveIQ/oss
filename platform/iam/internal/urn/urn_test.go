@@ -62,8 +62,7 @@ func TestParse(t *testing.T) {
 
 func TestParseSupportsEscapedS3KeyCeiling(t *testing.T) {
 	prefix := "urn:iq:s3:object/" + strings.Repeat("b", 63) + "/"
-	// Empty slash segments add sentinels as well as separators; the maximum
-	// canonical S3 resource is 4186 bytes, not the 3x percent-encoding bound.
+	// Empty slash segments need both sentinels and separators.
 	for _, key := range []string{
 		strings.Repeat("%2F/", 1024) + "%2F",
 		strings.Repeat("%25", 1024),

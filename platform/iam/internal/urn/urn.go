@@ -11,10 +11,10 @@
 package urn
 
 import (
-	"go.motiveiq.dev/lib/resourceurn"
-
 	"fmt"
 	"strings"
+
+	"go.motiveiq.dev/lib/resourceurn"
 )
 
 const prefix = resourceurn.Prefix
@@ -24,8 +24,8 @@ const prefix = resourceurn.Prefix
 // their length is authorization cost: without a ceiling a multi-megabyte URN
 // rides one Authorize call into every pattern match. Policy patterns carry the
 // same bounded ceiling; this is the system-wide backstop.
-// S3's 1024-byte keys can expand to 4186-byte object URNs when every byte is
-// a slash and the bucket name is maximal. Keep room for those exact resources.
+// A maximum-length S3 bucket name and a 1024-byte key of slashes produce
+// a 4180-byte canonical object URN.
 const MaxBytes = 8 * 1024
 
 // ServiceIAM is the URN service the IAM control plane owns. Roles, policies,
@@ -264,9 +264,8 @@ func validateSegment(seg string) error {
 
 // validatePctAt validates a percent-escape starting at index i and returns
 // the index of its last byte. Only uppercase hex is canonical, and only
-// reserved bytes may be escaped: %65 for 'e' would spell one resource two
-// ways, and non-canonical URNs are rejected, never normalized (DESIGN.md
-// invariant 17).
+// reserved bytes may be escaped. Rejecting %65 for 'e' keeps each resource
+// path unambiguous (DESIGN.md invariant 17).
 func validatePctAt(s string, i int) (int, error) {
 	if i+2 >= len(s) {
 		return 0, fmt.Errorf("truncated percent-escape in %q", s)

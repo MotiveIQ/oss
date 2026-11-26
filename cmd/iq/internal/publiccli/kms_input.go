@@ -1,8 +1,6 @@
 package publiccli
 
 import (
-	"go.motiveiq.dev/lib/resourceurn"
-
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
@@ -13,6 +11,8 @@ import (
 	"unicode/utf8"
 
 	"github.com/google/uuid"
+
+	"go.motiveiq.dev/lib/resourceurn"
 )
 
 const (

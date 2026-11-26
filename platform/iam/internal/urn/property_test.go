@@ -1,8 +1,6 @@
 package urn
 
 import (
-	"go.motiveiq.dev/lib/resourceurn"
-
 	"fmt"
 	"math/rand"
 	"strings"
@@ -10,6 +8,8 @@ import (
 
 	cedar "github.com/cedar-policy/cedar-go"
 	"github.com/cedar-policy/cedar-go/types"
+
+	"go.motiveiq.dev/lib/resourceurn"
 )
 
 // TestGlobMatchesCedarLike is the drift guard between Glob (used for
