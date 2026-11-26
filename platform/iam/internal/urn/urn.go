@@ -45,20 +45,48 @@ const MaxNameBytes = 255
 
 // URN is a parsed, canonical MotiveIQ resource name.
 type URN struct {
+	AccountID    string // empty on legacy URNs and shared service definitions
 	Service      string
 	ResourceType string
 	// Path is the resource path, without the leading resource-type segment.
-	Path string
-	raw  string
+	Path      string
+	raw       string
+	qualified bool
 }
 
 // String returns the canonical textual representation.
 func (u URN) String() string { return u.raw }
 
+// InstallationAlias returns the name used by the single-account catalog.
+// Only the installation owner and the shared service registry have aliases.
+func (u URN) InstallationAlias(installationID string) (URN, bool) {
+	if !u.qualified {
+		return u, true
+	}
+	if u.AccountID != "" && u.AccountID != installationID {
+		return URN{}, false
+	}
+	u.raw = prefix + u.Service + ":" + u.ResourceType + "/" + u.Path
+	u.AccountID, u.qualified = "", false
+	return u, true
+}
+
 // Parse resolves the namespace of a concrete URN. It rejects oversized
 // input (MaxBytes), wildcards, non-canonical forms, query strings,
 // fragments, and trailing slashes.
 func Parse(s string) (URN, error) {
+	return parse(s, false)
+}
+
+// ParseReference accepts both legacy and account-qualified names. Callers
+// resolve legacy role references to the installation account before lookup.
+// Only the shared IAM service-definition registry has an explicit empty slot.
+// Existing enforcement paths use Parse until they enforce account ownership.
+func ParseReference(s string) (URN, error) {
+	return parse(s, true)
+}
+
+func parse(s string, allowAccount bool) (URN, error) {
 	if len(s) > MaxBytes {
 		return URN{}, fmt.Errorf("urn: %d bytes exceeds the %d-byte limit", len(s), MaxBytes)
 	}
@@ -77,6 +105,24 @@ func Parse(s string) (URN, error) {
 	if !ok || path == "" {
 		return URN{}, fmt.Errorf("urn: %q missing resource path", s)
 	}
+	var accountID string
+	var qualified bool
+	if allowAccount {
+		if account, kind, found := strings.Cut(rtype, ":"); found {
+			if service == ServiceIAM && kind == "service-definition" {
+				if account != "" {
+					return URN{}, fmt.Errorf("urn: service definitions require an empty account in %q", s)
+				}
+				if err := ValidateService(path); err != nil {
+					return URN{}, fmt.Errorf("urn: service definition in %q: %w", s, err)
+				}
+			} else if len(account) != 12 || strings.Trim(account, "0123456789ABCDEFGHJKMNPQRSTVWXYZ") != "" {
+				return URN{}, fmt.Errorf("urn: invalid account ID in %q", s)
+			}
+			qualified = true
+			accountID, rtype = account, kind
+		}
+	}
 	if err := validateLabel(rtype); err != nil {
 		return URN{}, fmt.Errorf("urn: resource type in %q: %w", s, err)
 	}
@@ -85,7 +131,7 @@ func Parse(s string) (URN, error) {
 			return URN{}, fmt.Errorf("urn: path in %q: %w", s, err)
 		}
 	}
-	return URN{Service: service, ResourceType: rtype, Path: path, raw: s}, nil
+	return URN{qualified: qualified, AccountID: accountID, Service: service, ResourceType: rtype, Path: path, raw: s}, nil
 }
 
 // IAM constructs the canonical URN of an IAM-managed object of resourceType

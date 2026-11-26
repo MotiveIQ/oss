@@ -46,6 +46,7 @@ message AssumeRoleWithWebIdentityResponse {
   // Always proof-of-possession for newly issued sessions.
   SessionTokenType session_token_type = 6;
   string proof_key_thumbprint = 7;
+  string account_id = 8; // Owner of the assumed role.
 }
 
 message GetCallerIdentityRequest {}
@@ -56,4 +57,5 @@ message GetCallerIdentityResponse {
   string role_urn = 3;
   string session_name = 4;
   google.protobuf.Timestamp expire_time = 5;
+  string account_id = 6;
 }

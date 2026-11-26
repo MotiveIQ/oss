@@ -230,3 +230,25 @@ func TestGlob(t *testing.T) {
 		}
 	}
 }
+
+func TestAccountReferences(t *testing.T) {
+	for _, tc := range []struct{ ref, account string }{
+		{"urn:iq:iam:role/worker", ""},
+		{"urn:iq:iam:7K3M5P9Q2R4T:role/worker", "7K3M5P9Q2R4T"},
+		{"urn:iq:iam::service-definition/kms", ""},
+	} {
+		u, err := ParseReference(tc.ref)
+		if err != nil || u.AccountID != tc.account || u.String() != tc.ref {
+			t.Errorf("ParseReference(%q) = %v, %v", tc.ref, u, err)
+		}
+	}
+	for _, ref := range []string{
+		"urn:iq:iam::role/worker", "urn:iq:sts::assumed-role/worker/session", "urn:iq:kms::key/demo",
+		"urn:iq:kms::service-definition/kms", "urn:iq:iam::service-definition/foo/bar", "urn:iq:iam:7K3M5P9Q2R4T:service-definition/kms",
+		"urn:iq:iam:7K3M5P9Q2R4I:role/worker", "urn:iq:iam:7k3m5p9q2r4t:role/worker",
+	} {
+		if _, err := ParseReference(ref); err == nil {
+			t.Errorf("accepted %q", ref)
+		}
+	}
+}

@@ -115,6 +115,7 @@ type AssumeRoleWithWebIdentityResponse struct {
 	ExpireTime         *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=expire_time,json=expireTime,proto3" json:"expire_time,omitempty"`
 	SessionTokenType   SessionTokenType       `protobuf:"varint,6,opt,name=session_token_type,json=sessionTokenType,proto3,enum=motiveiq.iam.v1.SessionTokenType" json:"session_token_type,omitempty"`
 	ProofKeyThumbprint string                 `protobuf:"bytes,7,opt,name=proof_key_thumbprint,json=proofKeyThumbprint,proto3" json:"proof_key_thumbprint,omitempty"`
+	AccountId          string                 `protobuf:"bytes,8,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -198,6 +199,13 @@ func (x *AssumeRoleWithWebIdentityResponse) GetProofKeyThumbprint() string {
 	return ""
 }
 
+func (x *AssumeRoleWithWebIdentityResponse) GetAccountId() string {
+	if x != nil {
+		return x.AccountId
+	}
+	return ""
+}
+
 type GetCallerIdentityRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
@@ -241,6 +249,7 @@ type GetCallerIdentityResponse struct {
 	RoleUrn       string                 `protobuf:"bytes,3,opt,name=role_urn,json=roleUrn,proto3" json:"role_urn,omitempty"`
 	SessionName   string                 `protobuf:"bytes,4,opt,name=session_name,json=sessionName,proto3" json:"session_name,omitempty"`
 	ExpireTime    *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=expire_time,json=expireTime,proto3" json:"expire_time,omitempty"`
+	AccountId     string                 `protobuf:"bytes,6,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -310,6 +319,13 @@ func (x *GetCallerIdentityResponse) GetExpireTime() *timestamppb.Timestamp {
 	return nil
 }
 
+func (x *GetCallerIdentityResponse) GetAccountId() string {
+	if x != nil {
+		return x.AccountId
+	}
+	return ""
+}
+
 var File_platform_iam_api_v1_sts_proto protoreflect.FileDescriptor
 
 const file_platform_iam_api_v1_sts_proto_rawDesc = "" +
@@ -321,7 +337,7 @@ const file_platform_iam_api_v1_sts_proto_rawDesc = "" +
 	"\fsession_name\x18\x03 \x01(\tR\vsessionName\x12)\n" +
 	"\x10duration_seconds\x18\x04 \x01(\x03R\x0fdurationSeconds\x12.\n" +
 	"\x13session_policy_json\x18\x05 \x01(\tR\x11sessionPolicyJson\x12S\n" +
-	"\x14requested_token_type\x18\x06 \x01(\x0e2!.motiveiq.iam.v1.SessionTokenTypeR\x12requestedTokenType\"\xe8\x02\n" +
+	"\x14requested_token_type\x18\x06 \x01(\x0e2!.motiveiq.iam.v1.SessionTokenTypeR\x12requestedTokenType\"\x87\x03\n" +
 	"!AssumeRoleWithWebIdentityResponse\x12(\n" +
 	"\rsession_token\x18\x01 \x01(\tB\x03\x80\x01\x01R\fsessionToken\x12\x1d\n" +
 	"\n" +
@@ -332,8 +348,10 @@ const file_platform_iam_api_v1_sts_proto_rawDesc = "" +
 	"\vexpire_time\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
 	"expireTime\x12O\n" +
 	"\x12session_token_type\x18\x06 \x01(\x0e2!.motiveiq.iam.v1.SessionTokenTypeR\x10sessionTokenType\x120\n" +
-	"\x14proof_key_thumbprint\x18\a \x01(\tR\x12proofKeyThumbprint\"\x1a\n" +
-	"\x18GetCallerIdentityRequest\"\xd6\x01\n" +
+	"\x14proof_key_thumbprint\x18\a \x01(\tR\x12proofKeyThumbprint\x12\x1d\n" +
+	"\n" +
+	"account_id\x18\b \x01(\tR\taccountId\"\x1a\n" +
+	"\x18GetCallerIdentityRequest\"\xf5\x01\n" +
 	"\x19GetCallerIdentityResponse\x12\x1d\n" +
 	"\n" +
 	"session_id\x18\x01 \x01(\tR\tsessionId\x12\x1f\n" +
@@ -342,7 +360,9 @@ const file_platform_iam_api_v1_sts_proto_rawDesc = "" +
 	"\brole_urn\x18\x03 \x01(\tR\aroleUrn\x12!\n" +
 	"\fsession_name\x18\x04 \x01(\tR\vsessionName\x12;\n" +
 	"\vexpire_time\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
-	"expireTime2\xf6\x01\n" +
+	"expireTime\x12\x1d\n" +
+	"\n" +
+	"account_id\x18\x06 \x01(\tR\taccountId2\xf6\x01\n" +
 	"\x03STS\x12\x82\x01\n" +
 	"\x19AssumeRoleWithWebIdentity\x121.motiveiq.iam.v1.AssumeRoleWithWebIdentityRequest\x1a2.motiveiq.iam.v1.AssumeRoleWithWebIdentityResponse\x12j\n" +
 	"\x11GetCallerIdentity\x12).motiveiq.iam.v1.GetCallerIdentityRequest\x1a*.motiveiq.iam.v1.GetCallerIdentityResponseB+Z)go.motiveiq.dev/platform/iam/api/v1;iamv1b\x06proto3"

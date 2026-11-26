@@ -15,6 +15,7 @@ import (
 	iamv1 "go.motiveiq.dev/platform/iam/api/v1"
 	"go.motiveiq.dev/platform/iam/internal/proof"
 	"go.motiveiq.dev/platform/iam/internal/proofgrpc"
+	"go.motiveiq.dev/platform/iam/internal/urn"
 )
 
 // Credential-provider tuning. These are deliberately unexported constants:
@@ -293,6 +294,11 @@ func (p *SessionCredentials) exchangeWebIdentity(ctx context.Context, web string
 	resp, err := p.sts.AssumeRoleWithWebIdentity(ctx, req)
 	if err != nil {
 		return nil, fmt.Errorf("AssumeRoleWithWebIdentity(%s): %w", p.roleURN, err)
+	}
+	if requested, err := urn.ParseReference(p.roleURN); err == nil && requested.AccountID != "" {
+		if resp.GetAccountId() != requested.AccountID || (resp.GetRoleUrn() != p.roleURN && resp.GetRoleUrn() != "urn:iq:iam:role/"+requested.Path) {
+			return nil, fmt.Errorf("STS returned a session for a different account or role")
+		}
 	}
 	tok := resp.GetSessionToken()
 	expiresAt := resp.GetExpireTime().AsTime()

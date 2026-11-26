@@ -68,5 +68,6 @@ func iamCallerIdentityView(identity *iamv1.GetCallerIdentityResponse) iamView {
 		{"role_urn", identity.GetRoleUrn()},
 		{"session_name", identity.GetSessionName()},
 		{"expire_time", formatIAMTime(identity.GetExpireTime())},
+		{"account_id", identity.GetAccountId()},
 	})
 }

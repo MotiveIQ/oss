@@ -13,7 +13,7 @@ import (
 )
 
 // The identity fields, in the order every format lists them.
-var stsCallerIdentityFields = []string{"session_id", "session_urn", "role_urn", "session_name", "expire_time"}
+var stsCallerIdentityFields = []string{"session_id", "session_urn", "role_urn", "session_name", "expire_time", "account_id"}
 
 func TestSTSGetCallerIdentityDefaultOutputIsJSON(t *testing.T) {
 	defaultFixture := newIAMTestFixture(t)
@@ -54,7 +54,7 @@ func TestSTSGetCallerIdentityOutputFormats(t *testing.T) {
 		if len(rows) != 1 {
 			t.Fatalf("text rows %v, want the identity on one line", rows)
 		}
-		want := []string{"session_123", "urn:iq:sts:assumed-role/human/fabian", "urn:iq:iam:role/human", "fabian", "2026-01-01T00:00:00+00:00"}
+		want := []string{"session_123", "urn:iq:sts:assumed-role/human/fabian", "urn:iq:iam:role/human", "fabian", "2026-01-01T00:00:00+00:00", "7K3M9Q2DX4RW"}
 		if strings.Join(rows[0], "\t") != strings.Join(want, "\t") {
 			t.Fatalf("row %v, want %v", rows[0], want)
 		}

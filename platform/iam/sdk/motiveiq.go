@@ -278,7 +278,7 @@ func LoadDefaultConfig(_ context.Context, opts ...Option) (*Config, error) {
 	// Validate what is present; absence is legal (the component
 	// constructors demand their own inputs).
 	if cfg.RoleURN != "" {
-		parsed, err := urn.Parse(cfg.RoleURN)
+		parsed, err := urn.ParseReference(cfg.RoleURN)
 		if err != nil {
 			return nil, fmt.Errorf("motiveiq: %s: %w", EnvRoleURN, err)
 		}

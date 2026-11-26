@@ -118,6 +118,7 @@ func (f *fakeSTSClient) GetCallerIdentity(_ context.Context, _ *iamv1.GetCallerI
 		return nil, f.callerErr
 	}
 	return &iamv1.GetCallerIdentityResponse{
+		AccountId:   "7K3M9Q2DX4RW",
 		SessionId:   "session_123",
 		SessionUrn:  "urn:iq:sts:assumed-role/human/fabian",
 		RoleUrn:     "urn:iq:iam:role/human",
