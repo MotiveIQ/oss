@@ -8,8 +8,6 @@ import (
 
 	cedar "github.com/cedar-policy/cedar-go"
 	"github.com/cedar-policy/cedar-go/types"
-
-	"go.motiveiq.dev/lib/resourceurn"
 )
 
 // TestGlobMatchesCedarLike is the drift guard between Glob (used for
@@ -97,7 +95,7 @@ func FuzzParse(f *testing.F) {
 		}
 		// Canonical round-trip: successful parses reproduce their input
 		// exactly and re-parse to the same components.
-		if u.String() != resourceurn.Current(s) {
+		if u.String() != s {
 			t.Fatalf("Parse(%q).String() = %q", s, u.String())
 		}
 		u2, err := Parse(u.String())

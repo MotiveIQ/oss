@@ -192,6 +192,7 @@ func TestValidatePattern(t *testing.T) {
 	}
 	invalid := []string{
 		"",
+		"urn:motiveiq:iam:role/example/*",
 		"urn:iq:iam:role/a?",
 		"urn:iq:iam:role/a b",
 		"role/*",

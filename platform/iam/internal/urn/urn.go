@@ -7,17 +7,15 @@
 //	urn:iq:<service>:<resource-type>/<resource-path>
 //
 // Service and resource-type are lowercase. Resource paths are case-sensitive.
-// Parse accepts the previous namespace as an alias and requires canonical path encoding.
+// Parse requires the IQ namespace and canonical path encoding.
 package urn
 
 import (
 	"fmt"
 	"strings"
-
-	"go.motiveiq.dev/lib/resourceurn"
 )
 
-const prefix = resourceurn.Prefix
+const prefix = "urn:iq:"
 
 // MaxBytes bounds every URN and URN pattern accepted anywhere in the system.
 // Resource URNs are caller-controlled input to Cedar `like` evaluation, so
@@ -64,7 +62,6 @@ func Parse(s string) (URN, error) {
 	if len(s) > MaxBytes {
 		return URN{}, fmt.Errorf("urn: %d bytes exceeds the %d-byte limit", len(s), MaxBytes)
 	}
-	s = resourceurn.Current(s)
 	rest, ok := strings.CutPrefix(s, prefix)
 	if !ok {
 		return URN{}, fmt.Errorf("urn: %q does not start with %q", s, prefix)
@@ -130,7 +127,7 @@ func ParseIAM(resourceType, s string) (URN, error) {
 // object's name back to callers at the API edge without re-parsing; s is
 // assumed canonical (every stored IAM URN is, having been built by IAM).
 func IAMName(s, resourceType string) string {
-	return strings.TrimPrefix(resourceurn.Current(s), prefix+ServiceIAM+":"+resourceType+"/")
+	return strings.TrimPrefix(s, prefix+ServiceIAM+":"+resourceType+"/")
 }
 
 // ValidateService validates a URN service segment (a lowercase label), the
@@ -185,8 +182,8 @@ func ValidatePattern(p string) error {
 			return fmt.Errorf("urn pattern %q: invalid character %q", p, c)
 		}
 	}
-	if p != "*" && !strings.HasPrefix(p, "urn:") && !strings.HasPrefix(p, "*") {
-		return fmt.Errorf("urn pattern %q: must start with \"urn:\" or a wildcard", p)
+	if p != "*" && !strings.HasPrefix(p, prefix) && !strings.HasPrefix(p, "urn:*") && !strings.HasPrefix(p, "*") {
+		return fmt.Errorf("urn pattern %q: must start with the IQ namespace or a wildcard", p)
 	}
 	return nil
 }

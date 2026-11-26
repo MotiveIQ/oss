@@ -12,7 +12,6 @@ import (
 	"github.com/spf13/cobra"
 	"google.golang.org/protobuf/proto"
 
-	"go.motiveiq.dev/lib/resourceurn"
 	sm "go.motiveiq.dev/platform/secretsmanager/api/v1"
 )
 
@@ -295,7 +294,6 @@ func validSecretName(name string) bool {
 }
 
 func secretSelector(id string) (*sm.SecretSelector, error) {
-	id = resourceurn.Current(id)
 	if strings.HasPrefix(id, secretURNPrefix) && secretUUID(strings.TrimPrefix(id, secretURNPrefix)) {
 		return &sm.SecretSelector{Selector: &sm.SecretSelector_Urn{Urn: id}}, nil
 	}

@@ -24,7 +24,7 @@ func clearEnv(t *testing.T) {
 }
 
 func TestLoadDefaultConfigFromEnvironment(t *testing.T) {
-	t.Setenv(EnvRoleURN, strings.Replace(testRoleURN, "urn:iq:", "urn:motiveiq:", 1))
+	t.Setenv(EnvRoleURN, testRoleURN)
 	t.Setenv(EnvWebIdentityTokenFile, "/var/run/secrets/motiveiq/token")
 	t.Setenv(EnvSTSEndpoint, "iam.iam-system.svc:8443")
 	t.Setenv(EnvSTSProofOrigin, "https://sts.staging.example")
@@ -122,5 +122,13 @@ func TestLegacyEnvironmentCompatibility(t *testing.T) {
 	}
 	if _, err := cfg.Credentials(); err == nil {
 		t.Fatal("partial IQ identity borrowed a legacy token")
+	}
+}
+
+func TestLoadDefaultConfigRejectsLegacyRoleURN(t *testing.T) {
+	clearEnv(t)
+	t.Setenv(EnvRoleURN, "urn:motiveiq:iam:role/test")
+	if _, err := LoadDefaultConfig(context.Background()); err == nil {
+		t.Fatal("accepted a role URN in the retired namespace")
 	}
 }
