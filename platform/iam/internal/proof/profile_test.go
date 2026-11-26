@@ -115,7 +115,7 @@ func TestV3TransportIndependenceAndIsolation(t *testing.T) {
 		binding.Transport = transport
 		if transport == "example-rpc.v1" {
 			binding.Method = "CALL"
-			binding.TargetURI = "urn:motiveiq:example:rpc"
+			binding.TargetURI = "urn:iq:example:rpc"
 			binding.Operation = "Echo"
 		}
 		compact := mustSign(t, binding, goldenTime)

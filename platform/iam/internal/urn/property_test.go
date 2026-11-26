@@ -79,13 +79,13 @@ func cedarLike(t *testing.T, pattern, s string) bool {
 
 func FuzzParse(f *testing.F) {
 	for _, seed := range []string{
-		"urn:motiveiq:iam:role/payments-reconciler",
-		"urn:motiveiq:ledger:account/payments/reconciliation",
-		"urn:motiveiq:iam:role/pct%2Fencoded",
-		"urn:motiveiq:iam:role/pct%65ncoded",
-		"urn:motiveiq:iam:role/",
-		"urn:motiveiq:IAM:role/x",
-		"urn:motiveiq:iam:role/a*",
+		"urn:iq:iam:role/payments-reconciler",
+		"urn:iq:ledger:account/payments/reconciliation",
+		"urn:iq:iam:role/pct%2Fencoded",
+		"urn:iq:iam:role/pct%65ncoded",
+		"urn:iq:iam:role/",
+		"urn:iq:IAM:role/x",
+		"urn:iq:iam:role/a*",
 		"::://///%%%",
 	} {
 		f.Add(seed)
@@ -111,7 +111,7 @@ func FuzzParse(f *testing.F) {
 }
 
 func FuzzGlob(f *testing.F) {
-	f.Add("urn:motiveiq:temporal:namespace/acme-*", "urn:motiveiq:temporal:namespace/acme-prod")
+	f.Add("urn:iq:temporal:namespace/acme-*", "urn:iq:temporal:namespace/acme-prod")
 	f.Add("*", "")
 	f.Add("a*b*c", "abc")
 	f.Fuzz(func(t *testing.T, pattern, s string) {

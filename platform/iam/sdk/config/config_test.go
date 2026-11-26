@@ -15,7 +15,7 @@ import (
 	motiveiq "go.motiveiq.dev/platform/iam/sdk"
 )
 
-const testRole = "urn:motiveiq:iam:role/test"
+const testRole = "urn:iq:iam:role/test"
 
 func testResolver(t *testing.T) (Resolver, map[string]string) {
 	t.Helper()
@@ -38,7 +38,7 @@ func writeConfig(t *testing.T, env map[string]string, config FileConfig) {
 
 func fileConfig(path string) FileConfig {
 	return FileConfig{
-		Profiles:           map[string]Profile{"default": {RoleURN: testRole, WebIdentitySource: "test"}, "production": {RoleURN: "urn:motiveiq:iam:role/production", WebIdentitySource: "test", STSEndpoint: "sts.example:443"}},
+		Profiles:           map[string]Profile{"default": {RoleURN: testRole, WebIdentitySource: "test"}, "production": {RoleURN: "urn:iq:iam:role/production", WebIdentitySource: "test", STSEndpoint: "sts.example:443"}},
 		WebIdentitySources: map[string]Source{"test": {Type: "file", Config: SourceConfig{"path": path}}},
 	}
 }
@@ -47,7 +47,7 @@ func TestResolutionPrecedence(t *testing.T) {
 	r, env := testResolver(t)
 	profileFile := filepath.Join(t.TempDir(), "profile-token")
 	writeConfig(t, env, fileConfig(profileFile))
-	env[RoleURNEnv] = "urn:motiveiq:iam:role/workload"
+	env[RoleURNEnv] = "urn:iq:iam:role/workload"
 	env[WebIdentityTokenFileEnv] = filepath.Join(t.TempDir(), "workload-token")
 	env[STSEndpointEnv] = "workload.example:443"
 	identity, err := r.Resolve("")
@@ -56,12 +56,12 @@ func TestResolutionPrecedence(t *testing.T) {
 	}
 	env[ProfileEnv] = "production"
 	identity, err = r.Resolve("")
-	if err != nil || identity.RoleURN != "urn:motiveiq:iam:role/production" || identity.STSEndpoint != "sts.example:443" {
+	if err != nil || identity.RoleURN != "urn:iq:iam:role/production" || identity.STSEndpoint != "sts.example:443" {
 		t.Fatalf("named profile selection: %+v, %v", identity, err)
 	}
 	r.Profile = "default"
-	identity, err = r.Resolve("urn:motiveiq:iam:role/override")
-	if err != nil || identity.ProfileName != "default" || identity.RoleURN != "urn:motiveiq:iam:role/override" || identity.STSEndpoint != "" {
+	identity, err = r.Resolve("urn:iq:iam:role/override")
+	if err != nil || identity.ProfileName != "default" || identity.RoleURN != "urn:iq:iam:role/override" || identity.STSEndpoint != "" {
 		t.Fatalf("explicit override: %+v, %v", identity, err)
 	}
 	// Resolve is lazy: neither missing token file has been read yet.
@@ -73,7 +73,7 @@ func TestResolutionPrecedence(t *testing.T) {
 func TestExplicitProfileOverridesWorkloadEnvironment(t *testing.T) {
 	// Explicit profile selection pins identity even inside a workload. With
 	// no profile selected, the same environment must work automatically.
-	t.Setenv(motiveiq.EnvRoleURN, "urn:motiveiq:iam:role/ambient")
+	t.Setenv(motiveiq.EnvRoleURN, "urn:iq:iam:role/ambient")
 	t.Setenv(motiveiq.EnvWebIdentityTokenFile, "/ambient-token")
 	t.Setenv(motiveiq.EnvSTSEndpoint, "ambient.invalid:443")
 	t.Setenv(motiveiq.EnvSTSProofOrigin, "invalid ambient proof origin")
@@ -83,7 +83,7 @@ func TestExplicitProfileOverridesWorkloadEnvironment(t *testing.T) {
 	for _, key := range []string{motiveiq.EnvRoleURN, motiveiq.EnvWebIdentityTokenFile, motiveiq.EnvSTSEndpoint} {
 		env[key] = os.Getenv(key)
 	}
-	if identity, err := r.Resolve(""); err != nil || identity.RoleURN != "urn:motiveiq:iam:role/ambient" {
+	if identity, err := r.Resolve(""); err != nil || identity.RoleURN != "urn:iq:iam:role/ambient" {
 		t.Fatalf("workload was not discovered without a profile: %+v, %v", identity, err)
 	}
 	writeConfig(t, env, fileConfig("/configured-token"))
@@ -167,7 +167,7 @@ func TestFileRotationAndSourceFailure(t *testing.T) {
 func TestTOMLProfilesAndStrictValidation(t *testing.T) {
 	const document = `# Quoted names and comments are ordinary TOML.
 [profiles."ci.production"]
-role_urn = "urn:motiveiq:iam:role/test"
+role_urn = "urn:iq:iam:role/test"
 web_identity_source = "external"
 
 [web_identity_sources.external]
@@ -424,14 +424,14 @@ func TestCanonicalWorkloadCannotBorrowLegacyIdentity(t *testing.T) {
 			env["MOTIVEIQ_ROLE_URN"] = testRole
 			env["MOTIVEIQ_WEB_IDENTITY_TOKEN_FILE"] = "/legacy-token"
 			if key == RoleURNEnv {
-				env[key] = "urn:motiveiq:iam:role/canonical"
+				env[key] = "urn:iq:iam:role/canonical"
 			} else {
 				env[key] = "/canonical-token"
 			}
 			if _, err := r.Resolve(""); err == nil {
 				t.Fatal("partial canonical identity fell back")
 			}
-			env[RoleURNEnv] = "urn:motiveiq:iam:role/canonical"
+			env[RoleURNEnv] = "urn:iq:iam:role/canonical"
 			env[WebIdentityTokenFileEnv] = "/canonical-token"
 			identity, err := r.Resolve("")
 			if err != nil || identity.RoleURN != env[RoleURNEnv] {

@@ -44,7 +44,7 @@ func TestLoadDefaultConfigFromEnvironment(t *testing.T) {
 }
 
 func TestLoadDefaultConfigOptionsOverrideEnvironment(t *testing.T) {
-	t.Setenv(EnvRoleURN, "urn:motiveiq:iam:role/from-env")
+	t.Setenv(EnvRoleURN, "urn:iq:iam:role/from-env")
 	t.Setenv(EnvSTSEndpoint, "env-sts:1")
 	t.Setenv(EnvSTSProofOrigin, "https://env-sts")
 	t.Setenv(EnvSessionName, "env-pod-name")
@@ -108,7 +108,7 @@ func TestLegacyEnvironmentCompatibility(t *testing.T) {
 	if cfg.RoleURN != testRoleURN || cfg.WebIdentityTokenFile != "/legacy-token" || cfg.STSEndpoint != "legacy.example:443" || cfg.STSProofOrigin != "https://legacy-sts.example" || cfg.sessionName != "legacy-session" {
 		t.Fatalf("legacy environment was not discovered: %+v", cfg)
 	}
-	t.Setenv("IQ_ROLE_URN", "urn:motiveiq:iam:role/canonical")
+	t.Setenv("IQ_ROLE_URN", "urn:iq:iam:role/canonical")
 	t.Setenv("IQ_STS_ENDPOINT", "canonical.example:443")
 	t.Setenv("IQ_STS_PROOF_ORIGIN", "https://canonical-sts.example")
 	t.Setenv("IQ_SESSION_NAME", "canonical-session")
@@ -117,7 +117,7 @@ func TestLegacyEnvironmentCompatibility(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer cfg.Close()
-	if cfg.RoleURN != "urn:motiveiq:iam:role/canonical" || cfg.WebIdentityTokenFile != "" || cfg.STSEndpoint != "canonical.example:443" || cfg.STSProofOrigin != "https://canonical-sts.example" || cfg.sessionName != "canonical-session" {
+	if cfg.RoleURN != "urn:iq:iam:role/canonical" || cfg.WebIdentityTokenFile != "" || cfg.STSEndpoint != "canonical.example:443" || cfg.STSProofOrigin != "https://canonical-sts.example" || cfg.sessionName != "canonical-session" {
 		t.Fatalf("canonical environment did not take precedence: %+v", cfg)
 	}
 	if _, err := cfg.Credentials(); err == nil {

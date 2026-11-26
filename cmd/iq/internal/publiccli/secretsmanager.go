@@ -18,7 +18,7 @@ import (
 )
 
 const SecretsManagerEndpointEnv = "IQ_SECRETSMANAGER_ENDPOINT"
-const secretURNPrefix = "urn:motiveiq:secretsmanager:secret/"
+const secretURNPrefix = "urn:iq:secretsmanager:secret/"
 
 var secretNameSegment = regexp.MustCompile(`^[A-Za-z0-9][A-Za-z0-9_.-]{0,62}$`)
 
@@ -88,7 +88,7 @@ func (c *Command) secretCommand(o *secretsManagerOptions, verb string) *cobra.Co
 	f := command.Flags()
 	required := func(name string) { must(command.MarkFlagRequired(name)) }
 	if verb != "create-secret" && verb != "list-secrets" {
-		f.StringVar(&q.id, "secret-id", "", "Secret name or complete urn:motiveiq:secretsmanager:secret/<uuid>.")
+		f.StringVar(&q.id, "secret-id", "", "Secret name or complete urn:iq:secretsmanager:secret/<uuid>.")
 		required("secret-id")
 	}
 	if mutation {

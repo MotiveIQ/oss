@@ -16,8 +16,8 @@ import (
 )
 
 const (
-	kmsKeyPrefix   = "urn:motiveiq:kms:key/"
-	kmsAliasPrefix = "urn:motiveiq:kms:alias/"
+	kmsKeyPrefix   = "urn:iq:kms:key/"
+	kmsAliasPrefix = "urn:iq:kms:alias/"
 )
 
 var kmsAliasPart = regexp.MustCompile(`^[A-Za-z0-9][A-Za-z0-9_.-]{0,62}$`)

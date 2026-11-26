@@ -26,5 +26,5 @@ func Legacy(value string) string {
 }
 
 // Current gives the platform representation used for issuance, storage and
-// policy compilation. During the reader rollout all producers use the old form.
-func Current(value string) string { return Legacy(value) }
+// policy compilation.
+func Current(value string) string { return Canonical(value) }

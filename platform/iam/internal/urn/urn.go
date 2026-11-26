@@ -4,7 +4,7 @@
 //
 // Grammar (DESIGN.md "Naming"):
 //
-//	urn:motiveiq:<service>:<resource-type>/<resource-path>
+//	urn:iq:<service>:<resource-type>/<resource-path>
 //
 // Service and resource-type are lowercase. Resource paths are case-sensitive.
 // APIs reject non-canonical URNs; they never normalize them.
@@ -17,7 +17,7 @@ import (
 	"strings"
 )
 
-const prefix = "urn:motiveiq:"
+const prefix = resourceurn.Prefix
 
 // MaxBytes bounds every URN and URN pattern accepted anywhere in the system.
 // Resource URNs are caller-controlled input to Cedar `like` evaluation, so
@@ -93,7 +93,7 @@ func Parse(s string) (URN, error) {
 
 // IAM constructs the canonical URN of an IAM-managed object of resourceType
 // (role, policy, oidc-provider) named name:
-// urn:motiveiq:iam:<resourceType>/<name>. The control plane calls it to derive
+// urn:iq:iam:<resourceType>/<name>. The control plane calls it to derive
 // the server-owned URN from a caller-supplied name (DESIGN.md decision 27):
 // the service and type are fixed by the endpoint, so only the name segment is
 // caller input. resourceType must be a lowercase label; name must be a single
@@ -120,7 +120,7 @@ func ParseIAM(resourceType, s string) (URN, error) {
 		return URN{}, err
 	}
 	if u.Service != ServiceIAM || u.ResourceType != resourceType {
-		return URN{}, fmt.Errorf("urn: %q is not an urn:motiveiq:%s:%s/... URN", s, ServiceIAM, resourceType)
+		return URN{}, fmt.Errorf("urn: %q is not an urn:iq:%s:%s/... URN", s, ServiceIAM, resourceType)
 	}
 	return u, nil
 }

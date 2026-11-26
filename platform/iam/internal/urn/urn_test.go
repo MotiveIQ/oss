@@ -7,16 +7,16 @@ import (
 
 func TestParse(t *testing.T) {
 	valid := []string{
-		"urn:motiveiq:iam:role/payments-reconciler",
-		"urn:motiveiq:temporal:namespace/acme-prod",
-		"urn:motiveiq:ledger:account/payments/reconciliation",
-		"urn:motiveiq:sts:assumed-role/payments-reconciler/pod-01K8Y9",
-		"urn:motiveiq:git:repository/motiveiq/platform",
-		"urn:motiveiq:iam:role/Case.Sensitive_Path~ok",
-		"urn:motiveiq:iam:role/pct%2Fencoded", // %2F = '/': reserved, escapable
-		"urn:motiveiq:iam:role/pct%20space",   // %20 = ' ': reserved, escapable
+		"urn:iq:iam:role/payments-reconciler",
+		"urn:iq:temporal:namespace/acme-prod",
+		"urn:iq:ledger:account/payments/reconciliation",
+		"urn:iq:sts:assumed-role/payments-reconciler/pod-01K8Y9",
+		"urn:iq:git:repository/motiveiq/platform",
+		"urn:iq:iam:role/Case.Sensitive_Path~ok",
+		"urn:iq:iam:role/pct%2Fencoded", // %2F = '/': reserved, escapable
+		"urn:iq:iam:role/pct%20space",   // %20 = ' ': reserved, escapable
 		// Exactly MaxBytes is still accepted.
-		"urn:motiveiq:iam:role/" + strings.Repeat("x", MaxBytes-len("urn:motiveiq:iam:role/")),
+		"urn:iq:iam:role/" + strings.Repeat("x", MaxBytes-len("urn:iq:iam:role/")),
 	}
 	for _, s := range valid {
 		u, err := Parse(s)
@@ -30,28 +30,28 @@ func TestParse(t *testing.T) {
 	}
 
 	invalid := map[string]string{
-		"urn:motiveiq:iam:role":               "no path",
-		"urn:motiveiq:iam:role/":              "empty path",
-		"urn:motiveiq:iam:role/x/":            "trailing slash",
-		"urn:motiveiq:iam:role//x":            "empty segment",
-		"urn:motiveiq:IAM:role/x":             "uppercase service",
-		"urn:motiveiq:iam:Role/x":             "uppercase type",
-		"urn:motiveiq:iam:role/pay*":          "wildcard",
-		"urn:motiveiq:iam:role/pay?q=1":       "query-ish wildcard char",
-		"urn:motiveiq:iam:role/a#b":           "fragment char",
-		"urn:motiveiq:iam:role/pct%2fencoded": "lowercase pct hex",
-		"urn:motiveiq:iam:role/pct%2":         "truncated pct",
-		"urn:motiveiq:iam:role/a b":           "space",
-		"arn:motiveiq:iam:role/x":             "wrong scheme",
-		"urn:other:iam:role/x":                "wrong org",
-		"urn:motiveiq:9iam:role/x":            "label starts with digit",
+		"urn:iq:iam:role":               "no path",
+		"urn:iq:iam:role/":              "empty path",
+		"urn:iq:iam:role/x/":            "trailing slash",
+		"urn:iq:iam:role//x":            "empty segment",
+		"urn:iq:IAM:role/x":             "uppercase service",
+		"urn:iq:iam:Role/x":             "uppercase type",
+		"urn:iq:iam:role/pay*":          "wildcard",
+		"urn:iq:iam:role/pay?q=1":       "query-ish wildcard char",
+		"urn:iq:iam:role/a#b":           "fragment char",
+		"urn:iq:iam:role/pct%2fencoded": "lowercase pct hex",
+		"urn:iq:iam:role/pct%2":         "truncated pct",
+		"urn:iq:iam:role/a b":           "space",
+		"arn:motiveiq:iam:role/x":       "wrong scheme",
+		"urn:other:iam:role/x":          "wrong org",
+		"urn:iq:9iam:role/x":            "label starts with digit",
 		// Over-encoded escapes of unreserved bytes are canonical aliases
 		// (%65 spells 'e'); rejected, never normalized (invariant 17).
-		"urn:motiveiq:iam:role/pct%65ncoded":                     "percent-encoded unreserved letter",
-		"urn:motiveiq:iam:role/pct%41":                           "percent-encoded unreserved uppercase letter",
-		"urn:motiveiq:iam:role/pct%30":                           "percent-encoded unreserved digit",
-		"urn:motiveiq:iam:role/pct%7E":                           "percent-encoded unreserved tilde",
-		"urn:motiveiq:iam:role/" + strings.Repeat("x", MaxBytes): "over the byte limit",
+		"urn:iq:iam:role/pct%65ncoded":                     "percent-encoded unreserved letter",
+		"urn:iq:iam:role/pct%41":                           "percent-encoded unreserved uppercase letter",
+		"urn:iq:iam:role/pct%30":                           "percent-encoded unreserved digit",
+		"urn:iq:iam:role/pct%7E":                           "percent-encoded unreserved tilde",
+		"urn:iq:iam:role/" + strings.Repeat("x", MaxBytes): "over the byte limit",
 	}
 	for s, why := range invalid {
 		if _, err := Parse(s); err == nil {
@@ -61,7 +61,7 @@ func TestParse(t *testing.T) {
 }
 
 func TestParseSupportsEscapedS3KeyCeiling(t *testing.T) {
-	prefix := "urn:motiveiq:s3:object/" + strings.Repeat("b", 63) + "/"
+	prefix := "urn:iq:s3:object/" + strings.Repeat("b", 63) + "/"
 	// Empty slash segments add sentinels as well as separators; the maximum
 	// canonical S3 resource is 4186 bytes, not the 3x percent-encoding bound.
 	for _, key := range []string{
@@ -115,9 +115,9 @@ func TestValidateName(t *testing.T) {
 
 func TestIAM(t *testing.T) {
 	cases := []struct{ rtype, name, want string }{
-		{"role", "payments-reconciler", "urn:motiveiq:iam:role/payments-reconciler"},
-		{"policy", "ledger-access", "urn:motiveiq:iam:policy/ledger-access"},
-		{"oidc-provider", "k8s-prod", "urn:motiveiq:iam:oidc-provider/k8s-prod"},
+		{"role", "payments-reconciler", "urn:iq:iam:role/payments-reconciler"},
+		{"policy", "ledger-access", "urn:iq:iam:policy/ledger-access"},
+		{"oidc-provider", "k8s-prod", "urn:iq:iam:oidc-provider/k8s-prod"},
 	}
 	for _, c := range cases {
 		got, err := IAM(c.rtype, c.name)
@@ -159,14 +159,14 @@ func TestIAM(t *testing.T) {
 }
 
 func TestParseIAM(t *testing.T) {
-	if _, err := ParseIAM("policy", "urn:motiveiq:iam:policy/ledger-access"); err != nil {
+	if _, err := ParseIAM("policy", "urn:iq:iam:policy/ledger-access"); err != nil {
 		t.Errorf("valid iam policy urn rejected: %v", err)
 	}
 	invalid := []struct{ name, rtype, in string }{
-		{"wrong type", "policy", "urn:motiveiq:iam:role/x"},
-		{"wrong service", "policy", "urn:motiveiq:sts:policy/x"},
-		{"non-canonical", "policy", "urn:motiveiq:IAM:policy/x"},
-		{"wildcard", "policy", "urn:motiveiq:iam:policy/pay*"},
+		{"wrong type", "policy", "urn:iq:iam:role/x"},
+		{"wrong service", "policy", "urn:iq:sts:policy/x"},
+		{"non-canonical", "policy", "urn:iq:IAM:policy/x"},
+		{"wildcard", "policy", "urn:iq:iam:policy/pay*"},
 		{"empty", "policy", ""},
 	}
 	for _, tc := range invalid {
@@ -179,12 +179,12 @@ func TestParseIAM(t *testing.T) {
 func TestValidatePattern(t *testing.T) {
 	valid := []string{
 		"*",
-		"urn:motiveiq:temporal:namespace/acme-*",
-		"urn:motiveiq:temporal:*",
-		"urn:motiveiq:ledger:account/payments/*",
-		"urn:motiveiq:iam:role/exact-name",
+		"urn:iq:temporal:namespace/acme-*",
+		"urn:iq:temporal:*",
+		"urn:iq:ledger:account/payments/*",
+		"urn:iq:iam:role/exact-name",
 		"*prod",
-		"urn:motiveiq:iam:role/pct%2Fencoded-*", // reserved-byte escape stays valid
+		"urn:iq:iam:role/pct%2Fencoded-*", // reserved-byte escape stays valid
 	}
 	for _, p := range valid {
 		if err := ValidatePattern(p); err != nil {
@@ -193,11 +193,11 @@ func TestValidatePattern(t *testing.T) {
 	}
 	invalid := []string{
 		"",
-		"urn:motiveiq:iam:role/a?",
-		"urn:motiveiq:iam:role/a b",
+		"urn:iq:iam:role/a?",
+		"urn:iq:iam:role/a b",
 		"role/*",
-		"urn:motiveiq:iam:role/pct%65ncoded-*", // escape of unreserved 'e': canonical alias
-		"urn:motiveiq:iam:role/" + strings.Repeat("x", MaxBytes) + "*",
+		"urn:iq:iam:role/pct%65ncoded-*", // escape of unreserved 'e': canonical alias
+		"urn:iq:iam:role/" + strings.Repeat("x", MaxBytes) + "*",
 	}
 	for _, p := range invalid {
 		if err := ValidatePattern(p); err == nil {
@@ -212,11 +212,11 @@ func TestGlob(t *testing.T) {
 		want       bool
 	}{
 		{"*", "anything:at/all", true},
-		{"urn:motiveiq:temporal:namespace/acme-*", "urn:motiveiq:temporal:namespace/acme-prod", true},
-		{"urn:motiveiq:temporal:namespace/acme*", "urn:motiveiq:temporal:namespace/acme2", true},
-		{"urn:motiveiq:temporal:namespace/acme-*", "urn:motiveiq:temporal:namespace/acmeX-prod", false},
-		{"urn:motiveiq:ledger:account/payments/*", "urn:motiveiq:ledger:account/payments/a/b/c", true},
-		{"urn:motiveiq:temporal:*", "urn:motiveiq:temporal:namespace/x", true},
+		{"urn:iq:temporal:namespace/acme-*", "urn:iq:temporal:namespace/acme-prod", true},
+		{"urn:iq:temporal:namespace/acme*", "urn:iq:temporal:namespace/acme2", true},
+		{"urn:iq:temporal:namespace/acme-*", "urn:iq:temporal:namespace/acmeX-prod", false},
+		{"urn:iq:ledger:account/payments/*", "urn:iq:ledger:account/payments/a/b/c", true},
+		{"urn:iq:temporal:*", "urn:iq:temporal:namespace/x", true},
 		{"a*b*c", "aXXbYYc", true},
 		{"a*b*c", "aXXbYY", false},
 		{"exact", "exact", true},

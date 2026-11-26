@@ -114,7 +114,7 @@ func TestSessionCacheScopeIsolation(t *testing.T) {
 	firstConfig := cachedTestConfig(t, clock, address, tokenFile, cache)
 	first := mustToken(t, mustCredentials(t, firstConfig))
 	for _, option := range []Option{
-		WithRoleURN("urn:motiveiq:iam:role/other"),
+		WithRoleURN("urn:iq:iam:role/other"),
 		WithSessionName("different-name"),
 		WithSessionDuration(time.Minute),
 		WithSTSEndpoint("dns:///" + address),

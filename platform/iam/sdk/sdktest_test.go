@@ -28,7 +28,7 @@ import (
 const testIssuer = "https://sts.unit.test"
 
 // testRoleURN is a syntactically valid role URN.
-const testRoleURN = "urn:motiveiq:iam:role/unit-test"
+const testRoleURN = "urn:iq:iam:role/unit-test"
 
 // fakeClock is a manually advanced time source.
 type fakeClock struct {
@@ -136,7 +136,7 @@ func (f *fakeSTS) AssumeRoleWithWebIdentity(ctx context.Context, req *iamv1.Assu
 	return &iamv1.AssumeRoleWithWebIdentityResponse{
 		SessionToken:       fmt.Sprintf("session-token-%d", f.calls),
 		SessionId:          fmt.Sprintf("session_%d", f.calls),
-		SessionUrn:         "urn:motiveiq:sts:assumed-role/unit-test/pod-1",
+		SessionUrn:         "urn:iq:sts:assumed-role/unit-test/pod-1",
 		RoleUrn:            req.GetRoleUrn(),
 		ExpireTime:         timestamppb.New(now.Add(f.lifetime)),
 		SessionTokenType:   f.responseTokenType,

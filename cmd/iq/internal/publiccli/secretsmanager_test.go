@@ -460,8 +460,8 @@ func TestSecretsManagerConfigurationAndErrors(t *testing.T) {
 		}
 		return ""
 	}
-	output := f.run(t, "list-secrets", "--role", "urn:motiveiq:iam:role/test", "--timeout", "2s")
-	if f.endpoint != "dns:///localhost:8443" || f.role != "urn:motiveiq:iam:role/test" || time.Until(f.deadline) > 2*time.Second || f.deadline.IsZero() || !strings.Contains(output, "SecretList: []") {
+	output := f.run(t, "list-secrets", "--role", "urn:iq:iam:role/test", "--timeout", "2s")
+	if f.endpoint != "dns:///localhost:8443" || f.role != "urn:iq:iam:role/test" || time.Until(f.deadline) > 2*time.Second || f.deadline.IsZero() || !strings.Contains(output, "SecretList: []") {
 		t.Fatalf("config not used: %s %s %v %s", f.endpoint, f.role, f.deadline, output)
 	}
 	f.run(t, "list-secrets", "--endpoint-url", "https://localhost:9443")
